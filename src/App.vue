@@ -23,21 +23,22 @@
 
 <script>
 export default {
-	data() {
-		return {
-			menuShow: false,
-			linkMenu: [
-				{ title: 'Home', url: '/' },
-				{ title: 'Login', url: '/login' },
-				{ title: 'Registration', url: '/registration' }
-			]
-		};
-	}
+  data() {
+    return {
+      menuShow: false,
+      linkMenu: [
+        { title: "Home", url: "/" },
+        { title: "Task", url: "/task" },
+        { title: "Login", url: "/login" },
+        { title: "Registration", url: "/registration" }
+      ]
+    };
+  }
 };
 </script>
 
 <style></style>
 
 <style lang="stylus">
-@import './assets/stylus/main.styl'
+@import './assets/stylus/main.styl';
 </style>
