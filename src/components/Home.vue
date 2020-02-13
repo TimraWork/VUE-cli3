@@ -74,9 +74,7 @@
 						)
 						p {{ serialTime }}
 
-				
-				
-				
+
 				// TAG LIST
 				// Add New Tag
 				.tag-list.tag-list--add
@@ -97,7 +95,11 @@
 							span.tag-title {{ tag.title }}
 							span.button-close
 
-				p {{  tagsUsed }}
+				//- p {{  tagsUsed }}
+
+				.text-right
+					.button.button--round.button-primary(@click="newTask") Send
+		
 
 </template>
 
@@ -145,9 +147,9 @@ export default {
         return;
       }
       //   this.tasks.push({
-      this.tagsUsed.push({
+      this.tags.push({
         title: this.tagTitle,
-        used: false
+        use: false
       });
     },
     newTask() {
@@ -159,7 +161,6 @@ export default {
         title: this.taskTitle,
         description: this.taskDescription,
         whatWatch: this.whatWatch,
-        time,
         tagsUsed: this.tags,
         completed: false,
         editing: false
@@ -268,7 +269,16 @@ export default {
   align-items: center;
 }
 
+.tag-list .tag-add--input, .what-watch--radio {
+  margin-bottom: 0;
+}
+
+.what-watch--radio {
+  margin-top: 5px;
+}
+
 // New tag INput
-.tag-add--input {
+.text-right {
+  text-align: right;
 }
 </style>
