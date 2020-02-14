@@ -25,7 +25,6 @@
 						for="radioFilm"
 					) Film
 
-
 					input.what-watch--radio(
 						type="radio"
 						id="radioSerial"
@@ -94,7 +93,7 @@
 							span.tag-title {{ tag.title }}
 							span.button-close
 
-				//- p {{  tagsUsed }}
+				p {{  tagsUsed }}
 
 				.text-right
 					.button.button--round.button-primary(@click="newTask") Send
@@ -165,7 +164,7 @@ export default {
         description: this.taskDescription,
         whatWatch: this.whatWatch,
         time,
-        tagsUsed: this.tags,
+        tags: this.tagsUsed,
         completed: false,
         editing: false
       };
@@ -181,7 +180,9 @@ export default {
     addTagUsed(tag) {
       tag.use = !tag.use;
       if (tag.use) {
-        this.tagsUsed.push(tag.title);
+        this.tagsUsed.push({
+          title: tag.title
+        });
       } else {
         this.tagsUsed.splice(tag.title, 1);
       }

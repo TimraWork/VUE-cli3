@@ -24,6 +24,12 @@
 									span.ui-title-3 {{ task.title }}
 								.task-item__body
 									p.ui-text-regular {{ task.description }}
+								.task-item__footer
+									// All Tags
+									.tag-list
+										.ui-tag__wrapper(v-for="tag in task.tags")
+											.ui-tag( @click = "addTagUsed(tag)" )
+												span.tag-title {{ tag.title }}
 
 </template>
 
