@@ -9,7 +9,7 @@
 					v-model = "taskTitle"
 					@keyup.enter  = "newTask"
 				)
-				textarea(				
+				textarea(
 					placeholder = "What we will watch?"
 					v-model = "taskDescription"
 					@keyup.enter  = "newTask"
@@ -56,7 +56,6 @@
 						
 					// Serial Time
 					.total-time__serial( v-if="whatWatch === 'Serial'" )
-						span Total Serial Times
 						span.time-title How many season?
 						input.time-input(
 							type="number"
@@ -110,7 +109,6 @@ export default {
       taskTitle: "",
       taskDescription: "",
       whatWatch: "Film",
-      taskId: 3,
 
       // Total Time
       // Film
@@ -153,23 +151,28 @@ export default {
       });
     },
     newTask() {
+      let time;
       if (!this.taskTitle) return;
+      if (this.whatWatch === "Film") {
+        time = this.filmTime;
+      } else {
+        time = this.serialTime;
+      }
 
       //   this.tasks.push({
       const task = {
-        id: this.taskId,
         title: this.taskTitle,
         description: this.taskDescription,
         whatWatch: this.whatWatch,
+        time,
         tagsUsed: this.tags,
         completed: false,
         editing: false
       };
-
+      this.$store.dispatch("newTask", task);
       console.log(task);
 
       // Reset
-      this.taskId += 1;
       this.taskTitle = "";
       this.taskDescription = "";
       this.tagsUsed = [];

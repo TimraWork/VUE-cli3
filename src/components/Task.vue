@@ -12,7 +12,7 @@
 						.ui-card.ui-card--shadow
 							.task-item__info
 								span.ui-label.ui-label--light {{ task.whatWatch }}
-								span Total Time: 
+								span Total Time: {{ task.time }}
 								span.button-close
 							.task-item__content
 								.task-item__header
@@ -29,29 +29,10 @@
 
 <script>
 export default {
-  data() {
-    return {
-      tasks: [
-        {
-          id: 1,
-          title: "GrowthBuster: Hooked on Growth",
-          description:
-            "I directed this documentary challengie directed this documentary challengie",
-          whatWatch: "Film",
-          comleted: false,
-          editing: false
-        },
-        {
-          id: 2,
-          title: "Game of thrones",
-          description:
-            "Best serials Bes directed this documentary challengie  t serialsBest serials Best serials Best serialsBest serials",
-          whatWatch: "Serial",
-          comleted: false,
-          editing: false
-        }
-      ]
-    };
+  computed: {
+    tasks() {
+      return this.$store.getters.tasks;
+    }
   }
 };
 </script>
