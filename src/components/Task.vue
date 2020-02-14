@@ -16,8 +16,9 @@
 					)
 						.ui-card.ui-card--shadow
 							.task-item__info
-								span.ui-label.ui-label--light {{ task.whatWatch }}
-								span Total Time: {{ task.time }}
+								span.task-item__wrap
+									span.ui-label.ui-label--light {{ task.whatWatch }}
+									span Total Time: {{ task.time }}
 								span.button-close
 							.task-item__content
 								.task-item__header
@@ -33,7 +34,7 @@
 									// All Tags
 									.tag-list
 										.ui-tag__wrapper(v-for="tag in task.tags")
-											.ui-tag( @click = "addTagUsed(tag)" )
+											.ui-tag
 												span.tag-title {{ tag.title }}
 
 </template>

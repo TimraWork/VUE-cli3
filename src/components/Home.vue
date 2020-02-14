@@ -121,21 +121,7 @@ export default {
       //Tags
       tagsUsed: [],
       tagTitle: "",
-      tagMenuShow: false,
-      tags: [
-        {
-          title: "Comedy",
-          use: true
-        },
-        {
-          title: "Westerns",
-          use: false
-        },
-        {
-          title: "Adventure",
-          use: false
-        }
-      ]
+      tagMenuShow: false
     };
   },
   methods: {
@@ -144,10 +130,15 @@ export default {
         return;
       }
       //   this.tasks.push({
-      this.tags.push({
+      const tag = {
         title: this.tagTitle,
         use: false
-      });
+      };
+
+      this.$store.dispatch("newTag", tag); // В dispatch мы отправим новый метод newTag и отпавим туда константу tag
+
+      // Reset
+      this.tagTitle = "";
     },
     newTask() {
       let time;
@@ -175,6 +166,12 @@ export default {
       this.taskTitle = "";
       this.taskDescription = "";
       this.tagsUsed = [];
+      this.tagTitle = "";
+      this.tagMenuShow = false;
+
+      for (let i = 0; i < this.tags.length; i++) {
+        this.tags[i].use = false;
+      }
     },
     // tagMenuShow() {},
     addTagUsed(tag) {
@@ -194,6 +191,9 @@ export default {
     }
   },
   computed: {
+    tags() {
+      return this.$store.getters.tags;
+    },
     filmTime() {
       let min = this.filmHours * 60 + this.filmMinutes;
       return this.getHoursAndMinutes(min);
@@ -284,5 +284,9 @@ export default {
 // New tag INput
 .text-right {
   text-align: right;
+}
+
+.option-list, .total-time {
+  display: none;
 }
 </style>
