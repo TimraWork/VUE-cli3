@@ -2,12 +2,17 @@
 	.content-wrapper
 		section
 			.container
-				h1.ui-title-1 Tasks list
+				.task-list__header
+					h1.ui-title-1 Tasks list
+					.buttons-list
+						.button.button-default.button--round(@click=" filter = 'active' " :class="{ active : filter == 'active' }") Active
+						.button.button-default.button--round(@click=" filter = 'completed' " :class="{ active : filter == 'completed' }") Completed
+						.button.button-default.button--round(@click=" filter = 'all' " :class="{ active : filter == 'all' }") All
 				.task-list
 					.task-item(
-						v-for = "task in tasks"
+						v-for = "task in tasksFilter"
 						:key = "task.id"
-						:class = "{ competed: task.completed }"
+						:class = "{ completed: task.completed }"
 					)
 						.ui-card.ui-card--shadow
 							.task-item__info
@@ -35,10 +40,25 @@
 
 <script>
 export default {
+  data() {
+    return {
+      filter: "active"
+    };
+  },
   computed: {
-    tasks() {
-      return this.$store.getters.tasks;
+    tasksFilter() {
+      if (this.filter === "active") {
+        return this.$store.getters.taskNotCompleted;
+      } else if (this.filter === "completed") {
+        return this.$store.getters.taskCompleted;
+      } else if (this.filter === "all") {
+        return this.$store.getters.tasks;
+      }
+      return this.filter === "active";
     }
+    // tasks() {
+    //   return this.$store.getters.tasks;
+    // }
   }
 };
 </script>
@@ -49,6 +69,21 @@ export default {
 
   &:last-child {
     margin-bottom: 0;
+  }
+
+  &.completed {
+    color: rgba(0, 0, 0, 0.1);
+    opacity: 0.7;
+    pointer-events: none;
+
+    .ui-card.ui-card--shadow {
+      background: rgba(0, 0, 0, 0.07);
+    }
+
+    .ui-title-3 {
+      color: gray;
+      text-decoration: line-through;
+    }
   }
 }
 
@@ -87,5 +122,26 @@ export default {
 
 .total-time {
   margin: 0 0 10px;
+}
+
+.task-list__header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons-list {
+  margin-bottom: 30px;
+}
+
+.buttons-list .button {
+  margin: 0 5px;
+}
+
+.buttons-list .button:last-child {
+  margin-right: 0;
+}
+
+.buttons-list .button.active {
+  background: #ccc;
 }
 </style>
