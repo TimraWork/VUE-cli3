@@ -7,12 +7,10 @@
 					type = "text"
 					placeholder = "What we will watch?"
 					v-model = "taskTitle"
-					@keyup.enter  = "newTask"
 				)
 				textarea(
 					placeholder = "What we will watch?"
 					v-model = "taskDescription"
-					@keyup.enter  = "newTask"
 				)
 				.option-list
 					input.what-watch--radio(
@@ -88,12 +86,13 @@
 
 				// All Tags
 				.tag-list
-					.ui-tag__wrapper(v-for="tag in tags")
-						.ui-tag( @click = "addTagUsed(tag)" :class="{ active: tag.use}")
-							span.tag-title {{ tag.title }}
-							span.button-close
+					transition-group( name="ui-tag__wrapper"  tag="div" enter-active-class="animated fadeIn")
+						.ui-tag__wrapper(v-for="tag in tags" :key="tag.title" )
+							.ui-tag( @click = "addTagUsed(tag)" :class="{ active: tag.use}")
+								span.tag-title {{ tag.title }}
+								span.button-close
 
-				p {{  tagsUsed }}
+				//- p {{  tagsUsed }}
 
 				.text-right
 					.button.button--round.button-primary(@click="newTask") Send
@@ -103,107 +102,112 @@
 
 <script>
 export default {
-  data() {
-    return {
-      taskTitle: "",
-      taskDescription: "",
-      whatWatch: "Film",
+	data() {
+		return {
+			taskTitle: '',
+			taskDescription: '',
+			whatWatch: 'Film',
 
-      // Total Time
-      // Film
-      filmHours: 1,
-      filmMinutes: 30,
-      // Serial
-      serialSeason: 1,
-      serialSeries: 11,
-      serialSeriesMinutes: 40,
+			// Total Time
+			// Film
+			filmHours: 1,
+			filmMinutes: 30,
+			// Serial
+			serialSeason: 1,
+			serialSeries: 11,
+			serialSeriesMinutes: 40,
 
-      //Tags
-      tagsUsed: [],
-      tagTitle: "",
-      tagMenuShow: false
-    };
-  },
-  methods: {
-    newTag() {
-      if (this.tagTitle === "") {
-        return;
-      }
-      //   this.tasks.push({
-      const tag = {
-        title: this.tagTitle,
-        use: false
-      };
+			//Tags
+			tagsUsed: [],
+			tagTitle: '',
+			tagMenuShow: false
+		};
+	},
+	methods: {
+		newTag() {
+			if (this.tagTitle === '') {
+				return;
+			}
+			//   this.tasks.push({
+			const tag = {
+				title: this.tagTitle,
+				use: false
+			};
 
-      this.$store.dispatch("newTag", tag); // В dispatch мы отправим новый метод newTag и отпавим туда константу tag
+			this.$store.dispatch('newTag', tag); // В dispatch мы отправим новый метод newTag и отпавим туда константу tag
 
-      // Reset
-      this.tagTitle = "";
-    },
-    newTask() {
-      let time;
-      if (!this.taskTitle) return;
-      if (this.whatWatch === "Film") {
-        time = this.filmTime;
-      } else {
-        time = this.serialTime;
-      }
+			// Reset
+			this.tagTitle = '';
+			console.log('newTag');
+		},
+		newTask() {
+			let time;
+			if (!this.taskTitle) return;
+			if (this.whatWatch === 'Film') {
+				time = this.filmTime;
+			} else {
+				time = this.serialTime;
+			}
 
-      //   this.tasks.push({
-      const task = {
-        title: this.taskTitle,
-        description: this.taskDescription,
-        whatWatch: this.whatWatch,
-        time,
-        tags: this.tagsUsed,
-        completed: false,
-        editing: false
-      };
-      this.$store.dispatch("newTask", task);
-      console.log(task);
+			//   this.tasks.push({
+			const task = {
+				title: this.taskTitle,
+				description: this.taskDescription,
+				whatWatch: this.whatWatch,
+				time,
+				tags: this.tagsUsed,
+				completed: false,
+				editing: false
+			};
+			this.$store.dispatch('newTask', task);
+			console.log(task);
 
-      // Reset
-      this.taskTitle = "";
-      this.taskDescription = "";
-      this.tagsUsed = [];
-      this.tagTitle = "";
-      this.tagMenuShow = false;
+			// Reset
+			this.taskTitle = '';
+			this.taskDescription = '';
+			this.tagsUsed = [];
+			this.tagTitle = '';
+			this.tagMenuShow = false;
 
-      for (let i = 0; i < this.tags.length; i++) {
-        this.tags[i].use = false;
-      }
-    },
-    // tagMenuShow() {},
-    addTagUsed(tag) {
-      tag.use = !tag.use;
-      if (tag.use) {
-        this.tagsUsed.push({
-          title: tag.title
-        });
-      } else {
-        this.tagsUsed.splice(tag.title, 1);
-      }
-    },
-    getHoursAndMinutes(minutes) {
-      let hours = Math.trunc(minutes / 60);
-      let min = minutes % 60;
-      return hours + " Hours " + (min + " Minutes");
-    }
-  },
-  computed: {
-    tags() {
-      return this.$store.getters.tags;
-    },
-    filmTime() {
-      let min = this.filmHours * 60 + this.filmMinutes;
-      return this.getHoursAndMinutes(min);
-    },
-    serialTime() {
-      let min =
-        this.serialSeason * this.serialSeries * this.serialSeriesMinutes;
-      return this.getHoursAndMinutes(min);
-    }
-  }
+			for (let i = 0; i < this.tags.length; i++) {
+				this.tags[i].use = false;
+			}
+			console.log('newTask');
+		},
+		// tagMenuShow() {},
+		addTagUsed(tag) {
+			tag.use = !tag.use;
+			if (tag.use) {
+				this.tagsUsed.push({
+					title: tag.title
+				});
+			} else {
+				this.tagsUsed.splice(tag.title, 1);
+			}
+		},
+		getHoursAndMinutes(minutes) {
+			let hours = Math.trunc(minutes / 60);
+			let min = minutes % 60;
+			return hours + ' Hours ' + (min + ' Minutes');
+		}
+	},
+	computed: {
+		tags() {
+			return this.$store.getters.tags;
+			console.log('tags()');
+		},
+		filmTime() {
+			let min = this.filmHours * 60 + this.filmMinutes;
+			return this.getHoursAndMinutes(min);
+		},
+		serialTime() {
+			let min =
+				this.serialSeason *
+				this.serialSeries *
+				this.serialSeriesMinutes;
+			return this.getHoursAndMinutes(min);
+		}
+	}
 };
 </script>
 
@@ -286,7 +290,92 @@ export default {
   text-align: right;
 }
 
-.option-list, .total-time {
-  display: none;
+
+
+// // Animate.css
+.animated {
+   animation-duration: 1s;
+}
+
+// Animation for Tasks
+// Active
+.taskList-enter-active, .taskList-leave-active{
+	transition: all .6s;
+}
+// Enter
+.taskList-enter, .taskList-leave-to{
+	opacity: 0;
+	transform: translateY(10px);
+}
+
+// Animation for Tags menu
+// Active
+.fade-enter-active, .fade-leave-active{
+	transition: opacity .2s;
+}
+// Enter
+.fade-enter, .fade-leave-to{
+	opacity: 0;
+	transform: translateY(10px);
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fadeInLeft {
+  -webkit-animation-name: fadeInLeft;
+  animation-name: fadeInLeft;
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fadeInRight {
+  -webkit-animation-name: fadeInRight;
+  animation-name: fadeInRight;
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+.fadeOutDown {
+  -webkit-animation-name: fadeOutDown;
+  animation-name: fadeOutDown;
+}
+
+.tag-list .button{
+	margin-left: 30px;
+	border-radius: 5px;
 }
 </style>
