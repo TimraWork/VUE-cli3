@@ -3,213 +3,270 @@
 		section
 			.container
 				h1.ui-title-1 Home
-				input(
-					type = "text"
-					placeholder = "What we will watch?"
-					v-model = "taskTitle"
-				)
-				textarea(
-					placeholder = "What we will watch?"
-					v-model = "taskDescription"
-				)
-				.option-list
-					input.what-watch--radio(
-						type="radio"
-						id="radioFilm"
-						value="Film"
-						v-model="whatWatch"
-					)
-					label(
-						for="radioFilm"
-					) Film
-
-					input.what-watch--radio(
-						type="radio"
-						id="radioSerial"
-						value="Serial"
-						v-model="whatWatch"
-					)
-					label(
-						for="radioSerial"
-					) Serial
-
-				
-				// TOTAL TIME
-				.total-time
-
-					// Film Time
-					.total-time__film( v-if="whatWatch === 'Film'")
-						span.time-title Hours
-						input.time-input(
-							type="number"
-							v-model="filmHours"
+				form(@submit.prevent="onSubmit")
+					.form__item(:class="{ 'form__item--error': $v.taskTitle.$error }")
+						input(
+							type = "text"
+							placeholder = "What we will watch?"
+							v-model = "taskTitle"
+							@change="$v.taskTitle.$touch()"
 						)
-						span.time-title Minutes
-						input.time-input(
-							type="number"
-							v-model="filmMinutes"
+						.error(v-if="!$v.taskTitle.required") Input is required
+					.form__item
+						textarea(
+							placeholder = "What we will watch?"
+							v-model = "taskDescription"
 						)
-						p {{ filmTime }}
-						
-					// Serial Time
-					.total-time__serial( v-if="whatWatch === 'Serial'" )
-						span.time-title How many season?
-						input.time-input(
-							type="number"
-							v-model="serialSeason"
+					.option-list
+						input.what-watch--radio(
+							type="radio"
+							id="radioFilm"
+							value="Film"
+							v-model="whatWatch"
 						)
-						span.time-title How many series?
-						input.time-input(
-							type="number"
-							v-model="serialSeries"
+						label(
+							for="radioFilm"
+						) Film
+
+						input.what-watch--radio(
+							type="radio"
+							id="radioSerial"
+							value="Serial"
+							v-model="whatWatch"
 						)
-						span.time-title How long is one series? (minutes)
-						input.time-input(
-							type="number"
-							v-model="serialSeriesMinutes"
-						)
-						p {{ serialTime }}
+						label(
+							for="radioSerial"
+						) Serial
+
+					
+					// TOTAL TIME
+					.total-time
+
+						// Film Time
+						.total-time__film( v-if="whatWatch === 'Film'")
+							span.time-title Hours
+							input.time-input(
+								type="number"
+								v-model="filmHours"
+							)
+							span.time-title Minutes
+							input.time-input(
+								type="number"
+								v-model="filmMinutes"
+							)
+							p {{ filmTime }}
+							
+						// Serial Time
+						.total-time__serial( v-if="whatWatch === 'Serial'" )
+							span.time-title How many season?
+							input.time-input(
+								type="number"
+								v-model="serialSeason"
+							)
+							span.time-title How many series?
+							input.time-input(
+								type="number"
+								v-model="serialSeries"
+							)
+							span.time-title How long is one series? (minutes)
+							input.time-input(
+								type="number"
+								v-model="serialSeriesMinutes"
+							)
+							p {{ serialTime }}
 
 
-				// TAG LIST
-				// Add New Tag
-				.tag-list.tag-list--add
-					.ui-tag__wrapper( @click = "tagMenuShow = ! tagMenuShow")
-						.ui-tag
-							span.tag-title Add New
-							span.button-close( :class="{ active: !tagMenuShow }")
+					// TAG LIST
+					// Add New Tag
+					.tag-list.tag-list--add
+						.ui-tag__wrapper( @click = "tagMenuShow = ! tagMenuShow")
+							.ui-tag
+								span.tag-title Add New
+								span.button-close( :class="{ active: !tagMenuShow }")
 
-				// Show/hide Input
-				.tag-list.tag-list--menu(v-if="tagMenuShow")
-					input.tag-add--input(type="text" placeholder="New tag" v-model="tagTitle" @keyup.enter="newTag")
-					.button.button-default(@click="newTag") Send
+					// Show/hide Input
+					transition(name="fade")
+						.tag-list.tag-list--menu(v-if="tagMenuShow")
+							input.tag-add--input(type="text" placeholder="New tag" v-model="tagTitle" @keyup.enter="newTag")
+							.button.button-default(@click="newTag") Send
 
-				// All Tags
-				.tag-list
-					transition-group( name="ui-tag__wrapper"  tag="div" enter-active-class="animated fadeIn")
-						.ui-tag__wrapper(v-for="tag in tags" :key="tag.title" )
-							.ui-tag( @click = "addTagUsed(tag)" :class="{ active: tag.use}")
-								span.tag-title {{ tag.title }}
-								span.button-close
+					// All Tags
+					.tag-list
+						transition-group( name="ui-tag__wrapper"  tag="div" enter-active-class="animated fadeIn")
+							.ui-tag__wrapper(v-for="tag in tags" :key="tag.title" )
+								.ui-tag( @click = "addTagUsed(tag)" :class="{ active: tag.use}")
+									span.tag-title {{ tag.title }}
+									span.button-close
 
-				//- p {{  tagsUsed }}
+					//- p {{  tagsUsed }}
 
-				.text-right
-					.button.button--round.button-primary(@click="newTask") Send
+					.text-right
+						button.button.button--round.button-primary(type="submit" :disabled="submitStatus === 'PENDING'") Send
+						p.typo__p(v-if="submitStatus === 'OK'") Thanks for your submission!
+						p.typo__p.typo__p--error(v-if="submitStatus === 'ERROR'") Please fill the form correctly.
+						p.typo__p.typo__p--send(v-if="submitStatus === 'PENDING'") Sending...
 		
 
 </template>
 
 <script>
+import { required } from "vuelidate/lib/validators";
+
 export default {
-	data() {
-		return {
-			taskTitle: '',
-			taskDescription: '',
-			whatWatch: 'Film',
+  data() {
+    return {
+      taskTitle: "",
+      taskDescription: "",
+      whatWatch: "Film",
 
-			// Total Time
-			// Film
-			filmHours: 1,
-			filmMinutes: 30,
-			// Serial
-			serialSeason: 1,
-			serialSeries: 11,
-			serialSeriesMinutes: 40,
+      // Total Time
+      // Film
+      filmHours: 1,
+      filmMinutes: 30,
+      // Serial
+      serialSeason: 1,
+      serialSeries: 11,
+      serialSeriesMinutes: 40,
 
-			//Tags
-			tagsUsed: [],
-			tagTitle: '',
-			tagMenuShow: false
-		};
-	},
-	methods: {
-		newTag() {
-			if (this.tagTitle === '') {
-				return;
-			}
-			//   this.tasks.push({
-			const tag = {
-				title: this.tagTitle,
-				use: false
-			};
+      //Tags
+      tagsUsed: [],
+      tagTitle: "",
+      tagMenuShow: false,
 
-			this.$store.dispatch('newTag', tag); // В dispatch мы отправим новый метод newTag и отпавим туда константу tag
+      submitStatus: null
+    };
+  },
+  validations: {
+    taskTitle: {
+      required
+    }
+  },
+  methods: {
+    //  Submit New Task
+    onSubmit() {
+      this.$v.$touch();
+      console.log("this.$v =", this.$v);
 
-			// Reset
-			this.tagTitle = '';
-			console.log('newTag');
-		},
-		newTask() {
-			let time;
-			if (!this.taskTitle) return;
-			if (this.whatWatch === 'Film') {
-				time = this.filmTime;
-			} else {
-				time = this.serialTime;
-			}
+      if (this.$v.$invalid) {
+        console.log("ERROR");
+        this.submitStatus = "ERROR";
+      } else {
+        console.log("SEND!");
+        // do your submit logic here
+        this.submitStatus = "PENDING";
+        setTimeout(() => {
+          this.submitStatus = "OK";
+        }, 500);
+      }
 
-			//   this.tasks.push({
-			const task = {
-				title: this.taskTitle,
-				description: this.taskDescription,
-				whatWatch: this.whatWatch,
-				time,
-				tags: this.tagsUsed,
-				completed: false,
-				editing: false
-			};
-			this.$store.dispatch('newTask', task);
-			console.log(task);
+      let time;
+      if (!this.taskTitle) return;
+      if (this.whatWatch === "Film") {
+        time = this.filmTime;
+      } else {
+        time = this.serialTime;
+      }
 
-			// Reset
-			this.taskTitle = '';
-			this.taskDescription = '';
-			this.tagsUsed = [];
-			this.tagTitle = '';
-			this.tagMenuShow = false;
+      //   this.tasks.push({
+      const task = {
+        title: this.taskTitle,
+        description: this.taskDescription,
+        whatWatch: this.whatWatch,
+        time,
+        tags: this.tagsUsed,
+        completed: false,
+        editing: false
+      };
+      this.$store.dispatch("newTask", task);
+      console.log(task);
 
-			for (let i = 0; i < this.tags.length; i++) {
-				this.tags[i].use = false;
-			}
-			console.log('newTask');
-		},
-		// tagMenuShow() {},
-		addTagUsed(tag) {
-			tag.use = !tag.use;
-			if (tag.use) {
-				this.tagsUsed.push({
-					title: tag.title
-				});
-			} else {
-				this.tagsUsed.splice(tag.title, 1);
-			}
-		},
-		getHoursAndMinutes(minutes) {
-			let hours = Math.trunc(minutes / 60);
-			let min = minutes % 60;
-			return hours + ' Hours ' + (min + ' Minutes');
-		}
-	},
-	computed: {
-		tags() {
-			return this.$store.getters.tags;
-			console.log('tags()');
-		},
-		filmTime() {
-			let min = this.filmHours * 60 + this.filmMinutes;
-			return this.getHoursAndMinutes(min);
-		},
-		serialTime() {
-			let min =
-				this.serialSeason *
-				this.serialSeries *
-				this.serialSeriesMinutes;
-			return this.getHoursAndMinutes(min);
-		}
-	}
+      // Reset for task
+      this.taskTitle = "";
+      this.taskDescription = "";
+      // Reset $v (validate)
+      this.$v.$reset();
+
+      // Reset for Tags
+      this.tagMenuShow = false;
+      this.tagsUsed = [];
+      this.tagTitle = "";
+
+      for (let i = 0; i < this.tags.length; i++) {
+        this.tags[i].use = false;
+      }
+      console.log("newTask");
+    },
+    newTag() {
+      if (this.tagTitle === "") {
+        return;
+      }
+      //   this.tasks.push({
+      const tag = {
+        title: this.tagTitle,
+        use: false
+      };
+
+      this.$store.dispatch("newTag", tag); // В dispatch мы отправим новый метод newTag и отпавим туда константу tag
+
+      // Reset
+      this.tagTitle = "";
+      console.log("newTag");
+    },
+    // tagMenuShow() {},
+    addTagUsed(tag) {
+      tag.use = !tag.use;
+      if (tag.use) {
+        this.tagsUsed.push({
+          title: tag.title
+        });
+      } else {
+        this.tagsUsed.splice(tag.title, 1);
+      }
+    },
+    getHoursAndMinutes(minutes) {
+      let hours = Math.trunc(minutes / 60);
+      let min = minutes % 60;
+      return hours + " Hours " + (min + " Minutes");
+    }
+  },
+  computed: {
+    tags() {
+      return this.$store.getters.tags;
+      console.log("tags()");
+    },
+    filmTime() {
+      let min = this.filmHours * 60 + this.filmMinutes;
+      return this.getHoursAndMinutes(min);
+    },
+    serialTime() {
+      let min =
+        this.serialSeason * this.serialSeries * this.serialSeriesMinutes;
+      return this.getHoursAndMinutes(min);
+    }
+  }
 };
 </script>
+
+<style lang="stylus">
+// Animaton for Tasks
+.taskList-enter-active, .taskList-leave-active {
+  transition: all 0.6s;
+}
+
+.taskList-enter, .taskList-leave-to { /* .fade-leave-active до версии 2.1.8 */
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+// Animaton for Tags menu
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.8s ease-in-out;
+}
+
+.fade-enter, .fade-leave-to { /* .fade-leave-active до версии 2.1.8 */
+  opacity: 0;
+}
+</style>
 
 <style lang="stylus" scoped>
 .option-list {
@@ -239,7 +296,7 @@ export default {
 
 // Tags
 .tag-list {
-  margin-bottom: 20px;
+  padding-bottom: 30px;
 }
 
 .ui-tag__wrapper {
@@ -290,33 +347,33 @@ export default {
   text-align: right;
 }
 
-
-
 // // Animate.css
 .animated {
-   animation-duration: 1s;
+  animation-duration: 1s;
 }
 
 // Animation for Tasks
 // Active
-.taskList-enter-active, .taskList-leave-active{
-	transition: all .6s;
+.taskList-enter-active, .taskList-leave-active {
+  transition: all 0.6s;
 }
+
 // Enter
-.taskList-enter, .taskList-leave-to{
-	opacity: 0;
-	transform: translateY(10px);
+.taskList-enter, .taskList-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 // Animation for Tags menu
 // Active
-.fade-enter-active, .fade-leave-active{
-	transition: opacity .2s;
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.2s;
 }
+
 // Enter
-.fade-enter, .fade-leave-to{
-	opacity: 0;
-	transform: translateY(10px);
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 @keyframes fadeInLeft {
@@ -374,8 +431,8 @@ export default {
   animation-name: fadeOutDown;
 }
 
-.tag-list .button{
-	margin-left: 30px;
-	border-radius: 5px;
+.tag-list .button {
+  margin-left: 30px;
+  border-radius: 5px;
 }
 </style>

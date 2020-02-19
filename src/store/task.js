@@ -58,6 +58,11 @@ export default {
 			return state.tasks.filter(task => {
 				return task.completed === false;
 			});
+		},
+		taskDestroy(state) {
+			return state.tasks.filter(task => {
+				return task.remove();
+			});
 		}
 	}
 };

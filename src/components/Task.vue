@@ -9,58 +9,64 @@
 						.button.button-default.button--round(@click=" filter = 'completed' " :class="{ active : filter == 'completed' }") Completed
 						.button.button-default.button--round(@click=" filter = 'all' " :class="{ active : filter == 'all' }") All
 				.task-list
-					.task-item(
-						v-for = "task in tasksFilter"
-						:key = "task.id"
-						:class = "{ completed: task.completed }"
-					)
-						.ui-card.ui-card--shadow
-							.task-item__info
-								span.task-item__wrap
-									span.ui-label.ui-label--light {{ task.whatWatch }}
-									span Total Time: {{ task.time }}
-								span.button-close
-							.task-item__content
-								.task-item__header
-									.ui-checkboc-wrapper
-										input.ui-checkbox(
-											type="checkbox"
-											v-model="task.competed"
-										)
-									span.ui-title-3 {{ task.title }}
-								.task-item__body
-									p.ui-text-regular {{ task.description }}
-								.task-item__footer
-									// All Tags
-									.tag-list
-										.ui-tag__wrapper(v-for="tag in task.tags")
-											.ui-tag
-												span.tag-title {{ tag.title }}
+					transition-group(name="taskList" tag="div") 
+						.task-item(
+							v-for = "task in tasksFilter"
+							:key = "task.id"
+							:class = "{ completed: task.completed }"
+						)
+							.ui-card.ui-card--shadow
+								.task-item__info
+									span.task-item__wrap
+										span.ui-label.ui-label--light {{ task.whatWatch }}
+										span Total Time: {{ task.time }}
+									span.button-close
+								.task-item__content
+									.task-item__header
+										.ui-checkboc-wrapper
+											input.ui-checkbox(
+												type="checkbox"
+												v-model="task.competed"
+												@click="taskDestroy(task)"
+												
+											)
+										span.ui-title-3 {{ task.title }}
+									.task-item__body
+										p.ui-text-regular {{ task.description }}
+									.task-item__footer
+										// All Tags
+										.tag-list
+											.ui-tag__wrapper(v-for="tag in task.tags")
+												.ui-tag
+													span.tag-title {{ tag.title }}
 
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      filter: "active"
-    };
-  },
-  computed: {
-    tasksFilter() {
-      if (this.filter === "active") {
-        return this.$store.getters.taskNotCompleted;
-      } else if (this.filter === "completed") {
-        return this.$store.getters.taskCompleted;
-      } else if (this.filter === "all") {
-        return this.$store.getters.tasks;
-      }
-      return this.filter === "active";
-    }
-    // tasks() {
-    //   return this.$store.getters.tasks;
-    // }
-  }
+	data() {
+		return {
+			filter: 'active'
+		};
+	},
+	computed: {
+		tasksFilter() {
+			if (this.filter === 'active') {
+				return this.$store.getters.taskNotCompleted;
+			} else if (this.filter === 'completed') {
+				return this.$store.getters.taskCompleted;
+			} else if (this.filter === 'all') {
+				return this.$store.getters.tasks;
+			}
+			return this.filter === 'active';
+		},
+		taskDestroy() {
+			return this.$store.getters.taskDestroy;
+		}
+		// tasks() {
+		//   return this.$store.getters.tasks;
+		// }
+	}
 };
 </script>
 
