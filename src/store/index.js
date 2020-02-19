@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import user from './user';
 import task from './task';
 import tags from './tags';
 
@@ -11,6 +12,7 @@ export default new Vuex.Store({
 	mutations: {},
 	actions: {},
 	modules: {
+		user,
 		task,
 		tags
 	}
