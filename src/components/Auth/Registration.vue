@@ -20,10 +20,14 @@
 								input(type="password" placeholder="Repeat Password" v-model="repeatPassword" @change="$v.repeatPassword.$touch()")
 								.error(v-if="!$v.repeatPassword.sameAsPassword") Passwords must be identical
 							.buttons-list.button-list--info
-								button.button.button-default(type="submit" :disabled="submitStatus === 'PENDING'") Submit!
+								button.button.button-default(
+									type="submit") 
+										span(v-if="loading") LOADING ...
+										span(v-else) Registration
 								p.typo__p(v-if="submitStatus === 'OK'") Thanks for your submission!
 								p.typo__p.typo__p--error(v-if="submitStatus === 'ERROR'") Please fill the form correctly.
 								p.typo__p.typo__p--send(v-if="submitStatus === 'PENDING'") Sending...
+								p.typo__p.typo__p--send(v-else) {{ submitStatus }}
 							.buttons-list.button-list--info
 								span Do you have account? 
 									router-link(to="/login")  Enter Here
@@ -67,7 +71,17 @@ export default {
 					password: this.password
 				};
 
-				this.$store.dispatch('registerUser', user);
+				this.$store
+					.dispatch('registerUser', user)
+					.then(() => {
+						console.log('REGISTER !!!');
+						this.submitStatus = 'OK';
+						// Если пользователь зарегестрирован, перекидыавем на главную
+						this.$router.push('/');
+					})
+					.catch(err => {
+						this.submitStatus = err.message;
+					});
 
 				console.log(user);
 				// do your submit logic here
@@ -76,6 +90,12 @@ export default {
 				//   this.submitStatus = "OK";
 				// }, 500);
 			}
+		}
+	},
+	computed: {
+		loading() {
+			// берем loading из common.js
+			return this.$store.getters.loading;
 		}
 	}
 };

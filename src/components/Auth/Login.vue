@@ -20,7 +20,7 @@
 								button.button.button-default(type="submit" :disabled="submitStatus === 'PENDING'") Submit!
 								p.typo__p(v-if="submitStatus === 'OK'") Thanks for your submission!
 								p.typo__p.typo__p--error(v-if="submitStatus === 'ERROR'") Please fill the form correctly.
-								p.typo__p.typo__p--send(v-if="submitStatus === 'PENDING'") Sending...
+								p.typo__p.typo__p--error(v-else) {{ submitStatus }}
 							.buttons-list.button-list--info
 								| Do you need 
 								router-link(to="/login")  Registration
@@ -28,46 +28,56 @@
 </template>
 
 <script>
-import { required, email, minLength } from "vuelidate/lib/validators";
+import { required, email, minLength } from 'vuelidate/lib/validators';
 export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-      repeatPassword: "",
-      submitStatus: null
-    };
-  },
-  validations: {
-    email: {
-      required,
-      email
-    },
-    password: {
-      required,
-      minLength: minLength(6)
-    }
-  },
-  methods: {
-    onSubmit() {
-      this.$v.$touch();
-      if (this.$v.$invalid) {
-        this.submitStatus = "ERROR";
-      } else {
-        console.log("submit!");
-        // do your submit logic here
-        const user = {
-          email: this.email,
-          pass: this.password
-        };
-        console.log(user);
-        // do your submit logic here
-        this.submitStatus = "PENDING";
-        setTimeout(() => {
-          this.submitStatus = "OK";
-        }, 500);
-      }
-    }
-  }
+	data() {
+		return {
+			email: '',
+			password: '',
+			submitStatus: null
+		};
+	},
+	validations: {
+		email: {
+			required,
+			email
+		},
+		password: {
+			required,
+			minLength: minLength(6)
+		}
+	},
+	methods: {
+		onSubmit() {
+			this.$v.$touch();
+			if (this.$v.$invalid) {
+				this.submitStatus = 'ERROR';
+			} else {
+				console.log('submit!');
+				// do your submit logic here
+				const user = {
+					email: this.email,
+					password: this.password
+				};
+				console.log(user);
+
+				this.$store
+					.dispatch('loginUser', user)
+					.then(() => {
+						console.log('LOGIN!!!!!');
+						this.submitStatus = 'OK';
+						this.$router.push('/');
+					})
+					.catch(err => {
+						this.submitStatus = err.message;
+					});
+				// do your submit logic here
+				// this.submitStatus = "PENDING";
+				// setTimeout(() => {
+				//   this.submitStatus = "OK";
+				// }, 500);
+			}
+		}
+	}
 };
 </script>
