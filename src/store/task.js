@@ -3,35 +3,7 @@ import Task from './task_help';
 
 export default {
 	state: {
-		tasks: [
-			{
-				id: 1,
-				title: 'Фильм1',
-				description: 'Описание фильма1',
-				whatWatch: 'Film',
-				time: '1h 30m',
-				completed: false,
-				editing: false
-			},
-			{
-				id: 2,
-				title: 'Фильм2',
-				description: 'Описание фильма2',
-				whatWatch: 'Serial',
-				time: '1h 30m',
-				completed: true,
-				editing: false
-			},
-			{
-				id: 3,
-				title: 'Фильм3',
-				description: 'Описание фильма3',
-				whatWatch: 'Serial',
-				time: '1h 30m',
-				completed: false,
-				editing: false
-			}
-		]
+		tasks: []
 	},
 	mutations: {
 		newTask(state, payload) {
@@ -63,7 +35,10 @@ export default {
 				console.log('Переменная task = ', task);
 
 				// set to the mutations
-				commit('newTask', payload);
+				commit('newTask', {
+					...newTask,
+					id: task.key
+				});
 				// останавливаем загрузку
 				commit('setLoading', false);
 			} catch (error) {
