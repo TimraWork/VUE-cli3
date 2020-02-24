@@ -7,13 +7,13 @@
 					//- 	h1.ui-title-1 Hello banner
 					.auth__form
 						span.ui-title-2 Login
-						form(@submit.prevent="onSubmit")
+						form(@submit.prevent="onSubmit"  autocomplete="on")
 							.form__item(:class="{ 'form__item--error': $v.email.$error }")
 								input(type="email" placeholder="Email" v-model="email" @change="$v.email.$touch()")
 								.error(v-if="!$v.email.required") Email is required
 								.error(v-if="!$v.email.email") Invalid Email
 							.form__item(:class="{ 'form__item--error': $v.password.$error }")
-								input(type="password" placeholder="Password" v-model="password" @change="$v.password.$touch()")
+								input(type="password" placeholder="Password" v-model="password" @change="$v.password.$touch()" autocomplete="on")
 								.error(v-if="!$v.password.required") Password is required
 								.error(v-if="!$v.password.minLength") Password must have at least {{ $v.password.$params.minLength.min }} letters.
 							.buttons-list.button-list--info

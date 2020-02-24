@@ -26,9 +26,8 @@
 										.ui-checkboc-wrapper
 											input.ui-checkbox(
 												type="checkbox"
-												v-model="task.competed"
-												@click="taskDestroy(task)"
-												
+												v-model="task.completed"
+												@click="taskCompleted(task.id, task.completed)"
 											)
 										span.ui-title-3 {{ task.title }}
 									.task-item__body
@@ -46,8 +45,20 @@
 export default {
 	data() {
 		return {
-			filter: 'active'
+			filter: 'active',
+			completed: false
 		};
+	},
+	methods: {
+		// Completed
+		taskCompleted(id, completed) {
+			console.log('completed = ' + completed);
+			completed ? (completed = false) : (completed = true);
+			this.$store.dispatch('completedTask', {
+				id,
+				completed
+			});
+		}
 	},
 	computed: {
 		tasksFilter() {

@@ -8,6 +8,12 @@ export default {
 	mutations: {
 		newTask(state, payload) {
 			state.tasks.push(payload);
+		},
+		completedTask(state, { id, completed }) {
+			return state.tasks.find(t => {
+				return t.id === id;
+			});
+			task.completed = completed;
 		}
 	},
 	actions: {
@@ -48,6 +54,13 @@ export default {
 				// выкидываем ошибку
 				throw error;
 			}
+		},
+		async completedTask({ commit }, { id, completed }) {
+			// Send mutation
+			commit('completedTask', {
+				id,
+				completed
+			});
 		}
 	},
 	getters: {
@@ -63,11 +76,6 @@ export default {
 		taskNotCompleted(state) {
 			return state.tasks.filter(task => {
 				return task.completed === false;
-			});
-		},
-		taskDestroy(state) {
-			return state.tasks.filter(task => {
-				return task.remove();
 			});
 		}
 	}

@@ -110,140 +110,142 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
+import { required } from 'vuelidate/lib/validators';
 
 export default {
-  data() {
-    return {
-      taskTitle: "",
-      taskDescription: "",
-      whatWatch: "Film",
+	data() {
+		return {
+			taskTitle: '',
+			taskDescription: '',
+			whatWatch: 'Film',
 
-      // Total Time
-      // Film
-      filmHours: 1,
-      filmMinutes: 30,
-      // Serial
-      serialSeason: 1,
-      serialSeries: 11,
-      serialSeriesMinutes: 40,
+			// Total Time
+			// Film
+			filmHours: 1,
+			filmMinutes: 30,
+			// Serial
+			serialSeason: 1,
+			serialSeries: 11,
+			serialSeriesMinutes: 40,
 
-      //Tags
-      tagsUsed: [],
-      tagTitle: "",
-      tagMenuShow: false,
+			//Tags
+			tagsUsed: [],
+			tagTitle: '',
+			tagMenuShow: false,
 
-      submitStatus: null
-    };
-  },
-  validations: {
-    taskTitle: {
-      required
-    }
-  },
-  methods: {
-    //  Submit New Task
-    onSubmit() {
-      this.$v.$touch();
-      console.log("this.$v =", this.$v);
+			submitStatus: null
+		};
+	},
+	validations: {
+		taskTitle: {
+			required
+		}
+	},
+	methods: {
+		//  Submit New Task
+		onSubmit() {
+			this.$v.$touch();
+			console.log('this.$v =', this.$v);
 
-      if (this.$v.$invalid) {
-        console.log("ERROR");
-        this.submitStatus = "ERROR";
-      } else {
-        console.log("SEND!");
-        // do your submit logic here
-        this.submitStatus = "PENDING";
-        setTimeout(() => {
-          this.submitStatus = "OK";
-        }, 500);
-      }
+			if (this.$v.$invalid) {
+				console.log('ERROR');
+				this.submitStatus = 'ERROR';
+			} else {
+				console.log('SEND!');
+				// do your submit logic here
+				this.submitStatus = 'PENDING';
+				setTimeout(() => {
+					this.submitStatus = 'OK';
+				}, 500);
+			}
 
-      let time;
-      if (!this.taskTitle) return;
-      if (this.whatWatch === "Film") {
-        time = this.filmTime;
-      } else {
-        time = this.serialTime;
-      }
+			let time;
+			if (!this.taskTitle) return;
+			if (this.whatWatch === 'Film') {
+				time = this.filmTime;
+			} else {
+				time = this.serialTime;
+			}
 
-      //   this.tasks.push({
-      const task = {
-        title: this.taskTitle,
-        description: this.taskDescription,
-        whatWatch: this.whatWatch,
-        time,
-        tags: this.tagsUsed,
-        completed: false,
-        editing: false
-      };
-      this.$store.dispatch("newTask", task);
-      console.log(task);
+			//   this.tasks.push({
+			const task = {
+				title: this.taskTitle,
+				description: this.taskDescription,
+				whatWatch: this.whatWatch,
+				time,
+				tags: this.tagsUsed,
+				completed: false,
+				editing: false
+			};
+			this.$store.dispatch('newTask', task);
+			console.log(task);
 
-      // Reset for task
-      this.taskTitle = "";
-      this.taskDescription = "";
-      // Reset $v (validate)
-      this.$v.$reset();
+			// Reset for task
+			this.taskTitle = '';
+			this.taskDescription = '';
+			// Reset $v (validate)
+			this.$v.$reset();
 
-      // Reset for Tags
-      this.tagMenuShow = false;
-      this.tagsUsed = [];
-      this.tagTitle = "";
+			// Reset for Tags
+			this.tagMenuShow = false;
+			this.tagsUsed = [];
+			this.tagTitle = '';
 
-      for (let i = 0; i < this.tags.length; i++) {
-        this.tags[i].use = false;
-      }
-      console.log("newTask");
-    },
-    newTag() {
-      if (this.tagTitle === "") {
-        return;
-      }
-      //   this.tasks.push({
-      const tag = {
-        title: this.tagTitle,
-        use: false
-      };
+			for (let i = 0; i < this.tags.length; i++) {
+				this.tags[i].use = false;
+			}
+			console.log('newTask');
+		},
+		newTag() {
+			if (this.tagTitle === '') {
+				return;
+			}
+			//   this.tasks.push({
+			const tag = {
+				title: this.tagTitle,
+				use: false
+			};
 
-      this.$store.dispatch("newTag", tag); // В dispatch мы отправим новый метод newTag и отпавим туда константу tag
+			this.$store.dispatch('newTag', tag); // В dispatch мы отправим новый метод newTag и отпавим туда константу tag
 
-      // Reset
-      this.tagTitle = "";
-      console.log("newTag");
-    },
-    // tagMenuShow() {},
-    addTagUsed(tag) {
-      tag.use = !tag.use;
-      if (tag.use) {
-        this.tagsUsed.push({
-          title: tag.title
-        });
-      } else {
-        this.tagsUsed.splice(tag.title, 1);
-      }
-    },
-    getHoursAndMinutes(minutes) {
-      let hours = Math.trunc(minutes / 60);
-      let min = minutes % 60;
-      return hours + " Hours " + (min + " Minutes");
-    }
-  },
-  computed: {
-    tags() {
-      return this.$store.getters.tags;
-      console.log("tags()");
-    },
-    filmTime() {
-      let min = this.filmHours * 60 + this.filmMinutes;
-      return this.getHoursAndMinutes(min);
-    },
-    serialTime() {
-      let min =
-        this.serialSeason * this.serialSeries * this.serialSeriesMinutes;
-      return this.getHoursAndMinutes(min);
-    }
-  }
+			// Reset
+			this.tagTitle = '';
+			console.log('newTag');
+		},
+		// tagMenuShow() {},
+		addTagUsed(tag) {
+			tag.use = !tag.use;
+			if (tag.use) {
+				this.tagsUsed.push({
+					title: tag.title
+				});
+			} else {
+				this.tagsUsed.splice(tag.title, 1);
+			}
+		},
+		getHoursAndMinutes(minutes) {
+			let hours = Math.trunc(minutes / 60);
+			let min = minutes % 60;
+			return hours + ' Hours ' + (min + ' Minutes');
+		}
+	},
+	computed: {
+		tags() {
+			return this.$store.getters.tags;
+			console.log('tags()');
+		},
+		filmTime() {
+			let min = this.filmHours * 60 + this.filmMinutes;
+			return this.getHoursAndMinutes(min);
+		},
+		serialTime() {
+			let min =
+				this.serialSeason *
+				this.serialSeries *
+				this.serialSeriesMinutes;
+			return this.getHoursAndMinutes(min);
+		}
+	}
 };
 </script>
 
