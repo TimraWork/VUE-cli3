@@ -6,6 +6,9 @@ export default {
 		tasks: []
 	},
 	mutations: {
+		loadTasks(state, payload) {
+			state.tasks = payload;
+		},
 		newTask(state, payload) {
 			state.tasks.push(payload);
 		},
@@ -17,6 +20,53 @@ export default {
 		}
 	},
 	actions: {
+		// ПОДГРУЗИТЬ ТАСКИ ОТ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ из базы firebase
+		async loadTasks({ commit }, payload) {
+			commit('clearError');
+			commit('setLoading', true);
+			// Когда с сервера придет ответ мы меняем значения переменных
+			try {
+				// Забрать из firebase ЗНАЧЕНИЯ ТАБЛИЦЫ TASKS
+				const task = await firebase
+					.database()
+					.ref('tasks')
+					.once('value');
+
+				const tasks = task.val(); //выводит в консоле список тасков
+
+				const tasksArray = [];
+				Object.keys(tasks).forEach(key => {
+					const t = tasks[key];
+					// console.log(t);
+					// Пушим через вспомогательный класс task_help.js
+					tasksArray.push(
+						new Task(
+							t.title,
+							t.description,
+							t.whatWatch,
+							t.time,
+							t.tags,
+							t.completed,
+							t.editing,
+							t.user,
+							key
+						)
+					);
+				});
+
+				commit('loadTasks', tasksArray);
+
+				// console.log(tasks);
+				// останавливаем загрузку
+				commit('setLoading', false);
+			} catch (error) {
+				// останавливаем загрузку - когда поймали ошибку
+				commit('setLoading', false);
+				commit('setError', error.message);
+				// выкидываем ошибку
+				throw error;
+			}
+		},
 		// НОВЫЙ ТАСК, который полетит в firebase
 		async newTask({ commit, getters }, payload) {
 			commit('clearError');
@@ -64,17 +114,23 @@ export default {
 		}
 	},
 	getters: {
-		tasks(state) {
-			return state.tasks;
+		tasks(state, getters) {
+			console.log('tasks getters = ', getters);
+			// Функция, которая фильтрует пользователей по id
+			return state.tasks.filter(task => {
+				return task.user === getters.user.id;
+			});
 		},
 		// создадим ф-ю и передадим в нее state
-		taskCompleted(state) {
-			return state.tasks.filter(task => {
+		taskCompleted(state, getters) {
+			console.log('taskCompleted getters = ', getters);
+			return getters.tasks.filter(task => {
 				return task.completed;
 			});
 		},
-		taskNotCompleted(state) {
-			return state.tasks.filter(task => {
+		taskNotCompleted(state, getters) {
+			console.log('taskNotCompleted getters = ', getters);
+			return getters.tasks.filter(task => {
 				return task.completed === false;
 			});
 		}

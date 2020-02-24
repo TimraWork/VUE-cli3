@@ -41,6 +41,7 @@ new Vue({
 				this.$store.dispatch('loggedUser', user);
 				// console.log(user);
 			}
+			this.$store.dispatch('loadTasks');
 		});
 	}
 }).$mount('#app');

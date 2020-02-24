@@ -52,7 +52,6 @@ export default {
 	methods: {
 		// Completed
 		taskCompleted(id, completed) {
-			console.log('completed = ' + completed);
 			completed ? (completed = false) : (completed = true);
 			this.$store.dispatch('completedTask', {
 				id,
