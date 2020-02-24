@@ -15,6 +15,8 @@
 									router-link.navbar-link(
 										:to = "`${link.url}`"
 									) {{ link.title }}
+								li.navbar-item(v-if="checkUser" @click='logout')
+									span.navbar-link Logout
 		router-view
 </template>
 
@@ -24,6 +26,14 @@ export default {
 		return {
 			menuShow: false
 		};
+	},
+	methods: {
+		logout() {
+			this.$store.dispatch('logoutUser');
+
+			this.$router.push('/login'); // Перебрасываем на страницу Логин, после того, как была нажата ссылка logout
+			console.log('LOGOUT!!!!');
+		}
 	},
 	computed: {
 		checkUser() {
