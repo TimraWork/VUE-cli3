@@ -1,3 +1,6 @@
+import firebase from 'firebase/app';
+import Task from './task_help';
+
 export default {
 	state: {
 		tasks: [
@@ -36,12 +39,40 @@ export default {
 		}
 	},
 	actions: {
-		//              , task
-		newTask({ commit }, payload) {
-			//task.id
-			payload.id = Math.random();
-			// set to the mutations
-			commit('newTask', payload);
+		// НОВЫЙ ТАСК, который полетит в firebase
+		async newTask({ commit, getters }, payload) {
+			commit('clearError');
+			commit('setLoading', true);
+			// Когда с сервера придет ответ мы меняем значения переменных
+			try {
+				const newTask = new Task(
+					payload.title,
+					payload.description,
+					payload.whatWatch,
+					payload.time,
+					payload.tags,
+					payload.completed,
+					payload.editing,
+					getters.user.id
+				);
+				const task = await firebase
+					.database()
+					.ref('tasks')
+					.push(newTask);
+
+				console.log('Переменная task = ', task);
+
+				// set to the mutations
+				commit('newTask', payload);
+				// останавливаем загрузку
+				commit('setLoading', false);
+			} catch (error) {
+				// останавливаем загрузку - когда поймали ошибку
+				commit('setLoading', false);
+				commit('setError', error.message);
+				// выкидываем ошибку
+				throw error;
+			}
 		}
 	},
 	getters: {
