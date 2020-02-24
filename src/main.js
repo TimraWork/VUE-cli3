@@ -18,20 +18,29 @@ Vue.use(Vuelidate, Uimini);
 
 Vue.config.productionTip = false;
 
-const firebaseConfig = {
-	apiKey: 'AIzaSyC9SqamVPZ9YBoAaUVo5bZn0uUhhd70w9U',
-	authDomain: 'vue-cli3-ea58f.firebaseapp.com',
-	databaseURL: 'https://vue-cli3-ea58f.firebaseio.com',
-	projectId: 'vue-cli3-ea58f',
-	storageBucket: 'vue-cli3-ea58f.appspot.com',
-	messagingSenderId: '415777151690',
-	appId: '1:415777151690:web:593c85c62d10e67bb13233'
-};
-firebase.initializeApp(firebaseConfig);
-
 new Vue({
 	router,
 	store,
 	animate,
-	render: h => h(App)
+	render: h => h(App),
+	created() {
+		const firebaseConfig = {
+			apiKey: 'AIzaSyC9SqamVPZ9YBoAaUVo5bZn0uUhhd70w9U',
+			authDomain: 'vue-cli3-ea58f.firebaseapp.com',
+			databaseURL: 'https://vue-cli3-ea58f.firebaseio.com',
+			projectId: 'vue-cli3-ea58f',
+			storageBucket: 'vue-cli3-ea58f.appspot.com',
+			messagingSenderId: '415777151690',
+			appId: '1:415777151690:web:593c85c62d10e67bb13233'
+		};
+		firebase.initializeApp(firebaseConfig);
+		firebase.auth().onAuthStateChanged(user => {
+			// проверка остался ли пользователь в системе после обновления страницы
+			if (user) {
+				//создаем новый метод, loggedUser
+				this.$store.dispatch('loggedUser', user);
+				// console.log(user);
+			}
+		});
+	}
 }).$mount('#app');

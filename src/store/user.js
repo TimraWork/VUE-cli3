@@ -53,6 +53,10 @@ export default {
 				// выкидываем ошибку
 				throw error;
 			}
+		},
+		loggedUser({ commit }, payload) {
+			commit('setUser', new User(payload.uid));
+			console.log(payload.uid);
 		}
 	},
 	getters: {
