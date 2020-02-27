@@ -22,45 +22,47 @@
 
 <script>
 export default {
-	data() {
-		return {
-			menuShow: false
-		};
-	},
-	methods: {
-		logout() {
-			this.$store.dispatch('logoutUser');
+  data() {
+    return {
+      menuShow: false
+    };
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logoutUser");
 
-			this.$router.push('/login'); // Перебрасываем на страницу Логин, после того, как была нажата ссылка logout
-			console.log('LOGOUT!!!!');
-		}
-	},
-	computed: {
-		checkUser() {
-			return this.$store.getters.checkUser;
-		},
-		linkMenu() {
-			if (this.checkUser) {
-				return [
-					{ title: 'Home', url: '/' },
-					{ title: 'Task', url: '/task' }
-				];
-			}
-			return [
-				{ title: 'Login', url: '/login' },
-				{ title: 'Registration', url: '/registration' }
-			];
-		}
-	}
+      this.$router.push("/login"); // Перебрасываем на страницу Логин, после того, как была нажата ссылка logout
+      console.log("LOGOUT!!!!");
+    }
+  },
+  computed: {
+    checkUser() {
+      return this.$store.getters.checkUser;
+    },
+    linkMenu() {
+      if (this.checkUser) {
+        return [
+          { title: "Home", url: "/" },
+          { title: "Task", url: "/task" }
+        ];
+      }
+      return [
+        { title: "Calculator", url: "/calc" },
+        { title: "Login", url: "/login" },
+        { title: "Registration", url: "/registration" }
+      ];
+    }
+  }
 };
 </script>
 
 <style lang="stylus">
 // @import './assets/stylus/main.styl';
-.router-link-exact-active{
-	color: #444ce0;
+.router-link-exact-active {
+  color: #444ce0;
 }
-.button-default{
-	border-radius: 5px;
+
+.button-default {
+  border-radius: 5px;
 }
 </style>

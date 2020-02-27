@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import store from '../store';
 
 // import Home from '../views/Home.vue';
+import Calculator from '@/components/Calculator.vue';
 import Home from '@/components/Home.vue';
 import Task from '@/components/Task.vue';
 import Login from '@/components/Auth/Login.vue';
@@ -26,6 +27,11 @@ const routes = [
 		beforeEnter(to, from, next) {
 			store.getters.checkUser ? next() : next('/login');
 		}
+	},
+	{
+		path: '/calc',
+		name: 'calc',
+		component: Calculator
 	},
 	{
 		path: '/login',
