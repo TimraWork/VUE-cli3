@@ -14,6 +14,7 @@ import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/messaging';
 import 'firebase/storage';
+import i18n from './i18n'
 
 Vue.use(Vuelidate, Uimini);
 Vue.use(VueAxios, axios);
@@ -22,11 +23,13 @@ Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 
 new Vue({
-	router,
-	store,
-	animate,
-	render: h => h(App),
-	created() {
+    router,
+    store,
+    animate,
+    render: h => h(App),
+    i18n,
+
+    created() {
 		const firebaseConfig = {
 			apiKey: 'AIzaSyC9SqamVPZ9YBoAaUVo5bZn0uUhhd70w9U',
 			authDomain: 'vue-cli3-ea58f.firebaseapp.com',
