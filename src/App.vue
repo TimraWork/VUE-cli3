@@ -17,42 +17,52 @@
 									) {{ link.title }}
 								li.navbar-item(v-if="checkUser" @click='logout')
 									span.navbar-link Logout
-		router-view
+								li.navbar-item
+									.lang.navbar-link
+										router-link(to="/ru") Ru
+										| /
+										router-link(to="/en") En
+							
+		.timur
+			router-view
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      menuShow: false
-    };
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch("logoutUser");
+	data() {
+		return {
+			menuShow: false
+		};
+	},
+	methods: {
+		logout() {
+			this.$store.dispatch('logoutUser');
 
-      this.$router.push("/login"); // Перебрасываем на страницу Логин, после того, как была нажата ссылка logout
-      console.log("LOGOUT!!!!");
-    }
-  },
-  computed: {
-    checkUser() {
-      return this.$store.getters.checkUser;
-    },
-    linkMenu() {
-      if (this.checkUser) {
-        return [
-          { title: "Home", url: "/" },
-          { title: "Task", url: "/task" }
-        ];
-      }
-      return [
-        { title: "Calculator", url: "/calc" },
-        { title: "Login", url: "/login" },
-        { title: "Registration", url: "/registration" }
-      ];
-    }
-  }
+			this.$router.push('/login'); // Перебрасываем на страницу Логин, после того, как была нажата ссылка logout
+			console.log('LOGOUT!!!!');
+		}
+	},
+	computed: {
+		checkUser() {
+			return this.$store.getters.checkUser;
+		},
+		linkMenu() {
+			if (this.checkUser) {
+				return [
+					{ title: 'Blog', url: '/blog' },
+					{ title: 'Calculator', url: '/calc' },
+					{ title: 'Home', url: '/' },
+					{ title: 'Task', url: '/task' }
+				];
+			}
+			return [
+				{ title: 'Blog', url: '/blog' },
+				{ title: 'Calculator', url: '/calc' },
+				{ title: 'Login', url: '/login' },
+				{ title: 'Registration', url: '/registration' }
+			];
+		}
+	}
 };
 </script>
 
@@ -64,5 +74,14 @@ export default {
 
 .button-default {
   border-radius: 5px;
+}
+
+.lang{
+	a{
+		color: blue;
+		&.router-link-active{
+			color: gray;
+		}
+	}
 }
 </style>

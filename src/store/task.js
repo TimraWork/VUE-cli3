@@ -115,7 +115,7 @@ export default {
 	},
 	getters: {
 		tasks(state, getters) {
-			console.log('tasks getters = ', getters);
+			// console.log('tasks getters = ', getters);
 			// Функция, которая фильтрует пользователей по id
 			return state.tasks.filter(task => {
 				return task.user === getters.user.id;
@@ -123,13 +123,13 @@ export default {
 		},
 		// создадим ф-ю и передадим в нее state
 		taskCompleted(state, getters) {
-			console.log('taskCompleted getters = ', getters);
+			// console.log('taskCompleted getters = ', getters);
 			return getters.tasks.filter(task => {
 				return task.completed;
 			});
 		},
 		taskNotCompleted(state, getters) {
-			console.log('taskNotCompleted getters = ', getters);
+			// console.log('taskNotCompleted getters = ', getters);
 			return getters.tasks.filter(task => {
 				return task.completed === false;
 			});
