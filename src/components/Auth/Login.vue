@@ -6,7 +6,7 @@
 					//- .auth__banner
 					//- 	h1.ui-title-1 Hello banner
 					.auth__form
-						span.ui-title-2 Login
+						span.ui-title-2 {{ $t('login') }}
 						form(@submit.prevent="onSubmit"  autocomplete="on")
 							.form__item(:class="{ 'form__item--error': $v.email.$error }")
 								input(type="email" placeholder="Email" v-model="email" @change="$v.email.$touch()")
@@ -23,7 +23,7 @@
 								p.typo__p.typo__p--error(v-else) {{ submitStatus }}
 							.buttons-list.button-list--info
 								| Do you need 
-								router-link(to="/login")  Registration
+								router-link(to="/login")  {{ $t('registration') }}
 
 </template>
 

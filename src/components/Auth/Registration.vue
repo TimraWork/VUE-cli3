@@ -6,7 +6,7 @@
 					//- .auth__banner
 					//- 	h1.ui-title-1 Hello banner
 					.auth__form
-						span.ui-title-2 Registration
+						span.ui-title-2  {{ $t('registration') }}
 						form(@submit.prevent="onSubmit")
 							.form__item(:class="{ 'form__item--error': $v.email.$error }")
 								input(type="email" placeholder="Email" v-model="email" @change="$v.email.$touch()")
@@ -23,7 +23,7 @@
 								button.button.button-default(
 									type="submit") 
 										span(v-if="loading") LOADING ...
-										span(v-else) Registration
+										span(v-else)  {{ $t('registration') }}
 								p.typo__p(v-if="submitStatus === 'OK'") Thanks for your submission!
 								p.typo__p.typo__p--error(v-if="submitStatus === 'ERROR'") Please fill the form correctly.
 								p.typo__p.typo__p--send(v-if="submitStatus === 'PENDING'") Sending...

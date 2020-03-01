@@ -2,7 +2,7 @@
 	.content-wrapper
 		section
 			.container
-				h1.ui-title-1 Home
+				h1.ui-title-1 {{ $t('home') }}
 				form(@submit.prevent="onSubmit")
 					.form__item(:class="{ 'form__item--error': $v.taskTitle.$error }")
 						input(

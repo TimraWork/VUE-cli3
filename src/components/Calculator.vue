@@ -2,7 +2,7 @@
 	.content-wrapper
 		section
 			.calc
-				h1.ui-title-1 Calculator
+				h1.ui-title-1 {{ $t('calc') }}
 				input.calc__input(type="text" v-model="result" placeholder="0" @keyup.enter="onResult()")
 				.calc__container
 					button.calc__button(v-for="num in nums" @click='onShowInInput(num)') {{num}}
@@ -12,33 +12,33 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
+import { required } from 'vuelidate/lib/validators';
 
 export default {
-  data() {
-    return {
-      result: "",
-      nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
-      operations: ["+", "-", "*", "/"]
-    };
-  },
-  methods: {
-    //  Submit New Task
-    onShowInInput(operation) {
-      //   console.log("onOperantion =", operation);
-      this.result = this.result.toString();
-      this.result += operation;
-    },
-    onReset() {
-      this.result = "";
-    },
-    onResult() {
-      this.result = eval(this.result);
-    }
-  },
-  computed: {
-    tags() {}
-  }
+	data() {
+		return {
+			result: '',
+			nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+			operations: ['+', '-', '*', '/']
+		};
+	},
+	methods: {
+		//  Submit New Task
+		onShowInInput(operation) {
+			//   console.log("onOperantion =", operation);
+			this.result = this.result.toString();
+			this.result += operation;
+		},
+		onReset() {
+			this.result = '';
+		},
+		onResult() {
+			this.result = eval(this.result);
+		}
+	},
+	computed: {
+		tags() {}
+	}
 };
 </script>
 

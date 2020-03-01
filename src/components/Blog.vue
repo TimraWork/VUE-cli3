@@ -3,7 +3,7 @@
 		section
 			.container
 				.blog
-					h1.ui-title-1 Blog
+					h1.ui-title-1 {{ $t('blog') }}
 					.blog__list
 						.blog__item(v-for = "post in posts")
 							//- .blog__title {{post}}
@@ -39,18 +39,18 @@ export default {
 					this.posts = response.data;
 					this.totalPhotos = parseInt(response.headers['x-wp-total']);
 					this.currentPage = page;
-					console.log(
-						'x-wp-total = ',
-						response.headers['x-wp-total']
-					);
-					console.log(
-						'x-wp-total = ',
-						response.headers['x-wp-total']
-					);
-					console.log(
-						'x-wp-totalpages = ',
-						response.headers['x-wp-totalpages']
-					);
+					// console.log(
+					// 	'x-wp-total = ',
+					// 	response.headers['x-wp-total']
+					// );
+					// console.log(
+					// 	'x-wp-total = ',
+					// 	response.headers['x-wp-total']
+					// );
+					// console.log(
+					// 	'x-wp-totalpages = ',
+					// 	response.headers['x-wp-totalpages']
+					// );
 				});
 		}
 	},

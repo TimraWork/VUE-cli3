@@ -2,7 +2,7 @@
 	.content-wrapper
 		section
 			.container
-				.not_found 404
+				.not_found {{ $t('not_found') }}
 
 </template>
 
