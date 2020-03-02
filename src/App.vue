@@ -23,10 +23,10 @@
 									) {{ link.title }}
 								li.navbar-item(v-if="checkUser" @click='logout')
 									span.navbar-link Logout
-								//- li.navbar-item
-								//- 	.lang.navbar-link
-								//- 		router-link( :to="'/'  +  lang" v-for="(lang, i) in langs"
-								//- 				:key="`Lang${i}`" @click.native="setLocale(lang)") {{ lang }} | 
+								li.navbar-item
+									.lang.navbar-link
+										router-link( :to="generateLink(lang)" v-for="(lang, i) in $i18n.availableLocales"
+												:key="`Lang${i}`" ) {{ lang }}
 								li.navbar-item
 									.lang.navbar-link
 										a( href="#" @click="setLocale('ru')") ru
@@ -42,10 +42,16 @@ export default {
 	data() {
 		return {
 			menuShow: false,
+			locale: '',
 			langs: ['ru', 'en']
 		};
 	},
 	methods: {
+		generateLink(lang) {
+			const regx = new RegExp('^/' + this.$i18n.locale);
+			const url = this.$route.fullPath.replace(regx, '');
+			return `/${lang}${url}`;
+		},
 		doSomethingCool() {
 			console.log('doSomethingCool');
 		},
