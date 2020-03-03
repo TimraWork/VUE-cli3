@@ -65,20 +65,32 @@ export default {
       const registration = this.$t("registration");
       const addTask = this.$t("addTask");
       const tasksList = this.$t("tasksList");
+
+      const newArray = [
+        { title: `${blog}`, url: `/blog` },
+        { title: `${calc}`, url: "/calc" }
+      ];
+
       if (this.checkUser) {
-        return [
-          { title: `${blog}`, url: `/blog` },
-          { title: `${calc}`, url: "/calc" },
+        newArray.push(
           { title: `${addTask}`, url: `/home` },
           { title: `${tasksList}`, url: "/task" }
-        ];
+        );
+      } else {
+        newArray.push(
+          { title: `${login}`, url: "/login" },
+          { title: `${registration}`, url: `/registration` }
+        );
       }
-      return [
-        { title: `${blog}`, url: `/blog` },
-        { title: `${calc}`, url: "/calc" },
-        { title: `${login}`, url: "/login" },
-        { title: `${registration}`, url: `/registration` }
-      ];
+
+      return newArray;
+
+      //   return [
+      //     { title: `${blog}`, url: `/blog` },
+      //     { title: `${calc}`, url: "/calc" },
+      //     { title: `${login}`, url: "/login" },
+      //     { title: `${registration}`, url: `/registration` }
+      //   ];
     }
   }
 };
