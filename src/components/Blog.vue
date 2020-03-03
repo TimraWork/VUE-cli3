@@ -4,10 +4,8 @@
 			.container
 				.blog
 					h1.ui-title-1 {{ $t('blog') }}
-					font-awesome-icon(icon="user-secret")
-					.r asf
 					.loading
-						//- i v-if="!posts" class="fa fa-spinner fa-spin"></i></div>
+						font-awesome-icon(icon="spinner" v-if="!posts" class="fa-spin")
 					.blog__list
 						.blog__item(v-for = "post in posts")
 							.blog__img(v-for = "p in post._embedded['wp:featuredmedia']")
@@ -84,5 +82,13 @@ pre {
     margin-bottom: 20px;
     width: 30%;
   }
+}
+
+.svg-inline--fa.fa-w-16{
+	width: 60px;
+	height: 60px;
+}
+.loading{
+	text-align: center;
 }
 </style>

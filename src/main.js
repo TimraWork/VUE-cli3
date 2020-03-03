@@ -18,9 +18,15 @@ import i18n from './i18n';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faUserAstronaut } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
+// We are only using the user-astronaut icon
+library.add(faUserAstronaut);
+
 library.add(faUserSecret);
+library.add(faSpinner);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(Vuelidate, Uimini);
