@@ -4,5 +4,10 @@
 	"calc": "Calculator",
 	"home": "Home - tasks",
 	"login": "Login",
-	"registration": "Registration"
+	"registration": "Registration",
+	"need": "Do you need",
+	"send": "Send",
+	"addTask": "Add task",
+	"tasksList": "Tasks",
+	"logout": "Дogout"
 }

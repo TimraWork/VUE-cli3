@@ -7,18 +7,23 @@ import i18n from '../i18n.js';
 import NotFound from '@/components/NotFound.vue';
 import Blog from '@/components/Blog.vue';
 import Calculator from '@/components/Calculator.vue';
-// import Home from '@/components/Home.vue';
-// import Task from '@/components/Task.vue';
+import Home from '@/components/Home.vue';
+import Task from '@/components/Task.vue';
 import Login from '@/components/Auth/Login.vue';
 import Registration from '@/components/Auth/Registration.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
+	// Редирект с главной на блог, если пользователь не зарегестрирован BEGIN
 	{
 		path: '/',
-		redirect: '/ru'
+		redirect: '/ru/blog',
+		component: Blog
 	},
+	// Редирект с главной на блог, если пользователь не зарегестрирован END
+
+	// Правила для обработки дочерних ссылок с атрибутом lang BEGIN
 	{
 		path: '/:lang',
 		component: {
@@ -42,13 +47,24 @@ const routes = [
 			{
 				path: 'registration',
 				component: Registration
+			},
+			{
+				path: 'home',
+				component: Home
+			},
+			{
+				path: 'task',
+				component: Task
 			}
 		]
 	},
+	// Правила для обработки дочерних ссылок с атрибутом lang END
+	// 404 BEGIN
 	{
 		path: '*',
 		component: NotFound
 	}
+	// 404 END
 ];
 
 const router = new VueRouter({
