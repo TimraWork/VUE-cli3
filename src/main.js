@@ -16,6 +16,13 @@ import 'firebase/messaging';
 import 'firebase/storage';
 import i18n from './i18n';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(faUserSecret);
+Vue.component('font-awesome-icon', FontAwesomeIcon);
+
 Vue.use(Vuelidate, Uimini);
 Vue.use(VueAxios, axios);
 // Vue.use(Vuelidate);
