@@ -37,3 +37,11 @@ export default {
   }
 };
 </script>
+
+<style lang="stylus">
+.post__content {
+  a {
+    color: blue;
+  }
+}
+</style>
