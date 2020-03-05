@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import store from '../store';
 import i18n from '../i18n.js';
 
-// import Home from '../views/Home.vue';
+import Post from '@/components/Post.vue';
 import NotFound from '@/components/NotFound.vue';
 import Blog from '@/components/Blog.vue';
 import Calculator from '@/components/Calculator.vue';
@@ -55,6 +55,11 @@ const routes = [
 			{
 				path: 'task',
 				component: Task
+			},
+			{
+				path: 'post/:id',
+				component: Post,
+				props: true
 			}
 		]
 	},

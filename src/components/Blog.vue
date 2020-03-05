@@ -11,8 +11,7 @@
 								.blog__img
 									span(v-for = "img in post._embedded['wp:featuredmedia']")
 										img( :src="img.source_url", alt="")
-								a( :href = 'post.link' target="_blank").blog__title(v-html="post.title['rendered']")
-								//- p.card-text(v-html="getExcerpt(post.content['rendered'])") 
+								router-link.blog__title(:to = " '/' + $i18n.locale + '/post/' + `${post.id}`" v-html="post.title['rendered']" )
 					
 					.loading(v-if="!posts")
 						font-awesome-icon(icon="spinner" class="fa-spin")
