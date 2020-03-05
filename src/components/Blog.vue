@@ -4,7 +4,10 @@
 			.container
 				.blog
 					h1.ui-title-1 {{ $t('blog') }}
-					input.search__input(type="text" v-model="search" placeholder="Поиск")
+					input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" v-on:change="fetchPhotos" )
+					a.button.button-default(href="#" v-on:click="fetchPhotos()")
+					//- router-link.button.button-default(:to = " '/' + $i18n.locale + '/page/' + `${currentPage+1}`" @click.native='currentPage += 1, posts = null') +
+					.ui-title-3 You searched: {{searchQuery}}
 					.row.blog__list
 						.col-xs-12.col-md-3.mb-2(v-for = "post in posts" :key = "post.id")
 							.ui-card.ui-card--shadow
@@ -36,8 +39,7 @@ export default {
       totalPhotos: 0,
       perPage: 12,
       currentPage: 1,
-
-      search: ""
+      searchQuery: ""
     };
   },
   computed: {
@@ -55,27 +57,20 @@ export default {
     // Slice array
     getExcerpt: post_content => post_content.slice(0, 200),
     //  Submit New Task
-    fetchPhotos: function(page) {
+    fetchPhotos: function() {
       axios.get(blogURL + this.currentPage).then(response => {
         this.posts = response.data;
-        this.totalPhotos = parseInt(response.headers["x-wp-total"]);
-        this.currentPage = page;
-        // console.log(
-        // 	'x-wp-total = ',
-        // 	response.headers['x-wp-total']
-        // );
-        // console.log(
-        // 	'x-wp-total = ',
-        // 	response.headers['x-wp-total']
-        // );
-        // console.log(
-        // 	'x-wp-totalpages = ',
-        // 	response.headers['x-wp-totalpages']
-        // );
-        //   console.log("data ", response.data);
+        // this.totalPhotos = parseInt(response.headers["x-wp-total"]);
       });
-
-      //   console.log(typeof this.posts);
+    },
+    // Generate the search URL
+    generateUrl: function(response) {
+      // Add search parameters.
+      if (this.searchQuery) {
+        return response.data + "&search=" + encodeURI(this.searchQuery);
+      } else {
+        return response.data;
+      }
     }
   },
   created() {
