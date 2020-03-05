@@ -6,6 +6,7 @@ import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
 import store from './store';
+import VueScrollTo from 'vue-scrollto';
 
 import axios from 'axios';
 import VueAxios from 'vue-axios';
@@ -17,23 +18,26 @@ import 'firebase/storage';
 import i18n from './i18n';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { faUserAstronaut } from '@fortawesome/free-solid-svg-icons';
+import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-// We are only using the user-astronaut icon
-library.add(faUserAstronaut);
-
-library.add(faUserSecret);
+library.add(faAngleUp);
 library.add(faSpinner);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(Vuelidate, Uimini);
 Vue.use(VueAxios, axios);
+Vue.use(VueScrollTo);
 // Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
+
+export default {
+	components: {
+		'v-scroll': VueScrollTo // or just vuescroll tried both
+	}
+};
 
 new Vue({
 	router,
