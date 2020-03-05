@@ -16,11 +16,9 @@
 					.loading(v-if="!posts")
 						font-awesome-icon(icon="spinner" class="fa-spin")
 					.page-nav(v-if="posts")
-						router-link.button.button-default(:to = " '/' + $i18n.locale + '/page/' + `${currentPage-1}`" ) -
-						span.button.button-default(v-on:click='currentPage -= 1, posts = null') - 
+						router-link.button.button-default(:to = " '/' + $i18n.locale + '/page/' + `${currentPage-1}`"  @click.native='currentPage -= 1, posts = null') -
 						span.page-nav__label You're on page: {{ currentPage }}
-						span.button.button-default(v-on:click='currentPage += 1, posts = null') +
-						router-link.button.button-default(:to = " '/' + $i18n.locale + '/page/' + `${currentPage+1}`" ) +
+						router-link.button.button-default(:to = " '/' + $i18n.locale + '/page/' + `${currentPage+1}`" @click.native='currentPage += 1, posts = null') +
 
 </template>
 
