@@ -9,8 +9,6 @@
 					a.button.button-default(href="#" v-on:click="fetchPhotos()") Поиск
 					br
 					br
-					
-					//- router-link.button.button-default(:to = " '/' + $i18n.locale + '/page/' + `${currentPage+1}`" @click.native='currentPage += 1, posts = null') +
 					.ui-title-3 You searched: {{searchQuery}}
 					.row.blog__list
 						.col-xs-12.col-md-3.mb-2(v-for = "post in posts" :key = "post.id")

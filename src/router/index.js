@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import store from '../store';
 import i18n from '../i18n.js';
 
+import ContactForm from '@/components/ContactForm.vue';
 import Post from '@/components/Post.vue';
 import NotFound from '@/components/NotFound.vue';
 import Blog from '@/components/Blog.vue';
@@ -64,6 +64,11 @@ const routes = [
 			{
 				path: 'page/:number',
 				component: Blog,
+				props: true
+			},
+			{
+				path: 'cf',
+				component: ContactForm,
 				props: true
 			}
 		]
