@@ -62,11 +62,6 @@ const routes = [
 				props: true
 			},
 			{
-				path: 'post/:id',
-				component: Post,
-				props: true
-			},
-			{
 				path: 'page/:number',
 				component: Blog,
 				props: true

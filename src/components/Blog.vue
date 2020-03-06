@@ -4,8 +4,12 @@
 			.container
 				.blog
 					h1.ui-title-1 {{ $t('blog') }}
-					input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" v-on:change="fetchPhotos" )
-					a.button.button-default(href="#" v-on:click="fetchPhotos()")
+					//- input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" v-on:change="fetchPhotos" )
+					input.search__input(type="text" v-model="searchQuery" placeholder="Поиск" v-on:change="fetchPhotos" )
+					a.button.button-default(href="#" v-on:click="fetchPhotos()") Поиск
+					br
+					br
+					
 					//- router-link.button.button-default(:to = " '/' + $i18n.locale + '/page/' + `${currentPage+1}`" @click.native='currentPage += 1, posts = null') +
 					.ui-title-3 You searched: {{searchQuery}}
 					.row.blog__list
@@ -26,56 +30,62 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
-var blogURL =
-  "https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=";
+let blogURL =
+	'https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=';
 
 export default {
-  data() {
-    return {
-      textSearch: "",
-      posts: null,
-      totalPhotos: 0,
-      perPage: 12,
-      currentPage: 1,
-      searchQuery: ""
-    };
-  },
-  computed: {
-    filteredList() {
-      // let posts = Object.keys(this.posts);
-      // return posts.filter(post =>
-      // 	post.title.toLowerCase().includes(this.search.toLowerCase())
-      // );
-    }
-  },
-  watch: {
-    currentPage: "fetchPhotos"
-  },
-  methods: {
-    // Slice array
-    getExcerpt: post_content => post_content.slice(0, 200),
-    //  Submit New Task
-    fetchPhotos: function() {
-      axios.get(blogURL + this.currentPage).then(response => {
-        this.posts = response.data;
-        // this.totalPhotos = parseInt(response.headers["x-wp-total"]);
-      });
-    },
-    // Generate the search URL
-    generateUrl: function(response) {
-      // Add search parameters.
-      if (this.searchQuery) {
-        return response.data + "&search=" + encodeURI(this.searchQuery);
-      } else {
-        return response.data;
-      }
-    }
-  },
-  created() {
-    this.fetchPhotos(this.currentPage);
-  }
+	data() {
+		return {
+			textSearch: '',
+			posts: null,
+			totalPhotos: 0,
+			perPage: 12,
+			currentPage: 1,
+			searchQuery: ''
+		};
+	},
+	computed: {},
+	watch: {
+		currentPage: 'fetchPhotos'
+	},
+	methods: {
+		// Slice array
+		getExcerpt: post_content => post_content.slice(0, 200),
+		//  Submit New Task
+		fetchPhotos: function() {
+			if (this.searchQuery) {
+				var searchUrl = this.generateUrl(blogURL);
+				console.log(searchUrl);
+				axios.get(searchUrl).then(response => {
+					this.posts = response.data;
+				});
+			} else {
+				axios.get(blogURL + this.currentPage).then(response => {
+					this.posts = response.data;
+				});
+			}
+		},
+		// Generate the search URL
+		generateUrl: function(blogURL) {
+			// Add search parameters.
+			if (this.searchQuery) {
+				this.posts = null;
+				return (
+					blogURL +
+					this.currentPage +
+					'&search=' +
+					encodeURI(this.searchQuery)
+				);
+			} else {
+				return blogURL;
+			}
+		}
+	},
+	created() {
+		this.fetchPhotos(this.currentPage);
+	}
 };
 </script>
 
@@ -84,17 +94,6 @@ pre {
   font-size: 10px;
 }
 
-// .blog {
-// &__list {
-// display: flex;
-// flex-wrap: wrap;
-// }
-
-// &__item {
-// margin-bottom: 20px;
-// width: 30%;
-// }
-// }
 .svg-inline--fa.fa-w-16 {
   width: 60px;
   height: 60px;
