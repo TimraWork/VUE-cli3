@@ -9,21 +9,20 @@
 					a.button.button-default(href="#" v-on:click="fetchPhotos()") Поиск
 					br
 					br
-					.ui-title-3 You searched: {{searchQuery}}
 					.row.blog__list
-						.col-xs-12.col-md-3.mb-2(v-for = "post in posts" :key = "post.id")
+						.col-xs-12.col-sm-3.mb-2(v-for = "post in posts" :key = "post.id")
 							.ui-card.ui-card--shadow
 								.blog__img
 									span(v-for = "img in post._embedded['wp:featuredmedia']")
 										img( :src="img.source_url", alt="")
-								router-link.blog__title(:to = " '/' + $i18n.locale + '/post/' + `${post.id}`" v-html="post.title['rendered']" )
+								router-link.blog__title(:to = " '/' + $i18n.locale + '/blog/post/' + `${post.id}`" v-html="post.title['rendered']" )
 					
 					.loading(v-if="!posts")
 						font-awesome-icon(icon="spinner" class="fa-spin")
 					.page-nav(v-if="posts")
-						router-link.button.button-default(:to = " '/' + $i18n.locale + '/page/' + `${currentPage-1}`"  @click.native='currentPage -= 1, posts = null') -
+						router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/' + `${currentPage-1}`"  @click.native='currentPage -= 1, posts = null' :class="{ disabled : currentPage < 2 }") <
 						span.page-nav__label You're on page: {{ currentPage }}
-						router-link.button.button-default(:to = " '/' + $i18n.locale + '/page/' + `${currentPage+1}`" @click.native='currentPage += 1, posts = null') +
+						router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/' + `${currentPage+1}`" @click.native='currentPage += 1, posts = null' :class="{ disabled : currentPage > totalPages - 2 }") >
 
 </template>
 
@@ -34,11 +33,12 @@ let blogURL =
 	'https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=';
 
 export default {
+	props: ['page_number'],
 	data() {
 		return {
 			textSearch: '',
 			posts: null,
-			totalPhotos: 0,
+			totalPages: 0,
 			perPage: 12,
 			currentPage: 1,
 			searchQuery: ''
@@ -52,16 +52,29 @@ export default {
 		// Slice array
 		getExcerpt: post_content => post_content.slice(0, 200),
 		//  Submit New Task
-		fetchPhotos: function() {
+		fetchPhotos: function(page_number) {
+			this.page_number
+				? (this.currentPage = Number(this.page_number))
+				: this.currentPage;
+
 			if (this.searchQuery) {
 				var searchUrl = this.generateUrl(blogURL);
 				console.log(searchUrl);
 				axios.get(searchUrl).then(response => {
 					this.posts = response.data;
+					this.totalPages = response.headers['x-wp-totalpages'];
+					console.log('this.posts', this.posts);
+					console.log(
+						'totalpages',
+						response.headers['x-wp-totalpages'] - 2
+					);
+					console.log('currentPage', this.currentPage);
 				});
 			} else {
 				axios.get(blogURL + this.currentPage).then(response => {
 					this.posts = response.data;
+					this.totalPages = response.headers['x-wp-totalpages'];
+					console.log(response.headers['x-wp-totalpages']);
 				});
 			}
 		},
@@ -90,6 +103,7 @@ export default {
 <style lang="stylus">
 pre {
   font-size: 10px;
+  margin-bottom: 60px !important;
 }
 
 .svg-inline--fa.fa-w-16 {
@@ -232,7 +246,7 @@ ol.linenums li.L1, ol.linenums li.L3, ol.linenums li.L5, ol.linenums li.L7, ol.l
 }
 
 pre.prettyprint {
-  margin: 0 0 10px !important;
+  margin: 0 0 30px !important;
   font-family: Arial;
   padding: 8px 10px !important;
   background: #f9fff5;

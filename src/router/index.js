@@ -33,8 +33,22 @@ const routes = [
 		},
 		children: [
 			{
+				path: '',
+				component: Blog
+			},
+			{
 				path: 'blog',
 				component: Blog
+			},
+			{
+				path: 'blog/post/:id',
+				component: Post,
+				props: true
+			},
+			{
+				path: 'blog/page/:page_number',
+				component: Blog,
+				props: true
 			},
 			{
 				path: 'calc',
@@ -55,16 +69,6 @@ const routes = [
 			{
 				path: 'task',
 				component: Task
-			},
-			{
-				path: 'post/:id',
-				component: Post,
-				props: true
-			},
-			{
-				path: 'page/:number',
-				component: Blog,
-				props: true
 			},
 			{
 				path: 'cf',

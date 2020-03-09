@@ -142,13 +142,18 @@ body{
 .navbar-link {
   color: blue;
 
-  &.router-link-exact-active {
+  &.router-link-exact-active, &.router-link-active {
     color: #333;
   }
 }
 
 .button-default {
   border-radius: 5px;
+}
+
+.disabled{
+	opacity: .4;
+	pointer-events: none;
 }
 
 .lang {

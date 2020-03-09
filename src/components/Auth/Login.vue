@@ -28,56 +28,56 @@
 </template>
 
 <script>
-import { required, email, minLength } from "vuelidate/lib/validators";
+import { required, email, minLength } from 'vuelidate/lib/validators';
 export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-      submitStatus: null
-    };
-  },
-  validations: {
-    email: {
-      required,
-      email
-    },
-    password: {
-      required,
-      minLength: minLength(6)
-    }
-  },
-  methods: {
-    onSubmit() {
-      this.$v.$touch();
-      if (this.$v.$invalid) {
-        this.submitStatus = "ERROR";
-      } else {
-        console.log("submit!");
-        // do your submit logic here
-        const user = {
-          email: this.email,
-          password: this.password
-        };
-        console.log(user);
+	data() {
+		return {
+			email: '',
+			password: '',
+			submitStatus: null
+		};
+	},
+	validations: {
+		email: {
+			required,
+			email
+		},
+		password: {
+			required,
+			minLength: minLength(6)
+		}
+	},
+	methods: {
+		onSubmit() {
+			this.$v.$touch();
+			if (this.$v.$invalid) {
+				this.submitStatus = 'ERROR';
+			} else {
+				console.log('submit!');
+				// do your submit logic here
+				const user = {
+					email: this.email,
+					password: this.password
+				};
+				console.log(user);
 
-        this.$store
-          .dispatch("loginUser", user)
-          .then(() => {
-            console.log("LOGIN!!!!!");
-            this.submitStatus = "OK";
-            this.$router.push("/");
-          })
-          .catch(err => {
-            this.submitStatus = err.message;
-          });
-        // do your submit logic here
-        // this.submitStatus = "PENDING";
-        // setTimeout(() => {
-        //   this.submitStatus = "OK";
-        // }, 500);
-      }
-    }
-  }
+				this.$store
+					.dispatch('loginUser', user)
+					.then(() => {
+						console.log('LOGIN!!!!!');
+						this.submitStatus = 'OK';
+						this.$router.push('/');
+					})
+					.catch(err => {
+						this.submitStatus = err.message;
+					});
+				// do your submit logic here
+				// this.submitStatus = "PENDING";
+				// setTimeout(() => {
+				//   this.submitStatus = "OK";
+				// }, 500);
+			}
+		}
+	}
 };
 </script>
