@@ -4,9 +4,9 @@
 			.container
 				.blog
 					h1.ui-title-1 {{ $t('blog') }}
-					//- input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" v-on:change="fetchPhotos" )
-					input.search__input(type="text" v-model="searchQuery" placeholder="Поиск" v-on:change="fetchPhotos" )
-					a.button.button-default(href="#" v-on:click="fetchPhotos()") Поиск
+					//- input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" v-on:change="getPosts" )
+					input.search__input(type="text" v-model="searchQuery" placeholder="Поиск" v-on:change="getPosts" )
+					a.button.button-default(href="#" v-on:click="getPosts()") Поиск
 					br
 					br
 					.row.blog__list
@@ -19,84 +19,63 @@
 					
 					.loading(v-if="!posts")
 						font-awesome-icon(icon="spinner" class="fa-spin")
-					.page-nav(v-if="posts")
+						
+					.sory.text-center(v-if="totalPages < 0") {{ $t('not_found') }}
+
+					.page-nav(v-if="posts && totalPages > 0")
 						router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/' + `${currentPage-1}`"  @click.native='currentPage -= 1, posts = null' :class="{ disabled : currentPage < 2 }") <
-						span.page-nav__label You're on page: {{ currentPage }}
-						router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/' + `${currentPage+1}`" @click.native='currentPage += 1, posts = null' :class="{ disabled : currentPage > totalPages - 2 }") >
+						span.page-nav__label {{ currentPage }} из {{ totalPages }}
+						router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/' + `${currentPage+1}`" @click.native='currentPage += 1, posts = null' :class="{ disabled : currentPage > totalPages - 1 }") >
 
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 let blogURL =
-	'https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=';
+  "https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=";
 
 export default {
-	props: ['page_number'],
-	data() {
-		return {
-			textSearch: '',
-			posts: null,
-			totalPages: 0,
-			perPage: 12,
-			currentPage: 1,
-			searchQuery: ''
-		};
-	},
-	computed: {},
-	watch: {
-		currentPage: 'fetchPhotos'
-	},
-	methods: {
-		// Slice array
-		getExcerpt: post_content => post_content.slice(0, 200),
-		//  Submit New Task
-		fetchPhotos: function(page_number) {
-			this.page_number
-				? (this.currentPage = Number(this.page_number))
-				: this.currentPage;
+  props: ["page_number"],
+  data() {
+    return {
+      textSearch: "",
+      posts: null,
+      totalPages: 0,
+      perPage: 12,
+      currentPage: 1,
+      searchQuery: ""
+    };
+  },
+  computed: {},
+  watch: {
+    currentPage: "getPosts"
+  },
+  methods: {
+    // Slice array
+    getExcerpt: post_content => post_content.slice(0, 200),
+    //  Submit New Task
+    getPosts: function(page_number) {
+      this.posts = null;
+      console.log(this.page_number);
+      this.page_number
+        ? (this.currentPage = Number(this.page_number))
+        : this.currentPage;
 
-			if (this.searchQuery) {
-				var searchUrl = this.generateUrl(blogURL);
-				console.log(searchUrl);
-				axios.get(searchUrl).then(response => {
-					this.posts = response.data;
-					this.totalPages = response.headers['x-wp-totalpages'];
-					console.log('this.posts', this.posts);
-					console.log(
-						'totalpages',
-						response.headers['x-wp-totalpages'] - 2
-					);
-					console.log('currentPage', this.currentPage);
-				});
-			} else {
-				axios.get(blogURL + this.currentPage).then(response => {
-					this.posts = response.data;
-					this.totalPages = response.headers['x-wp-totalpages'];
-					console.log(response.headers['x-wp-totalpages']);
-				});
-			}
-		},
-		// Generate the search URL
-		generateUrl: function(blogURL) {
-			// Add search parameters.
-			if (this.searchQuery) {
-				this.posts = null;
-				return (
-					blogURL +
-					this.currentPage +
-					'&search=' +
-					encodeURI(this.searchQuery)
-				);
-			} else {
-				return blogURL;
-			}
-		}
-	},
-	created() {
-		this.fetchPhotos(this.currentPage);
-	}
+      let apiListPostsUrl = this.searchQuery
+        ? blogURL + this.currentPage + "&search=" + encodeURI(this.searchQuery)
+        : blogURL + this.currentPage;
+
+      axios.get(apiListPostsUrl).then(response => {
+        this.posts = response.data;
+        this.totalPages = response.headers["x-wp-totalpages"] - 1;
+        console.log(this.totalPages);
+      });
+    }
+  },
+  created() {
+    this.getPosts(this.currentPage);
+  }
 };
 </script>
 
@@ -384,5 +363,9 @@ table td:first-child {
 
 .post__content p {
   margin-bottom: 20px;
+}
+
+.sory {
+  color: #f00;
 }
 </style>
