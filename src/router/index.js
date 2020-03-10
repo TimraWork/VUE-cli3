@@ -18,7 +18,7 @@ const routes = [
 	// Редирект с главной на блог, если пользователь не зарегестрирован BEGIN
 	{
 		path: '/',
-		redirect: '/ru/blog',
+		redirect: '/ru/blog/page/1',
 		component: Blog
 	},
 	// Редирект с главной на блог, если пользователь не зарегестрирован END
@@ -48,8 +48,20 @@ const routes = [
 			{
 				path: 'blog/page/:page_number',
 				component: Blog,
-				props: true
+				props: true,
+				children: [
+					{
+						path: 'search/:search_letter',
+						component: Blog,
+						props: true
+					}
+				]
 			},
+			// {
+			// 	path: 'blog/page/:page_number/search/:search_letter',
+			// 	component: Blog,
+			// 	props: true
+			// },
 			{
 				path: 'calc',
 				component: Calculator

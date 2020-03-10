@@ -6,9 +6,20 @@
 					h1.ui-title-1 {{ $t('blog') }}
 					//- input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" v-on:change="getPosts" )
 					input.search__input(type="text" v-model="searchQuery" placeholder="Поиск" v-on:change="getPosts" )
-					a.button.button-default(href="#" v-on:click="getPosts()") Поиск
+					//- a.button.button-default(href="#" v-on:click="getPosts(searchQuery)") Поиск  {{ searchQuery }}
+					router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/1/search/' + `${searchQuery}`" ) Поиск {{ searchQuery }}
+						
+
 					br
 					br
+					.search_res(v-if="search_letter")
+						br
+						| Запрос = 
+						//- | {{ $route.params.search_letter }}
+						strong {{ search_letter }}
+						br
+						br
+
 					.row.blog__list
 						.col-xs-12.col-sm-3.mb-2(v-for = "post in posts" :key = "post.id")
 							.ui-card.ui-card--shadow
@@ -36,7 +47,7 @@ let blogURL =
   "https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=";
 
 export default {
-  props: ["page_number"],
+  props: ["page_number", "search_letter"],
   data() {
     return {
       textSearch: "",
@@ -44,20 +55,38 @@ export default {
       totalPages: 0,
       perPage: 12,
       currentPage: 1,
-      searchQuery: ""
+      searchQuery: "",
+      info: ""
     };
+  },
+  created() {
+    this.getPosts();
+  },
+  mounted() {
+    if (this.search_letter) {
+      this.searchQuery = this.search_letter;
+      this.getPosts();
+    }
   },
   computed: {},
   watch: {
     currentPage: "getPosts"
+    // searchQuery: "generateSearchLink"
+    // search_letter: function(val) {
+    //   console.log("+++++++ WATCH searchQuery +++++++++", val);
+    // },]
   },
   methods: {
-    // Slice array
-    getExcerpt: post_content => post_content.slice(0, 200),
-    //  Submit New Task
-    getPosts: function(page_number) {
+    generateSearchLink(searchQuery) {
+      const regx = new RegExp(this.searchQuery);
+      const url = this.$route.fullPath.replace(regx, "");
+      //   return this.$route.fullPath;
+
+      return `${url}/search/${searchQuery}`;
+    },
+    getPosts: function(searchQuery) {
       this.posts = null;
-      console.log(this.page_number);
+
       this.page_number
         ? (this.currentPage = Number(this.page_number))
         : this.currentPage;
@@ -66,15 +95,16 @@ export default {
         ? blogURL + this.currentPage + "&search=" + encodeURI(this.searchQuery)
         : blogURL + this.currentPage;
 
-      axios.get(apiListPostsUrl).then(response => {
-        this.posts = response.data;
-        this.totalPages = response.headers["x-wp-totalpages"] - 1;
-        console.log(this.totalPages);
-      });
+      // var variable = (condition) ? (true block) : ((condition2) ? (true block2) : (else block2))
+
+      axios
+        .get(apiListPostsUrl)
+        .then(response => {
+          this.posts = response.data;
+          this.totalPages = response.headers["x-wp-totalpages"] - 1;
+        })
+        .catch(error => console.log(error));
     }
-  },
-  created() {
-    this.getPosts(this.currentPage);
   }
 };
 </script>
