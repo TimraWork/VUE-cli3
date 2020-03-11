@@ -221,4 +221,8 @@ body {
 .mb-4 {
   margin-bottom: 50px;
 }
+
+.info_block {
+  margin-bottom: 40px;
+}
 </style>

@@ -4,9 +4,18 @@
 			.container
 				.blog
 					h1.ui-title-1 {{ $t('blog') }}
-					input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" )
-					router-link.button.button-default.mb-4(:to="{ query: { search: " + "`${searchQuery}`" + " }}" @click.native='getPosts(), currentPage = 1' ) ПОИСК
 
+
+					a(href="#" @click.prevent="getPrevPage()" :class="{ disabled : currentPage < 2 }" ).button.button-default getPrevPage
+					a(href="#" @click.prevent="getNextPage()" :class="{ disabled : currentPage > totalPages - 1 }" ).button.button-default getNextPage
+					br
+					br
+
+					input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" )
+					router-link.button.button-default.mb-4(:to="{ query: { search: " + "`${searchQuery}`" + " }}" @click.native='getPosts(), clickToSearch = "SEARCH" ' ) ПОИСК
+
+					.info_block(v-if="page_number && !axiosError && !(totalPages < 0)")
+						| Вы сейчас на странице - {{ currentPage }}
 					.row.blog__list
 						.col-xs-12.col-sm-3.mb-2(v-for = "post in posts" :key = "post.id")
 							.ui-card.ui-card--shadow
@@ -15,15 +24,16 @@
 										img( :src="img.source_url", alt="")
 								router-link.blog__title(:to = " '/' + $i18n.locale + '/blog/post/' + `${post.id}`" v-html="post.title['rendered']" )
 					
-					.loading(v-if="!posts")
+					.loading(v-if="!posts && !axiosError")
 						font-awesome-icon(icon="spinner" class="fa-spin")
 						
 					.sory.text-center(v-if="totalPages < 0") {{ $t('not_found') }}
+					.sory.text-center(v-if="axiosError") {{ axiosError }}
 
 					.page-nav(v-if="posts && totalPages > 0")
-						router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/' + `${currentPage-1}`"  @click.native='currentPage -= 1, posts = null' :class="{ disabled : currentPage < 2 }") <
+						router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/' + `${currentPage-1}`"  @click.native='currentPage -= 1, posts = null, clickToSearch = ""' :class="{ disabled : currentPage < 2 }") <
 						span.page-nav__label {{ currentPage }} из {{ totalPages }}
-						router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/' + `${currentPage+1}`" @click.native='currentPage += 1, posts = null' :class="{ disabled : currentPage > totalPages - 1 }") >
+						router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/' + `${currentPage+1}`" @click.native='currentPage += 1, posts = null, clickToSearch = ""' :class="{ disabled : currentPage > totalPages - 1 }") >
 
 </template>
 
@@ -41,7 +51,8 @@ export default {
       searchQuery: "",
       currentPage: 1,
       totalPages: 0,
-      clickToPageIncDecr: ""
+      clickToSearch: "",
+      axiosError: ""
     };
   },
   mounted() {
@@ -52,15 +63,39 @@ export default {
   },
   computed: {},
   watch: {
-    currentPage: "getPosts"
+    currentPage: "getPosts",
+    $route(toR, fromR) {
+      console.log("Номер текущей страницы ==", toR.params["page_number"]);
+    }
   },
   methods: {
+    getPrevPage: function(searchQuery) {
+      this.posts = null;
+      this.currentPage = this.currentPage - 1;
+      this.$router.push({
+        name: "PageNumber",
+        params: { page_number: this.currentPage },
+        // query: { q1: "q1" },
+        query: { search: this.searchQuery }
+      });
+      this.getPosts();
+    },
+    getNextPage: function(searchQuery) {
+      this.posts = null;
+      this.currentPage = this.currentPage + 1;
+      this.$router.push({
+        name: "PageNumber",
+        params: { page_number: this.currentPage },
+        // query: { q1: "q1" },
+        query: { search: this.searchQuery }
+      });
+      this.getPosts();
+    },
     getPosts: function(searchQuery) {
       this.posts = null;
 
       // PAGER
-
-      this.page_number
+      this.page_number && !this.clickToSearch
         ? (this.currentPage = Number(this.page_number))
         : (this.currentPage = 1);
 
@@ -77,7 +112,9 @@ export default {
           this.posts = response.data;
           this.totalPages = response.headers["x-wp-totalpages"] - 1;
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          this.axiosError = error;
+        });
     }
   }
 };

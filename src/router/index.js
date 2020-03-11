@@ -48,6 +48,7 @@ const routes = [
 			{
 				path: 'blog/page/:page_number',
 				component: Blog,
+				name: 'PageNumber',
 				props: true
 			},
 			{
