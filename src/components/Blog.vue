@@ -4,21 +4,8 @@
 			.container
 				.blog
 					h1.ui-title-1 {{ $t('blog') }}
-					//- input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" v-on:change="getPosts" )
-					input.search__input(type="text" v-model="searchQuery" placeholder="Поиск" v-on:change="getPosts" )
-					//- a.button.button-default(href="#" v-on:click="getPosts(searchQuery)") Поиск  {{ searchQuery }}
-					router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/1/search/' + `${searchQuery}`" ) Поиск {{ searchQuery }}
-						
-
-					br
-					br
-					.search_res(v-if="search_letter")
-						br
-						| Запрос = 
-						//- | {{ $route.params.search_letter }}
-						strong {{ search_letter }}
-						br
-						br
+					input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" )
+					router-link.button.button-default.mb-4(:to="{ query: { search: " + "`${searchQuery}`" + " }}" @click.native='getPosts(), currentPage = 1' ) ПОИСК
 
 					.row.blog__list
 						.col-xs-12.col-sm-3.mb-2(v-for = "post in posts" :key = "post.id")
@@ -47,50 +34,37 @@ let blogURL =
   "https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=";
 
 export default {
-  props: ["page_number", "search_letter"],
+  props: ["page_number"],
   data() {
     return {
-      textSearch: "",
       posts: null,
-      totalPages: 0,
-      perPage: 12,
-      currentPage: 1,
       searchQuery: "",
-      info: ""
+      currentPage: 1,
+      totalPages: 0,
+      clickToPageIncDecr: ""
     };
   },
-  created() {
-    this.getPosts();
-  },
   mounted() {
-    if (this.search_letter) {
-      this.searchQuery = this.search_letter;
-      this.getPosts();
+    if (this.$route.query.search) {
+      this.searchQuery = this.$route.query.search;
     }
+    this.getPosts();
   },
   computed: {},
   watch: {
     currentPage: "getPosts"
-    // searchQuery: "generateSearchLink"
-    // search_letter: function(val) {
-    //   console.log("+++++++ WATCH searchQuery +++++++++", val);
-    // },]
   },
   methods: {
-    generateSearchLink(searchQuery) {
-      const regx = new RegExp(this.searchQuery);
-      const url = this.$route.fullPath.replace(regx, "");
-      //   return this.$route.fullPath;
-
-      return `${url}/search/${searchQuery}`;
-    },
     getPosts: function(searchQuery) {
       this.posts = null;
 
+      // PAGER
+
       this.page_number
         ? (this.currentPage = Number(this.page_number))
-        : this.currentPage;
+        : (this.currentPage = 1);
 
+      // API URL
       let apiListPostsUrl = this.searchQuery
         ? blogURL + this.currentPage + "&search=" + encodeURI(this.searchQuery)
         : blogURL + this.currentPage;

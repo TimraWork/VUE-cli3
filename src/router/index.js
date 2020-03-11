@@ -48,20 +48,8 @@ const routes = [
 			{
 				path: 'blog/page/:page_number',
 				component: Blog,
-				props: true,
-				children: [
-					{
-						path: 'search/:search_letter',
-						component: Blog,
-						props: true
-					}
-				]
+				props: true
 			},
-			// {
-			// 	path: 'blog/page/:page_number/search/:search_letter',
-			// 	component: Blog,
-			// 	props: true
-			// },
 			{
 				path: 'calc',
 				component: Calculator
