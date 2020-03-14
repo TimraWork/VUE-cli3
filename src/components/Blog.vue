@@ -5,17 +5,16 @@
 				.blog
 					h1.ui-title-1 {{ $t('blog') }}
 
-
-					a(href="#" @click.prevent="getPrevPage()" :class="{ disabled : currentPage < 2 }" ).button.button-default getPrevPage
-					a(href="#" @click.prevent="getNextPage()" :class="{ disabled : currentPage > totalPages - 1 }" ).button.button-default getNextPage
-					br
-					br
-
 					input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" )
-					router-link.button.button-default.mb-4(:to="{ query: { search: " + "`${searchQuery}`" + " }}" @click.native='getPosts(), clickToSearch = "SEARCH" ' ) ПОИСК
+					router-link.button.button-default.mb-2(
+						:to="{ name: 'PageNumber', params: { page_number: '1' }, query: { search: " + "`${searchQuery}`" + " }}" 
+						@click.native='getPosts(), clickToSearch = "SEARCH" ' 
+					) ПОИСК
+					.page-nav.mb-2(v-if="posts && totalPages > 0")
+						a(href="#" @click.prevent="goToPage('prev')" :class="{ disabled : currentPage < 2 }" ).button.button-default <
+						span.page-nav__label {{ currentPage }} из {{ totalPages }}
+						a(href="#" @click.prevent="goToPage('next')" :class="{ disabled : currentPage > totalPages - 1 }" ).button.button-default >
 
-					.info_block(v-if="page_number && !axiosError && !(totalPages < 0)")
-						| Вы сейчас на странице - {{ currentPage }}
 					.row.blog__list
 						.col-xs-12.col-sm-3.mb-2(v-for = "post in posts" :key = "post.id")
 							.ui-card.ui-card--shadow
@@ -30,93 +29,95 @@
 					.sory.text-center(v-if="totalPages < 0") {{ $t('not_found') }}
 					.sory.text-center(v-if="axiosError") {{ axiosError }}
 
-					.page-nav(v-if="posts && totalPages > 0")
-						router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/' + `${currentPage-1}`"  @click.native='currentPage -= 1, posts = null, clickToSearch = ""' :class="{ disabled : currentPage < 2 }") <
-						span.page-nav__label {{ currentPage }} из {{ totalPages }}
-						router-link.button.button-default(:to = " '/' + $i18n.locale + '/blog/page/' + `${currentPage+1}`" @click.native='currentPage += 1, posts = null, clickToSearch = ""' :class="{ disabled : currentPage > totalPages - 1 }") >
 
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 let blogURL =
-  "https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=";
+	'https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=';
 
 export default {
-  props: ["page_number"],
-  data() {
-    return {
-      posts: null,
-      searchQuery: "",
-      currentPage: 1,
-      totalPages: 0,
-      clickToSearch: "",
-      axiosError: ""
-    };
-  },
-  mounted() {
-    if (this.$route.query.search) {
-      this.searchQuery = this.$route.query.search;
-    }
-    this.getPosts();
-  },
-  computed: {},
-  watch: {
-    currentPage: "getPosts",
-    $route(toR, fromR) {
-      console.log("Номер текущей страницы ==", toR.params["page_number"]);
-    }
-  },
-  methods: {
-    getPrevPage: function(searchQuery) {
-      this.posts = null;
-      this.currentPage = this.currentPage - 1;
-      this.$router.push({
-        name: "PageNumber",
-        params: { page_number: this.currentPage },
-        // query: { q1: "q1" },
-        query: { search: this.searchQuery }
-      });
-      this.getPosts();
-    },
-    getNextPage: function(searchQuery) {
-      this.posts = null;
-      this.currentPage = this.currentPage + 1;
-      this.$router.push({
-        name: "PageNumber",
-        params: { page_number: this.currentPage },
-        // query: { q1: "q1" },
-        query: { search: this.searchQuery }
-      });
-      this.getPosts();
-    },
-    getPosts: function(searchQuery) {
-      this.posts = null;
+	props: ['page_number'],
+	data() {
+		return {
+			posts: null,
+			searchQuery: '',
+			currentPage: 1,
+			totalPages: 0,
+			clickToSearch: '',
+			axiosError: ''
+		};
+	},
+	mounted() {
+		if (this.$route.query.search) {
+			this.searchQuery = this.$route.query.search;
+		}
+		this.getPosts();
+	},
+	computed: {},
+	watch: {
+		currentPage: 'getPosts'
+		// $route(toR, fromR) {
+		// 	console.log('Номер текущей страницы ==', toR.params['page_number']);
+		// }
+	},
+	methods: {
+		search: function() {
+			this.currentPage = 1;
+			this.$router.push({
+				name: 'PageNumber',
+				params: { page_number: this.currentPage },
+				query: { search: this.searchQuery }
+			});
+		},
+		goToPage: function(to) {
+			switch (to) {
+				case 'prev': // if (to == 'prev') {
+					this.currentPage--;
+					break;
+				case 'next': // if (to == 'next') {
+					this.currentPage++;
+					break;
+				default:
+					this.currentPage = 1;
+					break;
+			}
+			this.$router.push({
+				name: 'PageNumber',
+				params: { page_number: this.currentPage },
+				query: { search: this.searchQuery }
+			});
+		},
+		getPosts: function(searchQuery) {
+			this.posts = null;
 
-      // PAGER
-      this.page_number && !this.clickToSearch
-        ? (this.currentPage = Number(this.page_number))
-        : (this.currentPage = 1);
+			// PAGER
+			this.page_number && !this.clickToSearch
+				? (this.currentPage = Number(this.page_number))
+				: this.currentPage;
 
-      // API URL
-      let apiListPostsUrl = this.searchQuery
-        ? blogURL + this.currentPage + "&search=" + encodeURI(this.searchQuery)
-        : blogURL + this.currentPage;
+			// API URL
+			let apiListPostsUrl = this.searchQuery
+				? blogURL +
+				  this.currentPage +
+				  '&search=' +
+				  encodeURI(this.searchQuery)
+				: blogURL + this.currentPage;
 
-      // var variable = (condition) ? (true block) : ((condition2) ? (true block2) : (else block2))
-
-      axios
-        .get(apiListPostsUrl)
-        .then(response => {
-          this.posts = response.data;
-          this.totalPages = response.headers["x-wp-totalpages"] - 1;
-        })
-        .catch(error => {
-          this.axiosError = error;
-        });
-    }
-  }
+			// POSTS
+			axios
+				.get(apiListPostsUrl)
+				.then(response => {
+					this.posts = response.data;
+					this.totalPages = response.headers['x-wp-totalpages'] - 1;
+				})
+				.catch(error => {
+					this.axiosError = error;
+				});
+		}
+	}
 };
 </script>
 
