@@ -407,6 +407,10 @@ table td:first-child {
   margin-bottom: 20px;
 }
 
+.ok {
+  color: #0f0;
+}
+
 .sory {
   color: #f00;
 }

@@ -2,7 +2,7 @@
 	.content-wrapper
 		section
 			.container.auth
-				h1.ui-title-1 FORM
+				h1.ui-title-1 {{ $t('form') }}
 				form( name= "form")
 					.form__item
 						input(type="text" v-model="form.ename")
@@ -15,14 +15,7 @@
 </template>
 <script>
 import axios from 'axios';
-// const sendUrl = 'http://localhost:8081/forms';
-// const sendUrl = 'https://timra.ru/timra/dist/mail.php';
-const sendUrl =
-	'https://timra.ru/timra/wp-json/contact-form-7/v1/contact-forms/8616/feedback';
-// const sendUrl =
-// 	'https://timra.ru/timra/wp-json/contact-form-7/v1/contact-forms/8616';
-// const sendUrl = 'mail.php';
-// axios.defaults.headers.common.accept = 'application/json';
+const sendUrl = 'https://timra.ru/timra/dist/mail.php';
 
 export default {
 	mounted() {
@@ -47,11 +40,6 @@ export default {
 		createDbData() {},
 		onSubmit: function() {
 			const form = {
-				_wpcf7: '8616',
-				_wpcf7_version: '5.1.7',
-				_wpcf7_locale: 'ru_RU',
-				_wpcf7_unit_tag: 'wpcf7-f8616-o1',
-				_wpcf7_container_post: '0',
 				ename: this.form.ename,
 				email: this.form.email,
 				mess: this.form.message
@@ -69,16 +57,9 @@ export default {
 			axios
 				.post(sendUrl, formData)
 				.then(response => {
-					// this.posts = response.data;
-					// console.log('response.data = ', response.data);
 					console.log(response.data);
-					// console.log(response.status);
-					// console.log(response.statusText);
-					// console.log(response.headers);
-					// console.log(response.config);
 				})
 				.then(response => {
-					// console.log('response = ', response);
 					this.errors = [];
 				})
 				.catch(error => {
