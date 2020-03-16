@@ -8,7 +8,7 @@
 					input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" )
 					router-link.button.button-default.mb-2(
 						:to="{ name: 'PageNumber', params: { page_number: '1' }, query: { search: " + "`${searchQuery}`" + " }}" 
-						@click.native='getPosts(), clickToSearch = "SEARCH" ' 
+						@click.native='getPosts(), currentPage = 1, clickToSearch = "SEARCH" ' 
 					) ПОИСК
 					.page-nav.mb-2(v-if="posts && totalPages > 0")
 						a(href="#" @click.prevent="goToPage('prev')" :class="{ disabled : currentPage < 2 }" ).button.button-default <
