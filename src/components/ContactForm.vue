@@ -12,6 +12,7 @@
 <script>
 import Form from './forms/Form';
 import FormCF7 from './forms/FormCF7';
+import VueRecaptcha from 'vue-recaptcha';
 
 export default {
 	components: {

@@ -213,4 +213,12 @@ body {
 .info_block {
   margin-bottom: 40px;
 }
+
+textarea{
+	margin-bottom: 0;
+}
+
+.form__item div{
+	margin: 0 auto;
+}
 </style>
