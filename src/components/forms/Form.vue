@@ -7,7 +7,9 @@
 					.form__item
 						input(type="text" v-model="form.ename")
 					.form__item
-						input(type="email" v-model="form.email")
+						input(type="email" v-model="form.email" @change="$v.email.$touch()")
+						.error(v-if="!$v.email.required") Email is required
+						.error(v-if="!$v.email.email") Invalid Email
 					.form__item
 						textarea( v-model="form.message")
 					.buttons-list.button-list--info
@@ -15,6 +17,8 @@
 </template>
 <script>
 import axios from 'axios';
+import { required, email, minLength } from 'vuelidate/lib/validators';
+
 const sendUrl = 'https://timra.ru/timra/dist/mail.php';
 
 export default {
@@ -33,6 +37,16 @@ export default {
 			},
 			errors: []
 		};
+	},
+	validations: {
+		email: {
+			required,
+			email
+		},
+		password: {
+			required,
+			minLength: minLength(6)
+		}
 	},
 	computed: {},
 	watch: {},

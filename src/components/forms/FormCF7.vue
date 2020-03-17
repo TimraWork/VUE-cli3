@@ -2,36 +2,48 @@
 	.content-wrapper
 		section
 			.container.auth
-				h1.ui-title-1 CF7
+				h1.ui-title-1 Contact Form 7
 				.text-center.mb-2.ok(v-if="errors" :class="{ sory : status == 'validation_failed' }") {{ errors }}
 				form( name= "form")
+					.form__item(:class="{ 'form__item--error': $v.email.$ename }")
+						input(type="text" v-model="form.ename" @change="$v.ename.$touch()" :placeholder="$t('name')")
+						.text-center.mb-2.sory(v-if="input_err.ename") {{ $t('The field is required') }}
+						//- .text-center.mb-2.sory(v-if="!$v.email.ename") {{ $t('The field is required') }}
+					.form__item(:class="{ 'form__item--error': $v.email.$error }")
+						input(type="email" v-model="form.email" @change="$v.email.$touch()" :placeholder="$t('email')")
+						.text-center.mb-2.sory(v-if="input_err.email") {{ $t('Email is required') }}
+						//- .text-center.mb-2.sory(v-if="!$v.email.required") {{ $t('Email is required') }}
+						//- .text-center.mb-2.sory(v-if="!$v.email.email") {{ $t('The field is required') }}
 					.form__item
-						input(type="text" v-model="form.ename")
-						.text-center.mb-2.sory(v-if="input_err.ename") {{ input_err.ename }}
+						textarea( v-model="form.message"  :placeholder="$t('message')")
 					.form__item
-						input(type="email" v-model="form.email")
-						.text-center.mb-2.sory(v-if="input_err.email") {{ input_err.email }}
-					.form__item
-						textarea( v-model="form.message")
-					.form__item
-						vue-recaptcha(sitekey="6LfbreEUAAAAAOcJgK_fqvQVHhYxv0-UP0mGY1Mr", :loadRecaptchaScript="true", @verify="recaptchaVerified")
-						.text-center.mb-2.sory(v-if="input_err.recaptcha") {{ input_err.recaptcha }}
+						vue-recaptcha(sitekey="6LfbreEUAAAAAOcJgK_fqvQVHhYxv0-UP0mGY1Mr", :loadRecaptchaScript="true", @verify="recaptchaVerified", :placeholder="$t('mess')")
+						.text-center.mb-2.sory(v-if="input_err.recaptcha") {{ $t('captcha') }}
 					.buttons-list.button-list--info
 						button.button.button-default(type="submit" @click.prevent="onSubmit()") {{ $t('send') }}
+					
+					//- p.typo__p(v-if="submitStatus === 'OK'") Thanks for your submission!
+					//- 	p.typo__p.typo__p--error(v-if="submitStatus === 'ERROR'") Please fill the form correctly.
+					//- 	p.typo__p.typo__p--send(v-if="submitStatus === 'PENDING'") Sending...
+					//- 	p.typo__p.typo__p--send(v-else) {{ submitStatus }}
 
 </template>
 <script>
 import axios from 'axios';
 import VueRecaptcha from 'vue-recaptcha';
+import { required, email, minLength } from 'vuelidate/lib/validators';
+
 // const sendUrl = 'https://timra.ru/timra/dist/mail.php';
 const sendUrl =
 	'https://timra.ru/timra/wp-json/contact-form-7/v1/contact-forms/8616/feedback';
 
 export default {
 	mounted() {
-		this.form.ename = 'Elmira';
+		// this.form.ename = 'Elmira';
 		// this.form.email = 'mer389@mail.ru';
-		this.form.message = 'Test message';
+		// this.form.message = 'Test message';
+		$v.email = '';
+		$v.email.ename = '';
 	},
 	data() {
 		return {
@@ -51,6 +63,19 @@ export default {
 				message: ''
 			}
 		};
+	},
+	validations: {
+		ename: {
+			required
+		},
+		email: {
+			required,
+			email
+		},
+		password: {
+			required,
+			minLength: minLength(6)
+		}
 	},
 	components: { VueRecaptcha },
 	computed: {},
@@ -113,7 +138,7 @@ export default {
 						// console.log('response = ', response);
 					});
 			} else {
-				this.input_err.recaptcha = 'Отметьте флажочек';
+				this.input_err.recaptcha = true;
 			}
 		}
 	},

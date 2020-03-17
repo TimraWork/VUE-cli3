@@ -4,12 +4,14 @@
 			.container
 				.blog
 					h1.ui-title-1 {{ $t('blog') }}
-
-					input.search__input(type="text" v-model.lazy.trim="searchQuery" placeholder="Поиск" )
-					router-link.button.button-default.mb-2(
-						:to="{ name: 'PageNumber', params: { page_number: '1' }, query: { search: " + "`${searchQuery}`" + " }}" 
-						@click.native='getPosts(), currentPage = 1, clickToSearch = "SEARCH" ' 
-					) ПОИСК
+					
+					.search
+						input.search__input(type="text" v-model.lazy.trim="searchQuery" :placeholder="$t('search')" )
+						router-link.button.button-default.search__btn(
+							:to="{ name: 'PageNumber', params: { page_number: '1' }, query: { search: " + "`${searchQuery}`" + " }}" 
+							@click.native='getPosts(), currentPage = 1, clickToSearch = "SEARCH" ' 
+						) {{ $t('search') }}
+					
 					.page-nav.mb-2(v-if="posts && totalPages > 0")
 						a(href="#" @click.prevent="goToPage('prev')" :class="{ disabled : currentPage < 2 }" ).button.button-default <
 						span.page-nav__label {{ currentPage }} из {{ totalPages }}
@@ -170,6 +172,7 @@ pre {
 
 .page-nav {
   text-align: center;
+  margin-bottom: 30px;
 }
 
 .page-nav__label, .button, button {
@@ -413,5 +416,26 @@ table td:first-child {
 
 .sory {
   color: #f00;
+}
+
+.search{
+	display: flex;
+	margin-bottom: 60px;
+}
+
+.search input{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.search__input{
+	margin-bottom: 0;
+	margin-right: 20px;
+}
+
+.search__btn{
+	display: flex;
+	align-items: center;
 }
 </style>

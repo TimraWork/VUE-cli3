@@ -7,9 +7,16 @@
 	"registration": "Registration",
 	"need": "Do you need",
 	"send": "Send",
+	"search": "Search",
 	"addTask": "Add task",
 	"tasksList": "Tasks",
 	"logout": "Logout",
 	"cf7": "Form cf7",
-	"form": "Form"
+	"form": "Form",
+	"Email is required": "Email is required",
+	"The field is required": "The field is required",
+	"captcha": "The field is required",
+	"name": "Name",
+	"email": "Email",
+	"message": "Message"
 }
