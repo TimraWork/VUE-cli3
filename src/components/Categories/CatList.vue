@@ -18,7 +18,7 @@
 import axios from 'axios';
 
 let blogURL =
-	'http://timra.ru/timra/wp-json/wp/v2/categories?per_page=5&page=1&order=desc&orderby=count&exclude=1';
+	'https://timra.ru/timra/wp-json/wp/v2/categories?per_page=5&page=1&order=desc&orderby=count&exclude=1';
 
 export default {
 	data() {
