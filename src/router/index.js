@@ -38,10 +38,12 @@ const routes = [
 			},
 			{
 				path: 'blog',
+				name: 'Blog',
 				component: Blog
 			},
 			{
 				path: 'blog/post/:id',
+				name: 'Post',
 				component: Post,
 				props: true
 			},
@@ -53,26 +55,32 @@ const routes = [
 			},
 			{
 				path: 'calc',
+				name: 'Calc',
 				component: Calculator
 			},
 			{
 				path: 'login',
+				name: 'Login',
 				component: Login
 			},
 			{
 				path: 'registration',
+				name: 'Reg',
 				component: Registration
 			},
 			{
 				path: 'home',
+				name: 'Home',
 				component: Home
 			},
 			{
 				path: 'task',
+				name: 'Task',
 				component: Task
 			},
 			{
 				path: 'cf',
+				name: 'ContactForm',
 				component: ContactForm,
 				props: true
 			}
@@ -94,11 +102,24 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+	console.log('to.name', to.name);
+
 	const lang = to.params.lang;
 	if (i18n.locale !== lang) {
 		i18n.locale = lang;
 	}
+
+	// If this isn't an initial page load.
+	if (to.name) {
+		// Start the route progress bar.
+		NProgress.start();
+	}
 	return next();
+});
+
+router.afterEach((to, from) => {
+	// Complete the animation of the route progress bar.
+	NProgress.done();
 });
 
 export default router;
