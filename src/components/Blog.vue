@@ -2,121 +2,132 @@
 	.content-wrapper
 		section
 			.container
-				.blog
-					h1.ui-title-1 {{ $t('blog') }}
-					
-					.search
-						input.search__input(type="text" v-model.lazy.trim="searchQuery" :placeholder="$t('search')" )
-						router-link.button.button-default.search__btn(
-							:to="{ name: 'PageNumber', params: { page_number: '1' }, query: { search: " + "`${searchQuery}`" + " }}" 
-							@click.native='getPosts(), currentPage = 1, clickToSearch = "SEARCH" ' 
-						) {{ $t('search') }}
-					
-					.page-nav.mb-2(v-if="posts && totalPages > 0")
-						a(href="#" @click.prevent="goToPage('prev')" :class="{ disabled : currentPage < 2 }" ).button.button-default <
-						span.page-nav__label {{ currentPage }} {{ $t('of') }} {{ totalPages }}
-						a(href="#" @click.prevent="goToPage('next')" :class="{ disabled : currentPage > totalPages - 1 }" ).button.button-default >
+				h1.ui-title-1 {{ $t('blog') }}
+				.row
+					.col-sm-9
+						.blog
+							.search
+								input.search__input(type="text" v-model.lazy.trim="searchQuery" :placeholder="$t('search')" )
+								router-link.button.button-default.search__btn(
+									:to="{ name: 'PageNumber', params: { page_number: '1' }, query: { search: " + "`${searchQuery}`" + " }}" 
+									@click.native='getPosts(), currentPage = 1, clickToSearch = "SEARCH" ' 
+								) {{ $t('search') }}
+							
+							.page-nav.mb-2(v-if="posts && totalPages > 0")
+								a(href="#" @click.prevent="goToPage('prev')" :class="{ disabled : currentPage < 2 }" ).button.button-default <
+								span.page-nav__label {{ currentPage }} {{ $t('of') }} {{ totalPages }}
+								a(href="#" @click.prevent="goToPage('next')" :class="{ disabled : currentPage > totalPages - 1 }" ).button.button-default >
 
-					.row.blog__list
-						.col-xs-12.col-sm-3.mb-2(v-for = "post in posts" :key = "post.id")
-							.ui-card.ui-card--shadow
-								.blog__img
-									span(v-for = "img in post._embedded['wp:featuredmedia']")
-										img( :src="img.source_url", alt="")
-								router-link.blog__title(:to = " '/' + $i18n.locale + '/blog/post/' + `${post.id}`" v-html="post.title['rendered']" )
-					
-					.loading(v-if="!posts && !axiosError")
-						font-awesome-icon(icon="spinner" class="fa-spin")
+							.row.blog__list
+								.col-xs-12.col-sm-4.mb-2(v-for = "post in posts" :key = "post.id")
+									.ui-card.ui-card--shadow
+										.blog__img
+											span(v-for = "img in post._embedded['wp:featuredmedia']")
+												img( :src="img.source_url", alt="")
+										router-link.blog__title(:to = " '/' + $i18n.locale + '/blog/post/' + `${post.id}`" v-html="post.title['rendered']" )
+							
+							.loading(v-if="!posts && !axiosError")
+								font-awesome-icon(icon="spinner" class="fa-spin")
+								
+							.sory.text-center(v-if="totalPages < 0") {{ $t('not_found') }}
+							.sory.text-center(v-if="axiosError") {{ axiosError }}
 						
-					.sory.text-center(v-if="totalPages < 0") {{ $t('not_found') }}
-					.sory.text-center(v-if="axiosError") {{ axiosError }}
-
-
+					.col-sm-2
+						h3.ui-title-3 {{ $t('cats') }}
+						CatList
 </template>
 
 <script>
-import axios from "axios";
+import CatList from './Categories/CatList';
+
+import axios from 'axios';
 
 let blogURL =
-  "https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=";
+	'https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=';
 
 export default {
-  props: ["page_number"],
-  data() {
-    return {
-      posts: null,
-      searchQuery: "",
-      currentPage: 1,
-      totalPages: 0,
-      clickToSearch: "",
-      axiosError: ""
-    };
-  },
-  mounted() {
-    if (this.$route.query.search) {
-      this.searchQuery = this.$route.query.search;
-    }
-    this.getPosts();
-  },
-  computed: {},
-  watch: {
-    currentPage: "getPosts"
-    // $route(toR, fromR) {
-    // 	console.log('Номер текущей страницы ==', toR.params['page_number']);
-    // }
-  },
-  methods: {
-    search: function() {
-      this.currentPage = 1;
-      this.$router.push({
-        name: "PageNumber",
-        params: { page_number: this.currentPage },
-        query: { search: this.searchQuery }
-      });
-    },
-    goToPage: function(to) {
-      switch (to) {
-        case "prev": // if (to == 'prev') {
-          this.currentPage--;
-          break;
-        case "next": // if (to == 'next') {
-          this.currentPage++;
-          break;
-        default:
-          this.currentPage = 1;
-          break;
-      }
-      this.$router.push({
-        name: "PageNumber",
-        params: { page_number: this.currentPage },
-        query: { search: this.searchQuery }
-      });
-    },
-    getPosts: function(searchQuery) {
-      this.posts = null;
+	components: {
+		CatList
+	},
+	props: ['page_number'],
+	data() {
+		return {
+			posts: null,
+			searchQuery: '',
+			currentPage: 1,
+			totalPages: 0,
+			clickToSearch: '',
+			axiosError: ''
+		};
+	},
+	mounted() {
+		if (this.$route.query.search) {
+			this.searchQuery = this.$route.query.search;
+		}
+		this.getPosts();
+	},
+	computed: {},
+	watch: {
+		currentPage: 'getPosts'
+		// $route(toR, fromR) {
+		// 	console.log('Номер текущей страницы ==', toR.params['page_number']);
+		// }
+	},
+	methods: {
+		search: function() {
+			this.currentPage = 1;
+			this.$router.push({
+				name: 'PageNumber',
+				params: { page_number: this.currentPage },
+				query: { search: this.searchQuery }
+			});
+		},
+		goToPage: function(to) {
+			switch (to) {
+				case 'prev': // if (to == 'prev') {
+					this.currentPage--;
+					break;
+				case 'next': // if (to == 'next') {
+					this.currentPage++;
+					break;
+				default:
+					this.currentPage = 1;
+					break;
+			}
+			this.$router.push({
+				name: 'PageNumber',
+				params: { page_number: this.currentPage },
+				query: { search: this.searchQuery }
+			});
+		},
+		getPosts: function(searchQuery) {
+			this.posts = null;
 
-      // PAGER
-      this.page_number && !this.clickToSearch
-        ? (this.currentPage = Number(this.page_number))
-        : this.currentPage;
+			// PAGER
+			this.page_number && !this.clickToSearch
+				? (this.currentPage = Number(this.page_number))
+				: this.currentPage;
 
-      // API URL
-      let apiListPostsUrl = this.searchQuery
-        ? blogURL + this.currentPage + "&search=" + encodeURI(this.searchQuery)
-        : blogURL + this.currentPage;
+			// API URL
+			let apiListPostsUrl = this.searchQuery
+				? blogURL +
+				  this.currentPage +
+				  '&search=' +
+				  encodeURI(this.searchQuery)
+				: blogURL + this.currentPage;
 
-      // POSTS
-      axios
-        .get(apiListPostsUrl)
-        .then(response => {
-          this.posts = response.data;
-          this.totalPages = response.headers["x-wp-totalpages"] - 1;
-        })
-        .catch(error => {
-          this.axiosError = error;
-        });
-    }
-  }
+			// POSTS
+			axios
+				.get(apiListPostsUrl)
+				.then(response => {
+					this.posts = response.data;
+					this.totalPages = response.headers['x-wp-totalpages'] - 1;
+				})
+				.catch(error => {
+					this.axiosError = error;
+				});
+		}
+	}
 };
 </script>
 
@@ -160,11 +171,17 @@ pre {
   border-radius: 10px;
   align-items: center;
   justify-content: center;
-}
 
-.blog__img img {
-  max-height: 150px;
-  object-fit: contain;
+  img {
+	max-height: 150px;
+	object-fit: contain;
+	}
+  &--small{
+	  height: 50px;
+	  img{
+		  max-height: 50px;
+	  }
+  }
 }
 
 .page-nav {
