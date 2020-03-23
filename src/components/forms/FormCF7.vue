@@ -6,24 +6,24 @@
 				.text-center.mb-2.ok(v-if="errors" :class="{ sory : status == 'validation_failed' }") {{ errors }}
 				form( name= "form")
 					.form__item(:class="{ 'form__item--error': $v.email.$ename }")
-						input(type="text" v-model="form.ename" @change="$v.ename.$touch()" :placeholder="$t('name')")
-						.text-center.mb-2.sory(v-if="input_err.ename") {{ $t('The field is required') }}
+						input(type="text" @change="$v.ename.$touch()" :placeholder="$t('name')")
+						.error(v-if="input_err.ename") {{ $t('The field is required') }}
 						//- .text-center.mb-2.sory(v-if="!$v.email.ename") {{ $t('The field is required') }}
-					.form__item(:class="{ 'form__item--error': $v.email.$error }")
+					.form__item(:class="{ 'form__item--error': $v.email.$error || $v.email.required}")
 						input(type="email" v-model="form.email" @change="$v.email.$touch()" :placeholder="$t('email')")
-						.text-center.mb-2.sory(v-if="input_err.email") {{ $t('Email is required') }}
-						//- .text-center.mb-2.sory(v-if="!$v.email.required") {{ $t('Email is required') }}
+						//- .text-center.mb-2.sory(v-if="input_err.email") {{ $t('Email is required') }}
+						.error(v-if="!$v.email.required") {{ $t('Email is required') }}
 						//- .text-center.mb-2.sory(v-if="!$v.email.email") {{ $t('The field is required') }}
 					.form__item
 						textarea( v-model="form.message"  :placeholder="$t('message')")
-					.form__item
+					.form__item(:class="{ 'form__item--error': input_err.recaptcha }")
 						vue-recaptcha(
 							:sitekey="recaptchaKey", 
 							:loadRecaptchaScript="true", 
 							@verify="recaptchaVerified", 
 							:placeholder="$t('mess')"
 						)
-						.text-center.mb-2.sory(v-if="input_err.recaptcha") {{ $t('captcha') }}
+						.error(v-if="input_err.recaptcha") {{ $t('captcha') }}
 					.buttons-list.button-list--info
 						button.button.button-default(type="submit" @click.prevent="onSubmit()") {{ $t('send') }}
 					
@@ -115,10 +115,9 @@ export default {
         }
       };
       const formData = new FormData();
+
       formData.append("ename", this.form.ename);
       formData.append("email", this.form.email);
-
-      // this.$refs.recaptcha.execute();
 
       if (this.recaptchaVerify) {
         this.input_err.recaptcha = "";
