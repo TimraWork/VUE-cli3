@@ -12,6 +12,10 @@
 									:to="{ name: 'PageNumber', params: { page_number: '1' }, query: { search: " + "`${searchQuery}`" + " }}" 
 									@click.native='getPosts(), currentPage = 1, clickToSearch = "SEARCH" ' 
 								) {{ $t('search') }}
+
+							transition(name="fade")
+								.cat_name.mb-2(v-if="cat_name") Aрхив рубрики: 
+									strong {{ cat_name }}
 							
 							.page-nav.mb-2(v-if="posts && totalPages > 0")
 								a(href="#" @click.prevent="goToPage('prev')" :class="{ disabled : currentPage < 2 }" ).button.button-default <
@@ -33,101 +37,98 @@
 							.sory.text-center(v-if="axiosError") {{ axiosError }}
 						
 					.col-sm-2
-						h3.ui-title-3 {{ $t('cats') }}
+						//- h3.ui-title-3 {{ $t('cats') }}
 						CatList
 </template>
 
 <script>
-import CatList from './Categories/CatList';
+import CatList from "./Categories/CatList";
 
-import axios from 'axios';
+import axios from "axios";
 
 let blogURL =
-	'https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=';
+  "https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=";
 
 export default {
-	components: {
-		CatList
-	},
-	props: ['page_number'],
-	data() {
-		return {
-			posts: null,
-			searchQuery: '',
-			currentPage: 1,
-			totalPages: 0,
-			clickToSearch: '',
-			axiosError: ''
-		};
-	},
-	mounted() {
-		if (this.$route.query.search) {
-			this.searchQuery = this.$route.query.search;
-		}
-		this.getPosts();
-	},
-	computed: {},
-	watch: {
-		currentPage: 'getPosts'
-		// $route(toR, fromR) {
-		// 	console.log('Номер текущей страницы ==', toR.params['page_number']);
-		// }
-	},
-	methods: {
-		search: function() {
-			this.currentPage = 1;
-			this.$router.push({
-				name: 'PageNumber',
-				params: { page_number: this.currentPage },
-				query: { search: this.searchQuery }
-			});
-		},
-		goToPage: function(to) {
-			switch (to) {
-				case 'prev': // if (to == 'prev') {
-					this.currentPage--;
-					break;
-				case 'next': // if (to == 'next') {
-					this.currentPage++;
-					break;
-				default:
-					this.currentPage = 1;
-					break;
-			}
-			this.$router.push({
-				name: 'PageNumber',
-				params: { page_number: this.currentPage },
-				query: { search: this.searchQuery }
-			});
-		},
-		getPosts: function(searchQuery) {
-			this.posts = null;
+  components: {
+    CatList
+  },
+  props: ["page_number", "cat_name"],
+  data() {
+    return {
+      posts: null,
+      searchQuery: "",
+      currentPage: 1,
+      totalPages: 0,
+      clickToSearch: "",
+      axiosError: ""
+    };
+  },
+  mounted() {
+    if (this.$route.query.search) {
+      this.searchQuery = this.$route.query.search;
+    }
+    this.getPosts();
+  },
+  computed: {},
+  watch: {
+    currentPage: "getPosts"
+    // $route(toR, fromR) {
+    // 	console.log('Номер текущей страницы ==', toR.params['page_number']);
+    // }
+  },
+  methods: {
+    search: function() {
+      this.currentPage = 1;
+      this.$router.push({
+        name: "PageNumber",
+        params: { page_number: this.currentPage },
+        query: { search: this.searchQuery }
+      });
+    },
+    goToPage: function(to) {
+      switch (to) {
+        case "prev": // if (to == 'prev') {
+          this.currentPage--;
+          break;
+        case "next": // if (to == 'next') {
+          this.currentPage++;
+          break;
+        default:
+          this.currentPage = 1;
+          break;
+      }
+      this.$router.push({
+        name: "PageNumber",
+        params: { page_number: this.currentPage },
+        query: { search: this.searchQuery }
+      });
+    },
+    getPosts: function(searchQuery) {
+      this.posts = null;
 
-			// PAGER
-			this.page_number && !this.clickToSearch
-				? (this.currentPage = Number(this.page_number))
-				: this.currentPage;
+      // PAGER
+      this.page_number && !this.clickToSearch
+        ? (this.currentPage = Number(this.page_number))
+        : this.currentPage;
 
-			// API URL
-			let apiListPostsUrl = this.searchQuery
-				? blogURL +
-				  this.currentPage +
-				  '&search=' +
-				  encodeURI(this.searchQuery)
-				: blogURL + this.currentPage;
+      // API URL
+      let apiListPostsUrl = this.searchQuery
+        ? blogURL + this.currentPage + "&search=" + encodeURI(this.searchQuery)
+        : blogURL + this.currentPage;
 
-			// POSTS
-			axios
-				.get(apiListPostsUrl)
-				.then(response => {
-					this.posts = response.data;
-					this.totalPages = response.headers['x-wp-totalpages'] - 1;
-				})
-				.catch(error => {
-					this.axiosError = error;
-				});
-		}
-	}
+      // POSTS
+      axios
+        .get(apiListPostsUrl)
+        .then(response => {
+          this.posts = response.data;
+          this.totalPages = response.headers["x-wp-totalpages"] - 1;
+        })
+        .catch(error => {
+          this.axiosError = error;
+        });
+    }
+  }
 };
 </script>
 
@@ -173,14 +174,16 @@ pre {
   justify-content: center;
 
   img {
-	max-height: 150px;
-	object-fit: contain;
-	}
-  &--small{
-	  height: 50px;
-	  img{
-		  max-height: 50px;
-	  }
+    max-height: 150px;
+    object-fit: contain;
+  }
+
+  &--small {
+    height: 50px;
+
+    img {
+      max-height: 50px;
+    }
   }
 }
 
@@ -451,5 +454,10 @@ table td:first-child {
 .search__btn {
   display: flex;
   align-items: center;
+}
+
+.ui-card.active {
+  color: blue;
+  background: #f4f4f4;
 }
 </style>

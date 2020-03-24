@@ -54,6 +54,12 @@ const routes = [
 				props: true
 			},
 			{
+				path: 'blog/category/:cat_name',
+				component: Blog,
+				name: 'CatName',
+				props: true
+			},
+			{
 				path: 'calc',
 				name: 'Calc',
 				component: Calculator
@@ -102,7 +108,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	console.log('to.name', to.name);
+	// console.log('to.name', to.name);
 
 	const lang = to.params.lang;
 	if (i18n.locale !== lang) {
