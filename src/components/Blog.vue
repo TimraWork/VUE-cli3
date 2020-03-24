@@ -62,7 +62,8 @@ export default {
 			totalPages: 0,
 			clickToSearch: '',
 			axiosError: '',
-			parentCatName: ''
+			parentCatName: '',
+			parentCatId: ''
 		};
 	},
 	mounted() {
@@ -124,31 +125,47 @@ export default {
 				: blogURL + this.currentPage;
 
 			if (this.cat_name) {
+				console.log(this.cat_name);
+				// CATS
 				let apiListCatsUrl =
-					'https://timra.ru/timra/wp-json/wp/v2/categories/' +
+					'https://timra.ru/timra/wp-json/wp/v2/categories/?slug=' +
 					encodeURI(this.cat_name);
+				axios.get(apiListCatsUrl).then(response => {
+					this.parentCatName = response.data[0]['name'];
+					this.parentCatId = response.data[0]['id'];
+					console.log('this.parentCatId = ', this.parentCatId);
+				});
 
 				apiListPostsUrl =
-					apiListPostsUrl + '&categories=' + this.cat_name;
+					apiListPostsUrl + '&categories=' + this.parentCatId;
 
 				console.log('apiListPostsUrl = ', apiListPostsUrl);
+				// POSTS
+				axios
+					.get(apiListPostsUrl)
+					.then(response => {
+						this.posts = response.data;
+						this.totalPages =
+							response.headers['x-wp-totalpages'] - 1;
+					})
+					.catch(error => {
+						this.axiosError = error;
+					});
+			} else {
+				this.parentCatName = '';
 
-				// CATS
-				axios.get(apiListCatsUrl).then(response => {
-					this.parentCatName = response.data.name;
-				});
+				// POSTS
+				// axios
+				// 	.get(apiListPostsUrl)
+				// 	.then(response => {
+				// 		this.posts = response.data;
+				// 		this.totalPages =
+				// 			response.headers['x-wp-totalpages'] - 1;
+				// 	})
+				// 	.catch(error => {
+				// 		this.axiosError = error;
+				// 	});
 			}
-
-			// POSTS
-			axios
-				.get(apiListPostsUrl)
-				.then(response => {
-					this.posts = response.data;
-					this.totalPages = response.headers['x-wp-totalpages'] - 1;
-				})
-				.catch(error => {
-					this.axiosError = error;
-				});
 		},
 		getCatName: function() {}
 	}

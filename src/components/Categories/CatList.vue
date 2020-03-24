@@ -4,7 +4,7 @@
 			v-for = "cat in cats" :key = "cat.id"
 			tag="div" 
 			class="ui-card ui-card--shadow mb-2" 
-			:to = " '/' + $i18n.locale + '/blog/category/' + `${cat.id}`" active-class="active")
+			:to = " '/' + $i18n.locale + '/blog/category/' + `${cat.slug}`" active-class="active")
 			.blog__img.blog__img--small
 				span(v-for = "img in cat.acf")
 					img( :src="img.url", alt="")
@@ -16,7 +16,7 @@
 import axios from 'axios';
 
 let blogURL =
-	'https://timra.ru/timra/wp-json/wp/v2/categories?per_page=5&page=1&order=desc&orderby=count&exclude=1';
+	'https://timra.ru/timra/wp-json/wp/v2/categories?per_page=15&page=1&order=desc&orderby=count&exclude=1';
 
 export default {
 	data() {
