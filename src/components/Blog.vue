@@ -14,8 +14,8 @@
 								) {{ $t('search') }}
 
 							transition(name="fade")
-								.cat_name.mb-2(v-if="cat_name") Aрхив рубрики: 
-									strong {{ cat_name }}
+								.cat_name.mb-2(v-if="parentCatName") Aрхив рубрики: 
+									strong {{ parentCatName }}
 							
 							.page-nav.mb-2(v-if="posts && totalPages > 0")
 								a(href="#" @click.prevent="goToPage('prev')" :class="{ disabled : currentPage < 2 }" ).button.button-default <
@@ -42,93 +42,116 @@
 </template>
 
 <script>
-import CatList from "./Categories/CatList";
+import CatList from './Categories/CatList';
 
-import axios from "axios";
+import axios from 'axios';
 
 let blogURL =
-  "https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=";
+	'https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=';
 
 export default {
-  components: {
-    CatList
-  },
-  props: ["page_number", "cat_name"],
-  data() {
-    return {
-      posts: null,
-      searchQuery: "",
-      currentPage: 1,
-      totalPages: 0,
-      clickToSearch: "",
-      axiosError: ""
-    };
-  },
-  mounted() {
-    if (this.$route.query.search) {
-      this.searchQuery = this.$route.query.search;
-    }
-    this.getPosts();
-  },
-  computed: {},
-  watch: {
-    currentPage: "getPosts"
-    // $route(toR, fromR) {
-    // 	console.log('Номер текущей страницы ==', toR.params['page_number']);
-    // }
-  },
-  methods: {
-    search: function() {
-      this.currentPage = 1;
-      this.$router.push({
-        name: "PageNumber",
-        params: { page_number: this.currentPage },
-        query: { search: this.searchQuery }
-      });
-    },
-    goToPage: function(to) {
-      switch (to) {
-        case "prev": // if (to == 'prev') {
-          this.currentPage--;
-          break;
-        case "next": // if (to == 'next') {
-          this.currentPage++;
-          break;
-        default:
-          this.currentPage = 1;
-          break;
-      }
-      this.$router.push({
-        name: "PageNumber",
-        params: { page_number: this.currentPage },
-        query: { search: this.searchQuery }
-      });
-    },
-    getPosts: function(searchQuery) {
-      this.posts = null;
+	components: {
+		CatList
+	},
+	props: ['page_number', 'cat_name'],
+	data() {
+		return {
+			posts: null,
+			searchQuery: '',
+			currentPage: 1,
+			totalPages: 0,
+			clickToSearch: '',
+			axiosError: '',
+			parentCatName: ''
+		};
+	},
+	mounted() {
+		if (this.$route.query.search) {
+			this.searchQuery = this.$route.query.search;
+		}
+		this.getPosts();
+		this.getCatName();
+	},
+	computed: {},
+	watch: {
+		currentPage: 'getPosts',
+		cat_name: 'getPosts'
+		// $route(toR, fromR) {
+		// 	console.log('Номер текущей страницы ==', toR.params['page_number']);
+		// }
+	},
+	methods: {
+		search: function() {
+			this.currentPage = 1;
+			this.$router.push({
+				name: 'PageNumber',
+				params: { page_number: this.currentPage },
+				query: { search: this.searchQuery }
+			});
+		},
+		goToPage: function(to) {
+			switch (to) {
+				case 'prev': // if (to == 'prev') {
+					this.currentPage--;
+					break;
+				case 'next': // if (to == 'next') {
+					this.currentPage++;
+					break;
+				default:
+					this.currentPage = 1;
+					break;
+			}
+			this.$router.push({
+				name: 'PageNumber',
+				params: { page_number: this.currentPage },
+				query: { search: this.searchQuery }
+			});
+		},
+		getPosts: function(searchQuery) {
+			this.posts = null;
 
-      // PAGER
-      this.page_number && !this.clickToSearch
-        ? (this.currentPage = Number(this.page_number))
-        : this.currentPage;
+			// PAGER
+			this.page_number && !this.clickToSearch
+				? (this.currentPage = Number(this.page_number))
+				: this.currentPage;
 
-      // API URL
-      let apiListPostsUrl = this.searchQuery
-        ? blogURL + this.currentPage + "&search=" + encodeURI(this.searchQuery)
-        : blogURL + this.currentPage;
+			// API URL
+			let apiListPostsUrl = this.searchQuery
+				? blogURL +
+				  this.currentPage +
+				  '&search=' +
+				  encodeURI(this.searchQuery)
+				: blogURL + this.currentPage;
 
-      // POSTS
-      axios
-        .get(apiListPostsUrl)
-        .then(response => {
-          this.posts = response.data;
-          this.totalPages = response.headers["x-wp-totalpages"] - 1;
-        })
-        .catch(error => {
-          this.axiosError = error;
-        });
-    }
-  }
+			if (this.cat_name) {
+				let apiListCatsUrl =
+					'https://timra.ru/timra/wp-json/wp/v2/categories/' +
+					encodeURI(this.cat_name);
+
+				apiListPostsUrl =
+					apiListPostsUrl + '&categories=' + this.cat_name;
+
+				console.log('apiListPostsUrl = ', apiListPostsUrl);
+
+				// CATS
+				axios.get(apiListCatsUrl).then(response => {
+					this.parentCatName = response.data.name;
+				});
+			}
+
+			// POSTS
+			axios
+				.get(apiListPostsUrl)
+				.then(response => {
+					this.posts = response.data;
+					this.totalPages = response.headers['x-wp-totalpages'] - 1;
+				})
+				.catch(error => {
+					this.axiosError = error;
+				});
+		},
+		getCatName: function() {}
+	}
 };
 </script>
 
