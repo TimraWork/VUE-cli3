@@ -42,133 +42,154 @@
 </template>
 
 <script>
-import CatList from './Categories/CatList';
+import CatList from "./Categories/CatList";
 
-import axios from 'axios';
+import axios from "axios";
 
 let blogURL =
-	'https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=8&page=';
+  "https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=6&page=";
 
 export default {
-	components: {
-		CatList
-	},
-	props: ['page_number', 'cat_name'],
-	data() {
-		return {
-			posts: null,
-			searchQuery: '',
-			currentPage: 1,
-			totalPages: 0,
-			clickToSearch: '',
-			axiosError: '',
-			parentCatName: '',
-			parentCatId: ''
-		};
-	},
-	mounted() {
-		if (this.$route.query.search) {
-			this.searchQuery = this.$route.query.search;
-		}
-		this.getPosts();
-		this.getCatName();
-	},
-	computed: {},
-	watch: {
-		currentPage: 'getPosts',
-		cat_name: 'getPosts'
-		// $route(toR, fromR) {
-		// 	console.log('Номер текущей страницы ==', toR.params['page_number']);
-		// }
-	},
-	methods: {
-		search: function() {
-			this.currentPage = 1;
-			this.$router.push({
-				name: 'PageNumber',
-				params: { page_number: this.currentPage },
-				query: { search: this.searchQuery }
-			});
-		},
-		goToPage: function(to) {
-			switch (to) {
-				case 'prev': // if (to == 'prev') {
-					this.currentPage--;
-					break;
-				case 'next': // if (to == 'next') {
-					this.currentPage++;
-					break;
-				default:
-					this.currentPage = 1;
-					break;
-			}
-			this.$router.push({
-				name: 'PageNumber',
-				params: { page_number: this.currentPage },
-				query: { search: this.searchQuery }
-			});
-		},
-		getPosts: function(searchQuery) {
-			this.posts = null;
+  components: {
+    CatList
+  },
+  props: ["page_number", "cat_name"],
+  data() {
+    return {
+      posts: null,
+      searchQuery: "",
+      currentPage: 1,
+      totalPages: 0,
+      clickToSearch: "",
+      axiosError: "",
+      parentCatName: "",
+      parentCatId: ""
+    };
+  },
+  mounted() {
+    if (this.$route.query.search) {
+      this.searchQuery = this.$route.query.search;
+    }
+    if (this.cat_name) {
+      this.getCatName();
+    } else {
+      this.getPosts();
+    }
+  },
+  computed: {},
+  watch: {
+    currentPage: "getPosts",
+    cat_name: "getCatName"
+    // $route(toR, fromR) {
+    // 	console.log('Номер текущей страницы ==', toR.params['page_number']);
+    // }
+  },
+  methods: {
+    getCatName: function() {
+      //CAT ID
+      let apiListCatsUrl =
+        "https://timra.ru/timra/wp-json/wp/v2/categories/?slug=" +
+        encodeURI(this.cat_name);
+      axios.get(apiListCatsUrl).then(response => {
+        this.parentCatName = response.data[0]["name"];
+        this.parentCatId = response.data[0]["id"];
 
-			// PAGER
-			this.page_number && !this.clickToSearch
-				? (this.currentPage = Number(this.page_number))
-				: this.currentPage;
+        let apiListPostsUrl =
+          blogURL + this.currentPage + "&categories=" + this.parentCatId;
 
-			// API URL
-			let apiListPostsUrl = this.searchQuery
-				? blogURL +
-				  this.currentPage +
-				  '&search=' +
-				  encodeURI(this.searchQuery)
-				: blogURL + this.currentPage;
+        console.log(apiListPostsUrl);
 
-			if (this.cat_name) {
-				console.log(this.cat_name);
-				// CATS
-				let apiListCatsUrl =
-					'https://timra.ru/timra/wp-json/wp/v2/categories/?slug=' +
-					encodeURI(this.cat_name);
-				axios.get(apiListCatsUrl).then(response => {
-					this.parentCatName = response.data[0]['name'];
-					this.parentCatId = response.data[0]['id'];
-					console.log('this.parentCatId = ', this.parentCatId);
-				});
+        axios
+          .get(apiListPostsUrl)
+          .then(response => {
+            this.posts = response.data;
+            this.totalPages = response.headers["x-wp-totalpages"] - 1;
+          })
+          .catch(error => {
+            this.axiosError = error;
+          });
+      });
 
-				apiListPostsUrl =
-					apiListPostsUrl + '&categories=' + this.parentCatId;
+      if (this.parentCatId) {
+      }
+      if (this.cat_name) {
+        // console.log(this.cat_name);
+        // // CATS
+        // let apiListCatsUrl =
+        //   "https://timra.ru/timra/wp-json/wp/v2/categories/?slug=" +
+        //   encodeURI(this.cat_name);
+        // axios.get(apiListCatsUrl).then(response => {
+        //   this.parentCatName = response.data[0]["name"];
+        //   this.parentCatId = response.data[0]["id"];
+        //   console.log("this.parentCatId = ", this.parentCatId);
+        // });
+        // apiListPostsUrl = apiListPostsUrl + "&categories=" + this.parentCatId;
+        // console.log("apiListPostsUrl = ", apiListPostsUrl);
+        // // POSTS
+        // axios
+        //   .get(apiListPostsUrl)
+        //   .then(response => {
+        //     this.posts = response.data;
+        //     this.totalPages = response.headers["x-wp-totalpages"] - 1;
+        //   })
+        //   .catch(error => {
+        //     this.axiosError = error;
+        //   });
+      } else {
+        this.parentCatName = "";
+      }
+    },
+    search: function() {
+      this.currentPage = 1;
+      this.$router.push({
+        name: "PageNumber",
+        params: { page_number: this.currentPage },
+        query: { search: this.searchQuery }
+      });
+    },
+    goToPage: function(to) {
+      switch (to) {
+        case "prev": // if (to == 'prev') {
+          this.currentPage--;
+          break;
+        case "next": // if (to == 'next') {
+          this.currentPage++;
+          break;
+        default:
+          this.currentPage = 1;
+          break;
+      }
+      this.$router.push({
+        name: "PageNumber",
+        params: { page_number: this.currentPage },
+        query: { search: this.searchQuery }
+      });
+    },
+    getPosts: function(searchQuery) {
+      this.posts = null;
 
-				console.log('apiListPostsUrl = ', apiListPostsUrl);
-				// POSTS
-				axios
-					.get(apiListPostsUrl)
-					.then(response => {
-						this.posts = response.data;
-						this.totalPages =
-							response.headers['x-wp-totalpages'] - 1;
-					})
-					.catch(error => {
-						this.axiosError = error;
-					});
-			} else {
-				this.parentCatName = '';
+      // PAGER
+      this.page_number && !this.clickToSearch
+        ? (this.currentPage = Number(this.page_number))
+        : this.currentPage;
 
-				// POSTS
-				// axios
-				// 	.get(apiListPostsUrl)
-				// 	.then(response => {
-				// 		this.posts = response.data;
-				// 		this.totalPages =
-				// 			response.headers['x-wp-totalpages'] - 1;
-				// 	})
-				// 	.catch(error => {
-				// 		this.axiosError = error;
-				// 	});
-			}
-		},
-		getCatName: function() {}
-	}
+      // API URL
+      let apiListPostsUrl = this.searchQuery
+        ? blogURL + this.currentPage + "&search=" + encodeURI(this.searchQuery)
+        : blogURL + this.currentPage;
+
+      // POSTS
+      axios
+        .get(apiListPostsUrl)
+        .then(response => {
+          this.posts = response.data;
+          this.totalPages = response.headers["x-wp-totalpages"] - 1;
+        })
+        .catch(error => {
+          this.axiosError = error;
+        });
+    }
+  }
 };
 </script>
 
