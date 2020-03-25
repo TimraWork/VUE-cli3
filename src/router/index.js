@@ -21,6 +21,11 @@ const routes = [
 		redirect: '/ru/blog/page/1',
 		component: Blog
 	},
+	{
+		path: '/ru/blog',
+		redirect: '/ru/blog/page/1',
+		component: Blog
+	},
 	// Редирект с главной на блог, если пользователь не зарегестрирован END
 
 	// Правила для обработки дочерних ссылок с атрибутом lang BEGIN
