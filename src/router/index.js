@@ -54,9 +54,9 @@ const routes = [
 				props: true
 			},
 			{
-				path: 'blog/category/:cat_name',
+				path: 'blog/category/:cat_name/page/:page_number',
 				component: Blog,
-				name: 'CatName',
+				name: 'CatPage',
 				props: true
 			},
 			{

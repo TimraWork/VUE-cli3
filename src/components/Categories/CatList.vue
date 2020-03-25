@@ -4,7 +4,7 @@
 			v-for = "cat in cats" :key = "cat.id"
 			tag="div" 
 			class="ui-card ui-card--shadow mb-2" 
-			:to = " '/' + $i18n.locale + '/blog/category/' + `${cat.slug}`" active-class="active")
+			:to = " '/' + $i18n.locale + '/blog/category/' + `${cat.slug}` + '/page/1/'" active-class="active")
 			.blog__img.blog__img--small
 				span(v-for = "img in cat.acf")
 					img( :src="img.url", alt="")
