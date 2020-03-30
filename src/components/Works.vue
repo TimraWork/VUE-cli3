@@ -5,12 +5,13 @@
 				h1.ui-title-1 {{ $t('works') }}
 				.filter
 					.filter__cats
-						a(href="#").filter__item(:class="{ active: setFilter === 'ALL' }" ) Все работы
-						a(href="#").filter__item(:click="setFilter('Wordpress')" ) Wordpress
-						a(href="#").filter__item(:class="{ active: setFilter === 'Frontend' }" ) Frontend
+						a(href="" :click.stop.prevent="setCategory").filter__item(:class="{ active: cat === 'ALL' }" ) Все работы
+						a(href="" :click.stop.prevent="setCategory('Wordpress')").filter__item(:class="{ active: cat === 'Wordpress' }") Wordpress
+						a(href="" :click.stop.prevent="setCategory").filter__item(:class="{ active: cat === 'Frontend' }" ) Frontend
 					
 					.filter__list.row(v-if="works")
-						.filter__item.col-md-4(v-for = "work in works['acf']['works']")
+						.filter__item.col-sm-4(v-for = "work in works['acf']['works']")
+							span(v-if="work.works_category === cat")
 							a.filter__link(:href="work.works_link" target="_blank") 
 								img.filter__link(:src="work.works_img.url", alt="")
 								.filter__title {{ work.works_name }}
@@ -20,37 +21,52 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
-let blogURL = "https://timra.ru/timra/wp-json/wp/v2/pages/9662";
+let blogURL = 'https://timra.ru/timra/wp-json/wp/v2/pages/9662';
 
 export default {
-  data() {
-    return {
-      works: null,
-      cat: null
-    };
-  },
-  mounted() {
-    this.setFilter("All");
-  },
-  computed: {
-    filteredWorks: function() {}
-  },
-  methods: {
-    setFilter: function(cat) {
-      console.log("cat =", cat);
-      // WORKS
-      axios
-        .get(blogURL)
-        .then(response => {
-          this.works = response.data;
-        })
-        .catch(error => {
-          this.axiosError = error;
-        });
-    }
-  }
+	data() {
+		return {
+			works: null,
+			cat: 'ALL'
+		};
+	},
+	mounted() {
+		// this.setFilter('All');
+	},
+	computed: {
+		setFilter: function() {
+			// console.log(cat);
+			axios
+				.get(blogURL)
+				.then(response => {
+					this.works = response.data;
+				})
+				.catch(error => {
+					this.axiosError = error;
+				});
+		}
+	},
+	methods: {
+		setCategory: function(cat) {
+			//  :click="cat = 'Wordpress'"
+			console.log('current_cat = ', cat);
+			this.cat = cat;
+		}
+		// setFilter: function(cat) {
+		// 	console.log('cat =', cat);
+		// 	// WORKS
+		// 	axios
+		// 		.get(blogURL)
+		// 		.then(response => {
+		// 			this.works = response.data;
+		// 		})
+		// 		.catch(error => {
+		// 			this.axiosError = error;
+		// 		});
+		// }
+	}
 };
 </script>
 

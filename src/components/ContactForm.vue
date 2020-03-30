@@ -36,7 +36,6 @@ export default {
 			component: FormCF7
 		};
 	},
-	computed: {},
 	watch: {},
 	methods: {
 		onSubmit: function() {}

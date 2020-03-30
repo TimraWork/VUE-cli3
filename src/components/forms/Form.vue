@@ -48,7 +48,6 @@ export default {
 			minLength: minLength(6)
 		}
 	},
-	computed: {},
 	watch: {},
 	methods: {
 		createDbData() {},

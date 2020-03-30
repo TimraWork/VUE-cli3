@@ -35,9 +35,6 @@ export default {
 		onResult() {
 			this.result = eval(this.result);
 		}
-	},
-	computed: {
-		tags() {}
 	}
 };
 </script>
