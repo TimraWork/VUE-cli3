@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import i18n from '../i18n.js';
 
+import Works from '@/components/Works.vue';
 import ContactForm from '@/components/ContactForm.vue';
 import Post from '@/components/Post.vue';
 import NotFound from '@/components/NotFound.vue';
@@ -73,6 +74,11 @@ const routes = [
 				path: 'login',
 				name: 'Login',
 				component: Login
+			},
+			{
+				path: 'Works',
+				name: 'Works',
+				component: Works
 			},
 			{
 				path: 'registration',

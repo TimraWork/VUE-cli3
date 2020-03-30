@@ -178,11 +178,7 @@ export default {
         ? blogURL + this.currentPage + "&search=" + encodeURI(this.searchQuery)
         : blogURL + this.currentPage;
 
-      //SEARCH CLICK
-      if (this.clickToSearch) {
-        console.log("CLICK TO SEARCH");
-      }
-
+      //CATEGORY
       if (this.cat_name) {
         apiListPostsUrl =
           blogURL + this.currentPage + "&categories=" + this.parentCatId;

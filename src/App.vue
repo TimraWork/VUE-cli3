@@ -85,8 +85,10 @@ export default {
       const addTask = this.$t("addTask");
       const tasksList = this.$t("tasksList");
       const cf7 = this.$t("cf7");
+      const works = this.$t("works");
 
       const newArray = [
+        { title: `${works}`, url: "/works" },
         { title: `${cf7}`, url: `/cf` },
         { title: `${blog}`, url: `/blog` },
         { title: `${calc}`, url: "/calc" }
