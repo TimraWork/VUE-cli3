@@ -18,73 +18,45 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
-let blogURL = "https://timra.ru/timra/wp-json/wp/v2/pages/9662";
+let blogURL = 'https://timra.ru/timra/wp-json/wp/v2/pages/9662';
 
 export default {
-  data() {
-    return {
-      works: null,
-      cat: "All"
-    };
-  },
-  mounted() {
-    this.getData();
-    // console.log("asdf");
-  },
-  computed: {
-    // filteredWorks: function() {
-    //   var vm = this;
-    //   var category = this.cat;
-
-    //   if (category === "All") {
-    //     return vm.works;
-    //   } else {
-    //     return vm.works.filter(function(work) {
-    //       return work.works_category === category;
-    //     });
-    //   }
-    // },
-    filteredWorks() {
-      console.log(this.cat);
-      if (this.cat === "All") {
-        return this.works;
-      } else {
-        return this.works.filter(work => work.works_category === this.cat);
-      }
-    }
-  },
-  methods: {
-    getData() {
-      // WORKS
-      axios
-        .get(blogURL)
-        .then(response => {
-          this.works = response.data.acf.works;
-          //   console.log(response.data.acf.works);
-        })
-        .catch(error => {
-          this.axiosError = error;
-        });
-    }
-    // setCategory: function() {
-    //   //  :click="cat = 'Wordpress'"
-    //   console.log("current_cat = ");
-    // },
-    // setFilter: function() {
-    //   console.log("setFilter = ");
-    //   // WORKS
-    //   axios
-    //     .get(blogURL)
-    //     .then(response => {
-    //       this.works = response.data;
-    //     })
-    //     .catch(error => {
-    //       this.axiosError = error;
-    //     });
-    // }
-  }
+	data() {
+		return {
+			works: null,
+			cat: 'All'
+		};
+	},
+	mounted() {
+		this.getData();
+	},
+	computed: {
+		filteredWorks() {
+			console.log(this.cat);
+			if (this.cat === 'All') {
+				return this.works;
+			} else {
+				return this.works.filter(
+					work => work.works_category === this.cat
+				);
+			}
+		}
+	},
+	methods: {
+		getData() {
+			// WORKS
+			axios
+				.get(blogURL)
+				.then(response => {
+					this.works = response.data.acf.works;
+				})
+				.catch(error => {
+					this.axiosError = error;
+				});
+		}
+	}
 };
 </script>
 
@@ -100,9 +72,11 @@ export default {
   display: block;
   padding: 5px;
   margin-bottom: 10px;
+  cursor: pointer;
+  transition: all .3s ease-in-out;
 }
 
-.filter__item.active {
+.filter__item.active, .filter__item:hover  {
   background: #ccc;
 }
 </style>
