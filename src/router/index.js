@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import i18n from '../i18n.js';
 
+import Gists from '@/components/Gists.vue';
 import Works from '@/components/Works.vue';
 import ContactForm from '@/components/ContactForm.vue';
 import Post from '@/components/Post.vue';
@@ -41,6 +42,11 @@ const routes = [
 			{
 				path: '',
 				component: Blog
+			},
+			{
+				path: 'gists',
+				name: 'Gists',
+				component: Gists
 			},
 			{
 				path: 'blog',
