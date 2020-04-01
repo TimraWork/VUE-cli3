@@ -91,8 +91,8 @@ export default {
       const newArray = [
         { title: `${gists}`, url: "/gists" },
         { title: `${works}`, url: "/works" },
-        { title: `${cf7}`, url: `/cf` },
         { title: `${blog}`, url: `/blog` },
+        { title: `${cf7}`, url: `/cf` },
         { title: `${calc}`, url: "/calc" }
       ];
 
@@ -131,6 +131,10 @@ export default {
 body, input, textarea, button {
   font-family: 'Jura', serif !important;
   font-weight: 300;
+}
+
+.navbar-content {
+  font-weight: 500;
 }
 
 .ui-title-1 {

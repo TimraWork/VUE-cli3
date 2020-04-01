@@ -6,9 +6,13 @@
 				.search
 					input.search__input(type="text" v-model="searchQuery" :placeholder="$t('search')" )
 
+				.loading(v-if="!posts")
+					font-awesome-icon(icon="spinner" class="fa-spin")
+
 				.row.blog__list
-					.col-xs-12.col-sm-4.mb-2(v-for = "post in searchedPosts" :key = "post.id")
-						a.ui-card.ui-card--shadow(:href="post.html_url" v-html="post.description" target="_blank")
+					transition-group(name="flip-list" tag="div" class="row")
+						.col-xs-12.col-sm-4.mb-2(v-for = "post in searchedPosts" :key = "post.id")
+							a.ui-card.ui-card--shadow(:href="post.html_url" v-html="post.description" target="_blank")
 </template>
 
 <script>
@@ -60,5 +64,15 @@ export default {
 <style lang="stylus">
 .ui-card {
   display: block;
+}
+
+// some vue flip animation
+.flip-list-move {
+  transition: transform 0.4s;
+}
+
+.flip-list-leave-to {
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
 }
 </style>

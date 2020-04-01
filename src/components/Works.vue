@@ -8,7 +8,7 @@
 					.filter__item(:class="{ active: cat === 'All' }" @click="cat = 'All'" ) Все работы
 					.filter__item(:class="{ active: cat === 'wp: WordPress' }" @click="cat = 'wp: WordPress'" ) Wordpress
 					.filter__item(:class="{ active: cat === 'frontend: Верстка' }" @click="cat = 'frontend: Верстка'" ) Frontend
-
+				
 				.loading(v-if="!works")
 					font-awesome-icon(icon="spinner" class="fa-spin")
 
@@ -16,7 +16,7 @@
 					transition-group(class="filter__list" name="projects" tag="div")
 						.filter__item(v-for = "work in filteredWorks" :key="work.works_img.id")
 							//- pre {{ work }}
-							a.filter__link(:href="work.works_link" target="_blank")
+							a.filter__link(:href="work.works_link" target="_blank") 
 								img.filter__img(:src="work.works_img.url", alt="")
 								span.filter__cover
 									span.filter__top
@@ -24,9 +24,9 @@
 										span.filter__date {{ work.works_date }}
 									span.filter__bottom
 										span.filter__tags
-											span.filter__tag(v-for = "tags in work.tegi" ) {{ tags.name }}
+											span.filter__tag(v-for = "tags in work.tegi" ) {{ tags.name }} 
 										//- .filter__cat {{ work.works_category }}
-
+									
 </template>
 
 <script>
@@ -46,11 +46,9 @@ export default {
   },
   computed: {
     filteredWorks() {
-      if (this.cat === "All") {
-        return this.works;
-      } else {
-        return this.works.filter(work => work.works_category === this.cat);
-      }
+      return this.cat === "All"
+        ? this.works
+        : this.works.filter(work => work.works_category === this.cat);
     }
   },
   methods: {
@@ -60,7 +58,6 @@ export default {
         .get(blogURL)
         .then(response => {
           this.works = response.data.acf.works;
-          console.log("axios");
         })
         .catch(error => {
           this.axiosError = error;
