@@ -9,6 +9,9 @@
 					.filter__item(:class="{ active: cat === 'wp: WordPress' }" @click="cat = 'wp: WordPress'" ) Wordpress
 					.filter__item(:class="{ active: cat === 'frontend: Верстка' }" @click="cat = 'frontend: Верстка'" ) Frontend
 				
+				.loading(v-if="!works")
+					font-awesome-icon(icon="spinner" class="fa-spin")
+
 				.filter__content(v-if="works")
 					transition-group(class="filter__list" name="projects" tag="div")
 						.filter__item(v-for = "work in filteredWorks" :key="work.works_img.id")
@@ -16,11 +19,13 @@
 							a.filter__link(:href="work.works_link" target="_blank") 
 								img.filter__img(:src="work.works_img.url", alt="")
 								span.filter__cover
-									span.filter__title {{ work.works_name }}
-									span.filter__date {{ work.works_date }}
-									span.filter__tags
-										span.filter__tag(v-for = "tags in work.tegi" ) {{ tags.name }} 
-									//- .filter__cat {{ work.works_category }}
+									span.filter__top
+										span.filter__title {{ work.works_name }}
+										span.filter__date {{ work.works_date }}
+									span.filter__bottom
+										span.filter__tags
+											span.filter__tag(v-for = "tags in work.tegi" ) {{ tags.name }} 
+										//- .filter__cat {{ work.works_category }}
 									
 </template>
 
@@ -77,6 +82,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  transition: all 0.3s ease-in-out;
 }
 
 .filter__item {
@@ -99,6 +105,7 @@ export default {
   width: 25%;
   padding: 0;
   margin: 0;
+  border-radius: 0px;
 }
 
 .filter__item.active, .filter__item:hover {
@@ -107,6 +114,7 @@ export default {
 }
 
 .filter__item .filter__img {
+  max-width: 100%;
   transition: 0.3s ease-in-out;
 }
 
@@ -127,8 +135,9 @@ export default {
   height: 100%;
   text-align: center;
   background-color: rgba(255, 255, 255, 0.97);
-  transition: 0.5s ease-in-out;
+  transition: 0.3s ease-in-out;
   color: #000;
+  padding: 30px;
 }
 
 .filter__item:hover .filter__cover {
@@ -142,7 +151,7 @@ export default {
 }
 
 .projects-enter {
-  transform: scale(0.01) translatey(-50px);
+  transform: scale(0.005) translatey(-30px);
   opacity: 0;
 }
 
@@ -176,8 +185,56 @@ export default {
   margin: 0 3px 5px;
   display: inline-block;
   border-radius: 2px;
-  background: #c2eaec;
+  background: #69babe;
   padding: 0 5px;
   color: #fff;
+  opacity: 0.5;
+}
+
+.filter__top {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s 0.3s ease-in-out;
+}
+
+.filter__bottom {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s 0.3s ease-in-out;
+}
+
+.filter__item:hover .filter__top, .filter__item:hover .filter__bottom {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 1440px) {
+  .filter__content .filter__item {
+    width: 33%;
+  }
+
+  .ui-title-1 {
+    font-size: 35px;
+  }
+
+  .filter__title {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 992px) {
+  .filter__content .filter__item {
+    width: 50%;
+  }
+}
+
+@media (max-width: 680px) {
+  .filter__content .filter__item {
+    width: 100%;
+  }
+
+  .ui-title-1, .filter__title {
+    font-size: 25px;
+  }
 }
 </style>

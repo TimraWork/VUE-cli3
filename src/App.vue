@@ -136,7 +136,8 @@ body, input, textarea, button {
 }
 
 .navbar-link {
-  color: blue;
+  transition: all 0.3s ease-in-out;
+  color: #69babe;
 
   &.router-link-exact-active, &.router-link-active {
     color: #333;
@@ -154,7 +155,7 @@ body, input, textarea, button {
 
 .lang {
   a {
-    color: blue;
+    color: #69babe;
     display: inline-block;
 
     &:before {
