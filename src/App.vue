@@ -124,9 +124,15 @@ export default {
 
 <style lang="stylus">
 @import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&display=swap');
 
-body {
-  font-family: 'PT Sans', serif !important;
+body, input, textarea, button {
+  font-family: 'Jura', serif !important;
+  font-weight: 300;
+}
+
+.ui-title-1 {
+  font-size: 45px;
 }
 
 .navbar-link {

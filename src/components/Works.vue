@@ -3,18 +3,25 @@
 		section
 			.container
 				h1.ui-title-1 {{ $t('works') }}
-				.filter
-					.filter__cats
-						.filter__item(:class="{ active: cat === 'All' }" @click="cat = 'All'" ) Все работы
-						.filter__item(:class="{ active: cat === 'wp: WordPress' }" @click="cat = 'wp: WordPress'" ) Wordpress
-						.filter__item(:class="{ active: cat === 'frontend: Верстка' }" @click="cat = 'frontend: Верстка'" ) Frontend
-					
-					.filter__list.row(v-if="works")
-						.filter__item.col-sm-4(v-for = "work in filteredWorks")
+			.filter
+				.filter__cats
+					.filter__item(:class="{ active: cat === 'All' }" @click="cat = 'All'" ) Все работы
+					.filter__item(:class="{ active: cat === 'wp: WordPress' }" @click="cat = 'wp: WordPress'" ) Wordpress
+					.filter__item(:class="{ active: cat === 'frontend: Верстка' }" @click="cat = 'frontend: Верстка'" ) Frontend
+				
+				.filter__content(v-if="works")
+					transition-group(class="filter__list" name="projects" tag="div")
+						.filter__item(v-for = "work in filteredWorks" :key="work.works_img.id")
+							//- pre {{ work }}
 							a.filter__link(:href="work.works_link" target="_blank") 
-								img.filter__link(:src="work.works_img.url", alt="")
-								.filter__title {{ work.works_name }}
-								.filter__cat {{ work.works_category }}
+								img.filter__img(:src="work.works_img.url", alt="")
+								span.filter__cover
+									span.filter__title {{ work.works_name }}
+									span.filter__date {{ work.works_date }}
+									span.filter__tags
+										span.filter__tag(v-for = "tags in work.tegi" ) {{ tags.name }} 
+									//- .filter__cat {{ work.works_category }}
+									
 </template>
 
 <script>
@@ -31,23 +38,9 @@ export default {
   },
   mounted() {
     this.getData();
-    // console.log("asdf");
   },
   computed: {
-    // filteredWorks: function() {
-    //   var vm = this;
-    //   var category = this.cat;
-
-    //   if (category === "All") {
-    //     return vm.works;
-    //   } else {
-    //     return vm.works.filter(function(work) {
-    //       return work.works_category === category;
-    //     });
-    //   }
-    // },
     filteredWorks() {
-      console.log(this.cat);
       if (this.cat === "All") {
         return this.works;
       } else {
@@ -62,28 +55,12 @@ export default {
         .get(blogURL)
         .then(response => {
           this.works = response.data.acf.works;
-          //   console.log(response.data.acf.works);
+          console.log("axios");
         })
         .catch(error => {
           this.axiosError = error;
         });
     }
-    // setCategory: function() {
-    //   //  :click="cat = 'Wordpress'"
-    //   console.log("current_cat = ");
-    // },
-    // setFilter: function() {
-    //   console.log("setFilter = ");
-    //   // WORKS
-    //   axios
-    //     .get(blogURL)
-    //     .then(response => {
-    //       this.works = response.data;
-    //     })
-    //     .catch(error => {
-    //       this.axiosError = error;
-    //     });
-    // }
   }
 };
 </script>
@@ -96,13 +73,111 @@ export default {
   margin-bottom: 30px;
 }
 
+.filter__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .filter__item {
-  display: block;
-  padding: 5px;
+  position: relative;
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0 10px;
+  transition: all 0.35s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  font-weight: normal;
+  border-radius: 2px;
+}
+
+.filter__content .filter__item {
+  transition: all 0.35s ease-in-out;
+  width: 25%;
+  padding: 0;
+  margin: 0;
+}
+
+.filter__item.active, .filter__item:hover {
+  background: #69BABE;
+  color: white;
+}
+
+.filter__item .filter__img {
+  transition: 0.3s ease-in-out;
+}
+
+.filter__item:hover .filter__img {
+  transform: scale(1.05);
+}
+
+.filter__cover {
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  flex-direction: column;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.97);
+  transition: 0.5s ease-in-out;
+  color: #000;
+}
+
+.filter__item:hover .filter__cover {
+  opacity: 1;
+}
+
+.filter__title {
+  font-weight: bold;
+  font-size: 25px;
   margin-bottom: 10px;
 }
 
-.filter__item.active {
-  background: #ccc;
+.projects-enter {
+  transform: scale(0.01) translatey(-50px);
+  opacity: 0;
+}
+
+.projects-leave-to {
+  transform: translatey(30px);
+  opacity: 0;
+}
+
+.projects-leave-active {
+  position: absolute;
+  z-index: -1;
+}
+
+.filter__date {
+  display: block;
+  color: #69babe;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.filter__tags {
+  font-size: 0;
+  max-width: 50%;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.filter__tag {
+  font-size: 14px;
+  margin: 0 3px 5px;
+  display: inline-block;
+  border-radius: 2px;
+  background: #c2eaec;
+  padding: 0 5px;
+  color: #fff;
 }
 </style>
