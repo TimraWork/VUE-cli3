@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import i18n from '../i18n.js';
 
+import About from '@/components/About.vue';
 import Gists from '@/components/Gists.vue';
 import Works from '@/components/Works.vue';
 import ContactForm from '@/components/ContactForm.vue';
@@ -95,6 +96,11 @@ const routes = [
 				path: 'home',
 				name: 'Home',
 				component: Home
+			},
+			{
+				path: 'about',
+				name: 'About',
+				component: About
 			},
 			{
 				path: 'task',

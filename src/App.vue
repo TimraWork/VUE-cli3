@@ -4,7 +4,7 @@
 			.navbar
 				.container
 					.navbar-content
-						router-link.header-logo(to="/") Vue-cli3
+						router-link.header-logo(to="/") Timra
 						.button-burger(@click="menuShow = !menuShow" :class="{active:menuShow }")
 							span.line.line-1
 							span.line.line-2
@@ -31,96 +31,98 @@
 
 <script>
 export default {
-  data() {
-    return {
-      menuShow: false,
-      locale: "",
-      langs: ["ru", "en"],
-      scTimer: 0,
-      scY: 0
-    };
-  },
-  methods: {
-    handleScroll: function() {
-      if (this.scTimer) return;
-      this.scTimer = setTimeout(() => {
-        this.scY = window.scrollY;
-        clearTimeout(this.scTimer);
-        this.scTimer = 0;
-      }, 100);
-    },
-    toTop: function() {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    },
-    generateLink(lang) {
-      const regx = new RegExp("^/" + this.$i18n.locale);
-      const url = this.$route.fullPath.replace(regx, "");
-      return `/${lang}${url}`;
-    },
-    setLocale(locale) {
-      this.$i18n.locale = locale;
-      this.$router.push({
-        params: { lang: locale }
-      });
-    },
-    logout() {
-      this.$store.dispatch("logoutUser");
+	data() {
+		return {
+			menuShow: false,
+			locale: '',
+			langs: ['ru', 'en'],
+			scTimer: 0,
+			scY: 0
+		};
+	},
+	methods: {
+		handleScroll: function() {
+			if (this.scTimer) return;
+			this.scTimer = setTimeout(() => {
+				this.scY = window.scrollY;
+				clearTimeout(this.scTimer);
+				this.scTimer = 0;
+			}, 100);
+		},
+		toTop: function() {
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth'
+			});
+		},
+		generateLink(lang) {
+			const regx = new RegExp('^/' + this.$i18n.locale);
+			const url = this.$route.fullPath.replace(regx, '');
+			return `/${lang}${url}`;
+		},
+		setLocale(locale) {
+			this.$i18n.locale = locale;
+			this.$router.push({
+				params: { lang: locale }
+			});
+		},
+		logout() {
+			this.$store.dispatch('logoutUser');
 
-      this.$router.push("/"); // Перебрасываем на страницу Логин, после того, как была нажата ссылка logout
-      console.log("LOGOUT!!!!");
-    }
-  },
-  computed: {
-    checkUser() {
-      return this.$store.getters.checkUser;
-    },
-    linkMenu() {
-      const blog = this.$t("blog");
-      const calc = this.$t("calc");
-      const login = this.$t("login");
-      const registration = this.$t("registration");
-      const addTask = this.$t("addTask");
-      const tasksList = this.$t("tasksList");
-      const cf7 = this.$t("cf7");
-      const works = this.$t("works");
-      const gists = this.$t("gists");
+			this.$router.push('/'); // Перебрасываем на страницу Логин, после того, как была нажата ссылка logout
+			console.log('LOGOUT!!!!');
+		}
+	},
+	computed: {
+		checkUser() {
+			return this.$store.getters.checkUser;
+		},
+		linkMenu() {
+			const about = this.$t('about');
+			const blog = this.$t('blog');
+			const calc = this.$t('calc');
+			const login = this.$t('login');
+			const registration = this.$t('registration');
+			const addTask = this.$t('addTask');
+			const tasksList = this.$t('tasksList');
+			const cf7 = this.$t('cf7');
+			const works = this.$t('works');
+			const gists = this.$t('gists');
 
-      const newArray = [
-        { title: `${gists}`, url: "/gists" },
-        { title: `${works}`, url: "/works" }
-        // { title: `${blog}`, url: `/blog` },
-        // { title: `${cf7}`, url: `/cf` },
-        // { title: `${calc}`, url: "/calc" }
-      ];
+			const newArray = [
+				{ title: `${gists}`, url: '/gists' },
+				{ title: `${works}`, url: '/works' },
+				{ title: `${blog}`, url: `/blog` },
+				{ title: `${about}`, url: `/about` }
+				// { title: `${cf7}`, url: `/cf` },
+				// { title: `${calc}`, url: "/calc" }
+			];
 
-      if (this.checkUser) {
-        newArray.push(
-          { title: `${addTask}`, url: `/home` },
-          { title: `${tasksList}`, url: "/task" }
-        );
-      } else {
-        // newArray.push(
-        //   { title: `${login}`, url: "/login" },
-        //   { title: `${registration}`, url: `/registration` }
-        // );
-      }
+			if (this.checkUser) {
+				newArray.push(
+					{ title: `${addTask}`, url: `/home` },
+					{ title: `${tasksList}`, url: '/task' }
+				);
+			} else {
+				// newArray.push(
+				//   { title: `${login}`, url: "/login" },
+				//   { title: `${registration}`, url: `/registration` }
+				// );
+			}
 
-      return newArray;
+			return newArray;
 
-      //   return [
-      //     { title: `${blog}`, url: `/blog` },
-      //     { title: `${calc}`, url: "/calc" },
-      //     { title: `${login}`, url: "/login" },
-      //     { title: `${registration}`, url: `/registration` }
-      //   ];
-    }
-  },
-  mounted() {
-    window.addEventListener("scroll", this.handleScroll);
-  }
+			//   return [
+			//     { title: `${blog}`, url: `/blog` },
+			//     { title: `${calc}`, url: "/calc" },
+			//     { title: `${login}`, url: "/login" },
+			//     { title: `${registration}`, url: `/registration` }
+			//   ];
+		}
+	},
+	mounted() {
+		window.addEventListener('scroll', this.handleScroll);
+	}
 };
 </script>
 
@@ -157,6 +159,14 @@ body, input, textarea, button {
 .disabled {
   opacity: 0.4;
   pointer-events: none;
+}
+
+a{
+	transition: all .3s ease-in-out;
+}
+
+a:hover, a:focus{
+	color: #69babe;
 }
 
 .lang {

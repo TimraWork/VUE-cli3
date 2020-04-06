@@ -3,6 +3,7 @@ import Vuelidate from 'vuelidate';
 import Uimini from 'uimini/dist/css/uimini.css';
 import animate from 'animate.css';
 import App from './App.vue';
+import VueMeta from 'vue-meta';
 
 import './registerServiceWorker';
 import router from './router';
@@ -19,17 +20,47 @@ import 'firebase/storage';
 import i18n from './i18n';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
+import { faFontAwesome } from '@fortawesome/free-brands-svg-icons';
+
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
+
+import { faSkype } from '@fortawesome/free-brands-svg-icons';
+import { faTelegram } from '@fortawesome/free-brands-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faCodepen } from '@fortawesome/free-brands-svg-icons';
+import { faBitbucket } from '@fortawesome/free-brands-svg-icons';
+
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(faAngleUp);
 library.add(faSpinner);
+library.add(faEnvelope);
+library.add(faGlobe);
+library.add(faPhone);
+library.add(faFilePdf);
+
+library.add(faSkype);
+library.add(faTelegram);
+library.add(faGithub);
+library.add(faCodepen);
+library.add(faBitbucket);
+
+library.add(faFontAwesome);
+
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(Vuelidate, Uimini);
 Vue.use(VueAxios, axios);
 Vue.use(VueScrollTo);
+Vue.use(VueMeta, {
+	// optional pluginOptions
+	// refreshOnceOnNavigation: true
+});
 // Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
