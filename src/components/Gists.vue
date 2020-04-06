@@ -32,16 +32,25 @@ export default {
   },
   computed: {
     searchedPosts() {
-      if (this.searchQuery === "") {
-        return this.posts;
-      } else {
-        return this.posts.filter(
-          post =>
-            post.description
-              .toLowerCase()
-              .indexOf(this.searchQuery.toLowerCase()) !== -1
-        );
-      }
+      //   if (this.searchQuery === "") {
+      //     return this.posts;
+      //   } else {
+      //     return this.posts.filter(
+      //       post =>
+      //         post.description
+      //           .toLowerCase()
+      //           .indexOf(this.searchQuery.toLowerCase()) !== -1
+      //     );
+      //   }
+
+      return this.searchQuery
+        ? this.posts.filter(
+            post =>
+              post.description
+                .toLowerCase()
+                .indexOf(this.searchQuery.toLowerCase()) >= 0
+          )
+        : this.posts;
     }
   },
   mounted() {

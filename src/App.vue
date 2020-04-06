@@ -90,10 +90,10 @@ export default {
 
       const newArray = [
         { title: `${gists}`, url: "/gists" },
-        { title: `${works}`, url: "/works" },
-        { title: `${blog}`, url: `/blog` },
-        { title: `${cf7}`, url: `/cf` },
-        { title: `${calc}`, url: "/calc" }
+        { title: `${works}`, url: "/works" }
+        // { title: `${blog}`, url: `/blog` },
+        // { title: `${cf7}`, url: `/cf` },
+        // { title: `${calc}`, url: "/calc" }
       ];
 
       if (this.checkUser) {
@@ -102,10 +102,10 @@ export default {
           { title: `${tasksList}`, url: "/task" }
         );
       } else {
-        newArray.push(
-          { title: `${login}`, url: "/login" },
-          { title: `${registration}`, url: `/registration` }
-        );
+        // newArray.push(
+        //   { title: `${login}`, url: "/login" },
+        //   { title: `${registration}`, url: `/registration` }
+        // );
       }
 
       return newArray;
