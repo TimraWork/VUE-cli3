@@ -1,5 +1,5 @@
 <template lang="pug">
-	.list__wrapper
+	.wrapper
 		header#element
 			.navbar
 				.container
@@ -25,6 +25,11 @@
 		transition(name='fade')
 			#pagetop.scrollToTop(v-show='scY > 300', @click='toTop')
 				font-awesome-icon(icon="angle-up" )
+
+		footer.footer
+			.container
+				.footer__text Мухамеджанова Эльмира
+
 
   
 </template>
@@ -246,4 +251,41 @@ textarea {
 .form__item div {
   margin: 0 auto;
 }
+
+.footer{
+	position: relative;
+	text-align: center;
+	border-top: 1px solid #dcdfe6;
+	padding: 30px 0;
+}
+
+.header-logo {
+	font-weight: 800;
+	font-size: 30px;
+	color: #69babe;
+}
+
+.content-wrapper{
+	min-height: auto;
+}
+
+// ---- ---- footer bottom flexbox autoheight BEGIN  ---- ----
+html, body
+	height: 100%;
+
+.wrapper{
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+	max-width: none;
+}
+
+.content-wrapper{
+	flex: 1 0 auto;
+}
+
+footer{
+	flex: 0 0 auto;
+}
+// ---- ---- footer bottom flexbox autoheight END  ---- ----
 </style>
