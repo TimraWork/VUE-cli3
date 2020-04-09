@@ -55,7 +55,7 @@ let blogURL =
 
 export default {
 	components: {
-		CatList
+		CatList,
 	},
 	props: ['page_number', 'cat_name'],
 	data() {
@@ -67,7 +67,7 @@ export default {
 			clickToSearch: '',
 			axiosError: '',
 			parentCatName: '',
-			parentCatId: ''
+			parentCatId: '',
 		};
 	},
 	mounted() {
@@ -85,7 +85,7 @@ export default {
 	},
 	watch: {
 		currentPage: 'getPosts',
-		cat_name: 'getCatName'
+		cat_name: 'getCatName',
 		// $route(toR, fromR) {
 		// 	console.log('Номер текущей страницы ==', toR.params['page_number']);
 		// }
@@ -101,7 +101,7 @@ export default {
 				let apiListCatsUrl =
 					'https://timra.ru/timra/wp-json/wp/v2/categories/?slug=' +
 					encodeURI(this.cat_name);
-				axios.get(apiListCatsUrl).then(response => {
+				axios.get(apiListCatsUrl).then((response) => {
 					this.parentCatName = response.data[0]['name'];
 					this.parentCatId = response.data[0]['id'];
 					// console.log(response.data[0]);
@@ -116,13 +116,13 @@ export default {
 
 					axios
 						.get(apiListPostsUrl)
-						.then(response => {
+						.then((response) => {
 							this.posts = response.data;
 							this.totalPages =
 								response.headers['x-wp-totalpages'] - 1;
 							//   console.log("getCatName");
 						})
-						.catch(error => {
+						.catch((error) => {
 							this.axiosError = error;
 						});
 				});
@@ -145,26 +145,26 @@ export default {
 				this.$router.push({
 					name: 'PageNumber',
 					params: {
-						page_number: this.currentPage
+						page_number: this.currentPage,
 					},
 					query: {
-						search: this.searchQuery
-					}
+						search: this.searchQuery,
+					},
 				});
 			} else if (this.cat_name) {
 				this.$router.push({
 					name: 'CatPage',
 					params: {
 						page_number: this.currentPage,
-						cat_name: this.cat_name
-					}
+						cat_name: this.cat_name,
+					},
 				});
 			} else {
 				this.$router.push({
 					name: 'PageNumber',
 					params: {
-						page_number: this.currentPage
-					}
+						page_number: this.currentPage,
+					},
 				});
 			}
 		},
@@ -197,16 +197,16 @@ export default {
 			// POSTS
 			axios
 				.get(apiListPostsUrl)
-				.then(response => {
+				.then((response) => {
 					this.posts = response.data;
 					this.totalPages = response.headers['x-wp-totalpages'] - 1;
 					//   console.log("getPosts");
 				})
-				.catch(error => {
+				.catch((error) => {
 					this.axiosError = error;
 				});
-		}
-	}
+		},
+	},
 };
 </script>
 
@@ -236,6 +236,7 @@ pre {
   height: 100%;
   font-size: 14px;
   font-weight: bold;
+  padding: 12px;
 }
 
 .blog__img {

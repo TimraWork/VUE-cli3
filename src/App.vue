@@ -4,7 +4,11 @@
 			.navbar
 				.container
 					.navbar-content
-						router-link.header-logo(to="/") Timra
+						router-link.header-logo(to="/")
+							img.header-logo__img(src="img/logo.png", alt="")
+							span.logo__text
+								span.logo__title Timra
+								span.logo__subtitle Front-end разработка 
 						.button-burger(@click="menuShow = !menuShow" :class="{active:menuShow }")
 							span.line.line-1
 							span.line.line-2
@@ -42,7 +46,7 @@ export default {
 			locale: '',
 			langs: ['ru', 'en'],
 			scTimer: 0,
-			scY: 0
+			scY: 0,
 		};
 	},
 	methods: {
@@ -57,7 +61,7 @@ export default {
 		toTop: function() {
 			window.scrollTo({
 				top: 0,
-				behavior: 'smooth'
+				behavior: 'smooth',
 			});
 		},
 		generateLink(lang) {
@@ -68,7 +72,7 @@ export default {
 		setLocale(locale) {
 			this.$i18n.locale = locale;
 			this.$router.push({
-				params: { lang: locale }
+				params: { lang: locale },
 			});
 		},
 		logout() {
@@ -76,7 +80,7 @@ export default {
 
 			this.$router.push('/'); // Перебрасываем на страницу Логин, после того, как была нажата ссылка logout
 			console.log('LOGOUT!!!!');
-		}
+		},
 	},
 	computed: {
 		checkUser() {
@@ -98,7 +102,7 @@ export default {
 				{ title: `${gists}`, url: '/gists' },
 				{ title: `${works}`, url: '/works' },
 				{ title: `${blog}`, url: `/blog` },
-				{ title: `${about}`, url: `/about` }
+				{ title: `${about}`, url: `/about` },
 				// { title: `${cf7}`, url: `/cf` },
 				// { title: `${calc}`, url: "/calc" }
 			];
@@ -123,169 +127,12 @@ export default {
 			//     { title: `${login}`, url: "/login" },
 			//     { title: `${registration}`, url: `/registration` }
 			//   ];
-		}
+		},
 	},
 	mounted() {
 		window.addEventListener('scroll', this.handleScroll);
-	}
+	},
 };
 </script>
 
-<style lang="stylus">
-@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&display=swap');
-
-body, input, textarea, button {
-  font-family: 'Jura', serif !important;
-  font-weight: 300;
-}
-
-.navbar-content {
-  font-weight: 500;
-}
-
-.ui-title-1 {
-  font-size: 45px;
-}
-
-.navbar-link {
-  transition: all 0.3s ease-in-out;
-  color: #69babe;
-
-  &.router-link-exact-active, &.router-link-active {
-    color: #333;
-  }
-}
-
-.button-default {
-  border-radius: 5px;
-}
-
-.disabled {
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-a{
-	transition: all .3s ease-in-out;
-}
-
-a:hover, a:focus{
-	color: #69babe;
-}
-
-.lang {
-  a {
-    color: #69babe;
-    display: inline-block;
-
-    &:before {
-      content: '/';
-      padding: 0 5px;
-      color: #333;
-    }
-
-    &:first-child:before {
-      content: '';
-    }
-
-    &.router-link-active {
-      color: #333;
-    }
-  }
-}
-
-.scrollToTop {
-  position: fixed;
-  right: 10px;
-  bottom: 10px;
-  width: 50px;
-  height: 50px;
-  background: #eaeaea;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  transition: all 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #ccc;
-  }
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter, .fade-leave-to { /* .fade-leave-active до версии 2.1.8 */
-  opacity: 0;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.button.active {
-  color: blue;
-  border-color: blue;
-}
-
-.button + .button {
-  margin: 0 10px;
-}
-
-.mb-4 {
-  margin-bottom: 50px;
-}
-
-.info_block {
-  margin-bottom: 40px;
-}
-
-textarea {
-  margin-bottom: 0;
-}
-
-.form__item div {
-  margin: 0 auto;
-}
-
-.footer{
-	position: relative;
-	text-align: center;
-	border-top: 1px solid #dcdfe6;
-	padding: 30px 0;
-}
-
-.header-logo {
-	font-weight: 800;
-	font-size: 30px;
-	color: #69babe;
-}
-
-.content-wrapper{
-	min-height: auto;
-}
-
-// ---- ---- footer bottom flexbox autoheight BEGIN  ---- ----
-html, body
-	height: 100%;
-
-.wrapper{
-	display: flex;
-	height: 100%;
-	flex-direction: column;
-	max-width: none;
-}
-
-.content-wrapper{
-	flex: 1 0 auto;
-}
-
-footer{
-	flex: 0 0 auto;
-}
-// ---- ---- footer bottom flexbox autoheight END  ---- ----
-</style>
+<style lang="stylus"></style>

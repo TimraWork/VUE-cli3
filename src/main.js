@@ -1,7 +1,10 @@
 import Vue from 'vue';
+
 import Vuelidate from 'vuelidate';
 import Uimini from 'uimini/dist/css/uimini.css';
 import animate from 'animate.css';
+import StylusImport from './styles/imports.styl';
+
 import App from './App.vue';
 import VueMeta from 'vue-meta';
 
@@ -54,7 +57,7 @@ library.add(faFontAwesome);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-Vue.use(Vuelidate, Uimini);
+Vue.use(Vuelidate, Uimini, StylusImport);
 Vue.use(VueAxios, axios);
 Vue.use(VueScrollTo);
 Vue.use(VueMeta, {
@@ -67,15 +70,15 @@ Vue.config.productionTip = false;
 
 export default {
 	components: {
-		'v-scroll': VueScrollTo // or just vuescroll tried both
-	}
+		'v-scroll': VueScrollTo, // or just vuescroll tried both
+	},
 };
 
 new Vue({
 	router,
 	store,
 	animate,
-	render: h => h(App),
+	render: (h) => h(App),
 	i18n,
 	created() {
 		const firebaseConfig = {
@@ -85,10 +88,10 @@ new Vue({
 			projectId: 'vue-cli3-ea58f',
 			storageBucket: 'vue-cli3-ea58f.appspot.com',
 			messagingSenderId: '415777151690',
-			appId: '1:415777151690:web:593c85c62d10e67bb13233'
+			appId: '1:415777151690:web:593c85c62d10e67bb13233',
 		};
 		firebase.initializeApp(firebaseConfig);
-		firebase.auth().onAuthStateChanged(user => {
+		firebase.auth().onAuthStateChanged((user) => {
 			// проверка остался ли пользователь в системе после обновления страницы
 			if (user) {
 				//создаем новый метод, loggedUser
@@ -97,5 +100,5 @@ new Vue({
 			}
 			this.$store.dispatch('loadTasks');
 		});
-	}
+	},
 }).$mount('#app');

@@ -45,8 +45,7 @@
 					
 					.col-md-7.content
 						.mb-3
-							p Меня зовут 
-								strong Эльмира. 
+							h3.ui-title-4 Меня зовут Эльмира. 
 							| С 2013 года занимаюсь веб-разработкой, а именно версткой сайтов, посадкой сайтов на cms Wordpress.
 						
 						h3.ui-title-4 Образование:
@@ -58,15 +57,15 @@
 						.mb-3
 							p
 								strong
-									| май 2018 - по настоящий момент - 
+									| 04.2018 - 
 								a(href="http://www.metrafor.ru/" target="_blank") Metrafor
 							p
 								strong
-									| сентябрь 2017 - май 2018 - 
+									| 10.2017 / 04.2018 - 
 								a(href="http://sabgames.org/" target="_blank") Sabgames
 							p
 								strong
-									| сентябрь 2013 - октябрь 2014  - 
+									| 08.2013 / 10.2014  - 
 								a(href="https://stylemix.uz/" target="_blank") StyleMix
 
 						h3.ui-title-4 Навыки:	
@@ -78,8 +77,8 @@
 								| ( не изобретаю велосипеды, но клики, аяксы, мелкие события пишу без проблем ) 
 							p • Фреймворк JavaScript – 
 								strong Vue.js 
-								| ( этот сайт написан на
-								strong vue-cli3 + vue router + vuex + wordpress rest api ) 
+								| ( этот сайт написан на 
+								strong  vue-cli3 + vue router + vuex + wordpress rest api ) 
 							p • Препроцессор HTML – 
 								strong JADE(PUG) 
 								| ( пишу на нем, как по мне весьма удобная вещь=) ) 
@@ -121,46 +120,46 @@ export default {
 		meta: [
 			{
 				property: 'description',
-				content: 'Немного о себе: образование, навыки, контакты'
+				content: 'Немного о себе: образование, навыки, контакты',
 			},
 			{
 				property: 'og:title',
-				content: 'Vue App title'
+				content: 'Vue App title',
 			},
 			{
 				property: 'og:description',
-				content: 'Vue App description'
-			}
-		]
-	}
+				content: 'Vue App description',
+			},
+		],
+	},
 };
 </script>
 
 <style lang="stylus" scoped>
-.content{
-	margin-left: 20px;
+.content {
+  margin-left: 20px;
 }
 
-.content p{
-	margin-bottom: 10px;
+.content p {
+  margin-bottom: 10px;
 }
 
-.mb-3{
-	margin: 0 0 30px;
+.mb-3 {
+  margin: 0 0 30px;
 }
 
 .contacts__icon, .contacts__text {
-	display: inline-block;
-	vertical-align: top;
+  display: inline-block;
+  vertical-align: top;
 }
 
-.contacts__icon .svg-inline--fa{
-	color: #000;
-	font-size: 10px;
-	opacity: .2;
-	width: 20px;
-	height: 25px;
-	margin-right: 15px;
-	margin-bottom: 10px;
+.contacts__icon .svg-inline--fa {
+  color: #000;
+  font-size: 10px;
+  opacity: 0.2;
+  width: 20px;
+  height: 25px;
+  margin-right: 15px;
+  margin-bottom: 10px;
 }
 </style>
