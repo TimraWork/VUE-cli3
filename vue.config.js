@@ -1,8 +1,8 @@
 const path = require('path');
 
 module.exports = {
-	publicPath:
-		process.env.NODE_ENV === 'production' ? '/portfolio/vue-cli3/' : '/',
+	// publicPath:
+	// 	process.env.NODE_ENV === 'production' ? '/portfolio/vue-cli3/' : '/',
 
 	// Вот пример для stylus, который импортирует ./src/styles/imports.styl в каждый однофайловый компонент и в каждый файл stylus
 	// chainWebpack: (config) => {

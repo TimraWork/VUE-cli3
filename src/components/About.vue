@@ -4,8 +4,16 @@
 			.container
 				h1.ui-title-1 {{ $t('about') }}
 				.row
-					.col-md-4
-						img.mb-3(src="img/for_site.jpg")
+					.col-sm-4
+						img.mb-3(src="./../assets/images/for_site.jpg")
+						h3.ui-title-4 Образование
+						.mb-3 высшее (ТашИИТ) – инженер-программист
+
+						h3.ui-title-4 Опыт работы
+						.mb-3 4 года (на должности html-верстальщик)
+
+						h3.ui-title-4 Контакты и соц.сети
+
 						p
 							span.contacts__icon
 								font-awesome-icon(icon="envelope")
@@ -38,22 +46,19 @@
 							span.contacts__icon
 								font-awesome-icon(:icon="['fab', 'bitbucket']")
 							a(href="https://bitbucket.org/account/user/timra_work/" target="_blank").contacts__text bitbucket.org/user/timra_work
-						p
+						p.mb-3
 							span.contacts__icon
 								font-awesome-icon(:icon="['fas', 'file-pdf']")
-							a(href="CV_Elmira_Mukhamedjanova.pdf" download).contacts__text CV_Elmira_Mukhamedjanova.pdf
+							a(href="img/CV_Elmira_Mukhamedjanova.pdf" download).contacts__text CV_Elmira_Mukhamedjanova.pdf
+						
+
 					
-					.col-md-7.content
+					.col-sm-7.content
 						.mb-3
 							h3.ui-title-4 Меня зовут Эльмира. 
-							| С 2013 года занимаюсь веб-разработкой, а именно версткой сайтов, посадкой сайтов на cms Wordpress.
+							| С 2013 года занимаюсь веб-разработкой, а именно версткой сайтов, посадкой несложных сайтов (лендингов) на cms Wordpress, Bitrix.  
 						
-						h3.ui-title-4 Образование:
-						.mb-3
-							p Высшее(бакалавр) - ТашИИТ. Специальность 
-								strong "инженер-программист".
-						
-						h3.ui-title-4 Опыт работы в сфере IT:
+						h3.ui-title-4 Опыт работы:
 						.mb-3
 							p
 								strong
@@ -68,10 +73,11 @@
 									| 08.2013 / 10.2014  - 
 								a(href="https://stylemix.uz/" target="_blank") StyleMix
 
+
 						h3.ui-title-4 Навыки:	
 						.mb-3
 							p • 
-								strong HTML 4-5, CSS3, JS, PHOTOSHOP, Zeplin, Figma, WordPress, Bitrix
+								strong HTML 4-5, CSS3, JS, JQUERY, VUE.JS, REACT.JS, PHOTOSHOP, Zeplin, Figma, WordPress, Bitrix
 							p • Библиотека JavaScript – 
 								strong JQUERY 
 								| ( не изобретаю велосипеды, но клики, аяксы, мелкие события пишу без проблем ) 
@@ -79,30 +85,41 @@
 								strong Vue.js 
 								| ( этот сайт написан на 
 								strong  vue-cli3 + vue router + vuex + wordpress rest api ) 
+							p • Библиотека – 
+								strong React 
+								| ( изучаю самостоятельно 
+								strong  create-react-app + MATERIAL-UI + wordpress rest api ) 
 							p • Препроцессор HTML – 
 								strong JADE(PUG) 
-								| ( пишу на нем, как по мне весьма удобная вещь=) ) 
+								| ( пишу на нем, как по мне весьма удобная вещь=) для скорости написания однотиптых блоков ) 
 							p • Компиляция CSS – 
 								strong SASS(LESS, STYLUS) (по требованиям проекта) 
-							p • HTML фреймворк – 
-								strong Bootstrap4, UiMini 
+							p • HTML(CSS) фреймворк – 
+								strong Bootstrap4, UiMini, MATERIAL-UI
 							p • CMS – 
 								strong WordPress 
-								| (лендинги, визитки, небольшие блоги - с нуля, либо использую готовые темы, магазин делать пока не было задач, но было бы интересно) 
+								| (лендинги, визитки, небольшие блоги - с нуля, либо использую готовые темы, магазин делать пока не было задач, но было бы очень интересно) 
 							p • Сборка проекта – 
-								strong GULP, WEBPACK 
-								| ( автоматизация рутинных процессов: минификация картинок, компиляция sass(less), компиляция jade, автопрефиксы, livereload ) 
+								strong GULP, WEBPACK3,4 
+								| ( настраивала несколько своих шаблонов, использовала готовые варианты сборки, но зависит от проекта - для автоматизация рутинных процессов: минификация картинок, компиляция sass(less), компиляция jade, автопрефиксы, livereload ) 
 							p • Работа в консоле ( у меня она красивая – 
 								strong iterm2 + zsh ) 
+							p • Оптимизация скорости сайта 
+								strong PageSpeed Insights 
+								| ( оптимизировала существующий сайт под сервис гугла, при нынешних скоростях интернета не очень актуально, но если нужно могу верстать учитывая данные требования + учитывая грамотное сео, ) 
 							p • 
 								strong SQL 
 								| запросы к базе – знание основ (в институте нравилось это дело, в связке с wordpress к сожалению этот навык нужен крайне редко) 
 							p • 
-								strong Английский 
-								| – на уровне свободного чтения документации (разговорный – не самый лучший) 
+								strong PHP 
+								| в рамках дипломной работы в институте разрабатывала сайт на php без sms
 							p • 
-								strong Git 
-								| (сохраняю там все свои проекты) 
+								strong Английский 
+								| – на уровне свободного чтения документации
+								| - занимаюсь с преподавателем (уровень знаний - Pre-Intermediate )
+							p • 
+								strong Git, Bitbacket, Gists
+								| (сохраняю там все свои проекты, наработки) 
 	//- h2.ui-title-2 Контакты
 
 </template>
@@ -115,31 +132,27 @@
 // };
 
 export default {
-	metaInfo: {
-		title: 'Обо мне',
-		meta: [
-			{
-				property: 'description',
-				content: 'Немного о себе: образование, навыки, контакты',
-			},
-			{
-				property: 'og:title',
-				content: 'Vue App title',
-			},
-			{
-				property: 'og:description',
-				content: 'Vue App description',
-			},
-		],
-	},
+  //   metaInfo: {
+  //     title: "Обо мне",
+  //     meta: [
+  //       {
+  //         property: "description",
+  //         content: "Немного о себе: образование, навыки, контакты"
+  //       },
+  //       {
+  //         property: "og:title",
+  //         content: "Vue App title"
+  //       },
+  //       {
+  //         property: "og:description",
+  //         content: "Vue App description"
+  //       }
+  //     ]
+  //   }
 };
 </script>
 
 <style lang="stylus" scoped>
-.content {
-  margin-left: 20px;
-}
-
 .content p {
   margin-bottom: 10px;
 }

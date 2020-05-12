@@ -13,32 +13,32 @@
 			
 </template>
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 let blogURL =
-	'https://timra.ru/timra/wp-json/wp/v2/categories?per_page=6&page=1&order=desc&orderby=count&exclude=1';
+  "https://timra.ru/timra/wp-json/wp/v2/categories?per_page=8&page=1&order=desc&orderby=count&exclude=1";
 
 export default {
-	data() {
-		return {
-			cats: null,
-		};
-	},
-	mounted() {
-		this.getCats();
-	},
-	methods: {
-		getCats: function() {
-			// POSTS
-			axios
-				.get(blogURL)
-				.then((response) => {
-					this.cats = response.data;
-				})
-				.catch((error) => {
-					this.axiosError = error;
-				});
-		},
-	},
+  data() {
+    return {
+      cats: null
+    };
+  },
+  mounted() {
+    this.getCats();
+  },
+  methods: {
+    getCats: function() {
+      // POSTS
+      axios
+        .get(blogURL)
+        .then(response => {
+          this.cats = response.data;
+        })
+        .catch(error => {
+          this.axiosError = error;
+        });
+    }
+  }
 };
 </script>

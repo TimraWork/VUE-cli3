@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&display=swap');
 
 $accent = #69babe;
+$gray_light = #eaeaea;
 
 
 body, input, textarea, button {
@@ -9,9 +10,48 @@ body, input, textarea, button {
   font-weight: 300;
 }
 
+.blog__img.blog__img--small{
+    width: 50px;
+    display: inline-block;
+	vertical-align: middle;
+    margin-right: 10px !important;
+	margin-bottom: 0 !important;
+	padding: 10px;
+}
+
+.search input
+	border-color: #dcdfe6;
+	margin-right: 0;
+
+.search__btn
+	margin-left: 20px;
+	&:hover, &:focus
+		box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+
+
+.content
+	padding-left: 20px
+
+.row
+	width: auto
+
+.ui-title-4{
+	margin-bottom: 20px
+}
+
+.rc-anchor-pt
+	display: none
+
 .navbar-content {
   font-weight: 500;
 }
+
+.navbar
+	border-bottom-color $gray_light
+
+.form__item--captcha
+	margin: 0 auto;
+	overflow: hidden;
 
 .ui-title-1 {
   font-size: 45px;
@@ -124,7 +164,7 @@ textarea {
 .footer {
   position: relative;
   text-align: center;
-  border-top: 1px solid #dcdfe6;
+  border-top: 1px solid $gray_light;
   padding: 30px 0;
 }
 
@@ -196,3 +236,51 @@ footer {
 .blog
 	&__list
 		text-transform uppercase
+
+
+
+@media only screen and (max-width: 992px)
+	.header-logo__img
+		max-width: 30px
+	.logo
+		&__title
+			font-size 25px
+		&__subtitle
+			font-size 12px
+	
+	.navbar-content .button-burger
+		display: block;
+	
+	.navbar-list__wrapper
+    	display: none;
+	
+	.navbar-list__wrapper.active .navbar-list
+		padding: 20px
+	
+	.navbar-list__wrapper .navbar-item, 
+	.navbar-item:last-child, .navbar-link:last-child
+		padding: 8px 10px
+	
+	.lang
+		padding-right: 25px !important
+
+@media only screen and (max-width: 768px)
+	.content
+		padding-left 0
+		padding-top 30px
+
+@media screen and (max-width: 980px) {
+  .ui-title-4 {
+    font-size: 1.066666666666667rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .ui-title-4 {
+    font-size: 1.066666666666667rem;
+  }
+}
+@media screen and (max-width: 480px) {
+  .ui-title-4 {
+    font-size: 1.066666666666667rem;
+  }
+}
