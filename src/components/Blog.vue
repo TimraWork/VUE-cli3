@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import CatList from "./Categories/CatList";
+import CatList from "./CatList";
 
 import axios from "axios";
 

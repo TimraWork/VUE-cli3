@@ -10,36 +10,36 @@
 </template>
 
 <script>
-import Form from './forms/Form';
-import FormCF7 from './forms/FormCF7';
-import VueRecaptcha from 'vue-recaptcha';
+import Form from "./Forms/Form";
+import FormCF7 from "./Forms/FormCF7";
+import VueRecaptcha from "vue-recaptcha";
 
 export default {
-	components: {
-		Form,
-		FormCF7
-	},
-	mounted() {
-		this.form.name = 'Elmira';
-		this.form.email = 'mer389@mail.ru';
-		this.form.message = 'Test message';
-	},
-	data() {
-		return {
-			url: '',
-			form: {
-				name: '',
-				email: '',
-				message: ''
-			},
-			errors: [],
-			component: FormCF7
-		};
-	},
-	watch: {},
-	methods: {
-		onSubmit: function() {}
-	},
-	created() {}
+  components: {
+    Form,
+    FormCF7
+  },
+  mounted() {
+    this.form.name = "Elmira";
+    this.form.email = "mer389@mail.ru";
+    this.form.message = "Test message";
+  },
+  data() {
+    return {
+      url: "",
+      form: {
+        name: "",
+        email: "",
+        message: ""
+      },
+      errors: [],
+      component: FormCF7
+    };
+  },
+  watch: {},
+  methods: {
+    onSubmit: function() {}
+  },
+  created() {}
 };
 </script>

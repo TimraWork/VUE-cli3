@@ -11,13 +11,11 @@
 
 				.blog__list
 					transition-group(name="flip-list" tag="div" class="row")
-						.col-xs-12.col-sm-4.mb-2(v-for = "post in searchedPosts" :key = "post.id")
-							a.ui-card.ui-card--shadow(:href="post.html_url" v-html="post.description" target="_blank")
+						.col-xs-12.col-sm-4.mb-2(v-for = "(post, index) in searchedPosts" :key = "post.id")
+							a.ui-card.ui-card--shadow(:href="post.html_url" v-html="index + 1 + '. '+ post.description" target="_blank")
 </template>
 
 <script>
-import CatList from "./Categories/CatList";
-
 import axios from "axios";
 
 let blogURL =
@@ -32,17 +30,6 @@ export default {
   },
   computed: {
     searchedPosts() {
-      //   if (this.searchQuery === "") {
-      //     return this.posts;
-      //   } else {
-      //     return this.posts.filter(
-      //       post =>
-      //         post.description
-      //           .toLowerCase()
-      //           .indexOf(this.searchQuery.toLowerCase()) !== -1
-      //     );
-      //   }
-
       return this.searchQuery
         ? this.posts.filter(
             post =>
@@ -63,7 +50,6 @@ export default {
       let apiUrl = "https://api.github.com/users/TimraWork/gists";
       axios.get(apiUrl).then(response => {
         this.posts = response.data;
-        // console.log(this.posts);
       });
     }
   }

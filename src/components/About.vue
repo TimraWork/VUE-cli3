@@ -5,12 +5,12 @@
 				h1.ui-title-1 {{ $t('about') }}
 				.row
 					.col-sm-4
-						img.mb-3(src="./../assets/images/for_site.jpg")
+						img.mb-3(src="./../assets/images/about.jpg")
 						h3.ui-title-4 Образование
 						.mb-3 высшее (ТашИИТ) – инженер-программист
 
 						h3.ui-title-4 Опыт работы
-						.mb-3 4 года (на должности html-верстальщик)
+						.mb-3 5 лет (на должности html-верстальщик)
 
 						h3.ui-title-4 Контакты и соц.сети
 
@@ -50,8 +50,6 @@
 							span.contacts__icon
 								font-awesome-icon(:icon="['fas', 'file-pdf']")
 							a(href="img/CV_Elmira_Mukhamedjanova.pdf" download).contacts__text CV_Elmira_Mukhamedjanova.pdf
-						
-
 					
 					.col-sm-7.content
 						.mb-3
@@ -120,37 +118,8 @@
 							p • 
 								strong Git, Bitbacket, Gists
 								| (сохраняю там все свои проекты, наработки) 
-	//- h2.ui-title-2 Контакты
 
 </template>
-
-<script>
-// export default {
-// 	data() {
-// 		return {};
-// 	}
-// };
-
-export default {
-  //   metaInfo: {
-  //     title: "Обо мне",
-  //     meta: [
-  //       {
-  //         property: "description",
-  //         content: "Немного о себе: образование, навыки, контакты"
-  //       },
-  //       {
-  //         property: "og:title",
-  //         content: "Vue App title"
-  //       },
-  //       {
-  //         property: "og:description",
-  //         content: "Vue App description"
-  //       }
-  //     ]
-  //   }
-};
-</script>
 
 <style lang="stylus" scoped>
 .content p {
