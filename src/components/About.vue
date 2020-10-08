@@ -8,6 +8,16 @@
 						img.mb-3(src="./../assets/images/about.jpg")
 						h3.ui-title-4 Образование
 						.mb-3 высшее (ТашИИТ) – инженер-программист
+						
+						h3.ui-title-4 Сертификаты
+						.mb-3
+							.row
+								.col-md-6
+									a(href="https://assets.htmlacademy.ru/certificates/intensive/167/1504387.pdf" target="_blank")
+										img(src="./../assets/images/js1.jpg")
+								.col-md-6
+									a(href="https://assets.htmlacademy.ru/certificates/intensive/169/1504387.pdf" target="_blank")
+										img(src="./../assets/images/js2.jpg")
 
 						h3.ui-title-4 Опыт работы
 						.mb-3 5 лет (на должности html-верстальщик)
@@ -60,7 +70,7 @@
 						.mb-3
 							p
 								strong
-									| 04.2018 - 
+									| 04.2018 - 05.2018 - 
 								a(href="http://www.metrafor.ru/" target="_blank") Metrafor
 							p
 								strong

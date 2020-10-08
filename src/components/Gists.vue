@@ -47,7 +47,8 @@ export default {
     getPosts: function() {
       this.posts = null;
       //CAT ID
-      let apiUrl = "https://api.github.com/users/TimraWork/gists";
+      let apiUrl =
+        "https://api.github.com/users/TimraWork/gists?page=1&per_page=150";
       axios.get(apiUrl).then(response => {
         this.posts = response.data;
       });

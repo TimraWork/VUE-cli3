@@ -24,7 +24,7 @@
 										span.filter__date {{ work.works_date }}
 									span.filter__bottom
 										span.filter__tags
-											span.filter__tag(v-for = "tags in work.tegi" ) {{ tags.name }} 
+											span.filter__tag(v-for = "tag in work.tegi" ) {{ tag }} 
 										//- .filter__cat {{ work.works_category }}
 									
 </template>
@@ -82,6 +82,12 @@ export default {
   transition: all 0.3s ease-in-out;
 }
 
+.filter__link{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .filter__item {
   position: relative;
   padding: 2px 8px;
@@ -113,6 +119,9 @@ export default {
 .filter__item .filter__img {
   max-width: 100%;
   transition: 0.3s ease-in-out;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .filter__item:hover .filter__img {
