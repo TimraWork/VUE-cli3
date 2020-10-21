@@ -20,7 +20,7 @@ Vue.use(VueRouter);
 const routes = [
 	{
 		path: '/',
-		redirect: '/ru/about',
+		redirect: '/ru/blog/page/1',
 		component: About,
 	},
 	{
