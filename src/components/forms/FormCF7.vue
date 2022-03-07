@@ -39,7 +39,7 @@ import { required, email, minLength } from "vuelidate/lib/validators";
 
 // const sendUrl = 'https://timra.ru/timra/dist/mail.php';
 const sendUrl =
-  "https://timra.ru/timra/wp-json/contact-form-7/v1/contact-forms/8616/feedback";
+  "http://timra.ru/timra/wp-json/contact-form-7/v1/contact-forms/8616/feedback";
 
 export default {
   created() {
@@ -56,7 +56,7 @@ export default {
       form: {
         ename: "",
         email: "",
-        message: ""
+        message: "",
       },
       recaptchaVerify: null,
       recaptchaKey: null,
@@ -66,26 +66,26 @@ export default {
         ename: "",
         email: "",
         recaptcha: "",
-        message: ""
-      }
+        message: "",
+      },
     };
   },
   validations: {
     ename: {
-      required
+      required,
     },
     email: {
       required,
-      email
+      email,
     },
     password: {
       required,
-      minLength: minLength(6)
-    }
+      minLength: minLength(6),
+    },
   },
   components: { VueRecaptcha },
   watch: {
-    recaptchaVerify: "recaptchaVerified"
+    recaptchaVerify: "recaptchaVerified",
   },
   methods: {
     createDbData() {},
@@ -95,7 +95,7 @@ export default {
         this.input_err.recaptcha = "";
       }
     },
-    onSubmit: function(recaptchaToken) {
+    onSubmit: function (recaptchaToken) {
       const form = {
         _wpcf7: "8616",
         _wpcf7_version: "5.1.7",
@@ -105,12 +105,12 @@ export default {
         ename: this.form.ename,
         email: this.form.email,
         mess: this.form.message,
-        recaptchaToken: recaptchaToken
+        recaptchaToken: recaptchaToken,
       };
       var config = {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       };
       const formData = new FormData();
 
@@ -121,12 +121,12 @@ export default {
         this.input_err.recaptcha = "";
         axios
           .post(sendUrl, formData)
-          .then(response => {
+          .then((response) => {
             this.errors = response.data.message;
             this.status = response.data.status;
 
             if (response.data.status === "validation_failed") {
-              response.data.invalidFields.forEach(element => {
+              response.data.invalidFields.forEach((element) => {
                 const errorsArray = element.into.split(".");
                 const input_name = errorsArray[errorsArray.length - 1];
                 const input_mes = element.message;
@@ -136,14 +136,14 @@ export default {
               this.input_err = "";
             }
           })
-          .catch(error => {
+          .catch((error) => {
             // this.errors = error.response.data.message;
             // console.log('response = ', response);
           });
       } else {
         this.input_err.recaptcha = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>

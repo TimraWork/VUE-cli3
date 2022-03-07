@@ -16,29 +16,29 @@
 import axios from "axios";
 
 let blogURL =
-  "https://timra.ru/timra/wp-json/wp/v2/categories?per_page=8&page=1&order=desc&orderby=count&exclude=1";
+  "http://timra.ru/timra/wp-json/wp/v2/categories?per_page=8&page=1&order=desc&orderby=count&exclude=1";
 
 export default {
   data() {
     return {
-      cats: null
+      cats: null,
     };
   },
   mounted() {
     this.getCats();
   },
   methods: {
-    getCats: function() {
+    getCats: function () {
       // POSTS
       axios
         .get(blogURL)
-        .then(response => {
+        .then((response) => {
           this.cats = response.data;
         })
-        .catch(error => {
+        .catch((error) => {
           this.axiosError = error;
         });
-    }
-  }
+    },
+  },
 };
 </script>

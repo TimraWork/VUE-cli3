@@ -18,23 +18,23 @@ export default {
   data() {
     return {
       post: null,
-      endpoint: "https://timra.ru/timra/wp-json/wp/v2/posts/"
+      endpoint: "http://timra.ru/timra/wp-json/wp/v2/posts/",
     };
   },
   methods: {
     getPost(id) {
       axios(this.endpoint + id)
-        .then(response => {
+        .then((response) => {
           this.post = response.data;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
-    }
+    },
   },
   created() {
     this.getPost(this.id);
-  }
+  },
 };
 </script>
 

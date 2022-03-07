@@ -19,41 +19,41 @@
 import axios from "axios";
 
 let blogURL =
-  "https://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=6&page=";
+  "http://timra.ru/timra/wp-json/wp/v2/posts?_embed&per_page=6&page=";
 
 export default {
   data() {
     return {
       posts: null,
-      searchQuery: ""
+      searchQuery: "",
     };
   },
   computed: {
     searchedPosts() {
       return this.searchQuery
         ? this.posts.filter(
-            post =>
+            (post) =>
               post.description
                 .toLowerCase()
                 .indexOf(this.searchQuery.toLowerCase()) >= 0
           )
         : this.posts;
-    }
+    },
   },
   mounted() {
     this.getPosts();
   },
   methods: {
-    getPosts: function() {
+    getPosts: function () {
       this.posts = null;
       //CAT ID
       let apiUrl =
         "https://api.github.com/users/TimraWork/gists?page=1&per_page=150";
-      axios.get(apiUrl).then(response => {
+      axios.get(apiUrl).then((response) => {
         this.posts = response.data;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

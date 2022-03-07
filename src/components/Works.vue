@@ -32,13 +32,13 @@
 <script>
 import axios from "axios";
 
-let blogURL = "https://timra.ru/timra/wp-json/wp/v2/pages/9662";
+let blogURL = "http://timra.ru/timra/wp-json/wp/v2/pages/9662";
 
 export default {
   data() {
     return {
       works: null,
-      cat: "All"
+      cat: "All",
     };
   },
   mounted() {
@@ -48,22 +48,22 @@ export default {
     filteredWorks() {
       return this.cat === "All"
         ? this.works
-        : this.works.filter(work => work.works_category === this.cat);
-    }
+        : this.works.filter((work) => work.works_category === this.cat);
+    },
   },
   methods: {
     getData() {
       // WORKS
       axios
         .get(blogURL)
-        .then(response => {
+        .then((response) => {
           this.works = response.data.acf.works;
         })
-        .catch(error => {
+        .catch((error) => {
           this.axiosError = error;
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
