@@ -230,18 +230,16 @@ pre {
 }
 
 .blog__img {
-  text-align: center;
-}
-
-.blog__img {
   height: 191px;
   margin-bottom: 15px;
   padding: 15px;
-  background: #eaeaea;
+  background: url(../assets/images/No-Image-Placeholder.svg) no-repeat #eeeeee center center;
+  background-size: 100% 100%;
   display: flex;
   border-radius: 10px;
   align-items: center;
   justify-content: center;
+  text-align: center;
 
   img {
     max-height: 150px;

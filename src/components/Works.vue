@@ -6,9 +6,12 @@
 			.filter
 				.filter__cats
 					.filter__item(:class="{ active: cat === 'All' }" @click="cat = 'All'" ) Все работы
-					.filter__item(:class="{ active: cat === 'wp: WordPress' }" @click="cat = 'wp: WordPress'" ) Wordpress
-					.filter__item(:class="{ active: cat === 'frontend: Верстка' }" @click="cat = 'frontend: Верстка'" ) Frontend
-				
+					.filter__item(:class="{ active: cat === 'Jquery' }" @click="cat = 'Jquery'" ) Jquery
+					.filter__item(:class="{ active: cat === 'React' }" @click="cat = 'React'" ) React
+					.filter__item(:class="{ active: cat === 'Vue' }" @click="cat = 'Vue'" ) Vue
+					.filter__item(:class="{ active: cat === 'WordPress' }" @click="cat = 'WordPress'" ) Wordpress
+					.filter__item(:class="{ active: cat === 'Javascript' }" @click="cat = 'Javascript'" ) Javascript
+
 				.loading(v-if="!works")
 					font-awesome-icon(icon="spinner" class="fa-spin")
 
