@@ -1,5 +1,5 @@
 <template lang="pug">
-	.content-wrapper
+.content-wrapper
 		section
 			.container.auth.text-center
 				//- h1.ui-title-1 Выберите форму
@@ -10,14 +10,14 @@
 </template>
 
 <script>
-import Form from "./Forms/Form";
-import FormCF7 from "./Forms/FormCF7";
-import VueRecaptcha from "vue-recaptcha";
+import Form from "@/components/forms/Form";
+
+import FormCF7 from "./forms/FormCF7";
 
 export default {
   components: {
     Form,
-    FormCF7
+    FormCF7,
   },
   mounted() {
     this.form.name = "Elmira";
@@ -30,16 +30,16 @@ export default {
       form: {
         name: "",
         email: "",
-        message: ""
+        message: "",
       },
       errors: [],
-      component: FormCF7
+      component: FormCF7,
     };
   },
   watch: {},
   methods: {
-    onSubmit: function() {}
+    onSubmit: function () {},
   },
-  created() {}
+  created() {},
 };
 </script>
